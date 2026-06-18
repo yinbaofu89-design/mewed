@@ -315,39 +315,52 @@
     }
 
     function burst(x, y, sourceA, sourceB) {
-      const count = Math.floor(random(1, 4));
-      for (let i = 0; i < count; i++) {
-        const angle = random(0, Math.PI * 2);
-        const speed = random(1.7, 5.8);
-        particles.push({
-          text: products[Math.floor(Math.random() * products.length)],
-          x: x + random(-26, 26),
-          y: y + random(-18, 18),
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed - random(.8, 2.2),
-          life: random(78, 126),
-          age: 0,
-          size: random(20, 42),
-          color: productColor(),
-          spin: random(-.045, .045),
-          rot: random(-.35, .35)
-        });
-      }
 
-      for (let i = 0; i < 36; i++) {
-        const angle = random(0, Math.PI * 2);
-        const speed = random(2, 8);
-        sparks.push({
-          x,
-          y,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          life: random(22, 48),
-          age: 0,
-          color: Math.random() > .5 ? sourceA.color : sourceB.color
-        });
-      }
-    }
+  // 2～3個だけ選ぶ
+  const count = Math.floor(random(2, 4));
+
+  // 重複なしで製品選択
+  const selected = [...products]
+    .sort(() => Math.random() - 0.5)
+    .slice(0, count);
+
+  selected.forEach(product => {
+
+    const angle = random(0, Math.PI * 2);
+    const speed = random(1.7, 5.8);
+
+    particles.push({
+      text: product,
+      x: x + random(-26, 26),
+      y: y + random(-18, 18),
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - random(.8, 2.2),
+      life: random(78, 126),
+      age: 0,
+      size: random(20, 42),
+      color: productColor(),
+      spin: random(-.045, .045),
+      rot: random(-.35, .35)
+    });
+
+  });
+
+  // spark演出はそのまま
+  for (let i = 0; i < 36; i++) {
+    const angle = random(0, Math.PI * 2);
+    const speed = random(2, 8);
+
+    sparks.push({
+      x,
+      y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      life: random(22, 48),
+      age: 0,
+      color: Math.random() > .5 ? sourceA.color : sourceB.color
+    });
+  }
+}
 
     function drawBar(bar) {
       const radius = 18;
