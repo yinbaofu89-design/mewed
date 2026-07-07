@@ -3,559 +3,434 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Security Product Motion Wall</title>
+  <title>Portal Index</title>
   <style>
     :root {
-      --ink: #f8fbff;
-      --muted: rgba(232, 241, 255, .74);
-      --panel: rgba(7, 14, 26, .58);
-      --line: rgba(255, 255, 255, .18);
+      color-scheme: light;
+      --bg: #eef7f3;
+      --bg-soft: #f8fcfa;
+      --ink: #153236;
+      --muted: #5f7475;
+      --line: #d5e7e2;
+      --mint: #4bb59a;
+      --teal: #1b7f87;
+      --blue: #376aa6;
+      --amber: #b9822e;
+      --shadow: 0 18px 48px rgba(30, 82, 86, .13);
     }
 
     * {
       box-sizing: border-box;
     }
 
-    html,
     body {
-      width: 100%;
-      height: 100%;
       margin: 0;
-      overflow: hidden;
-      color: var(--ink);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #050814;
-    }
-
-    body {
       min-height: 100vh;
-    }
-
-    .stage {
-      position: fixed;
-      inset: 0;
-      isolation: isolate;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif;
+      color: var(--ink);
       background:
-        linear-gradient(135deg, rgba(4, 8, 18, .92), rgba(6, 21, 37, .76) 42%, rgba(22, 5, 41, .8)),
-        url("./assets/zen-background.png") center / min(88vw, 1200px) auto no-repeat,
-        radial-gradient(circle at 16% 18%, rgba(0, 230, 255, .34), transparent 30%),
-        radial-gradient(circle at 82% 22%, rgba(255, 68, 164, .26), transparent 28%),
-        radial-gradient(circle at 52% 86%, rgba(84, 255, 151, .22), transparent 34%),
-        #050814;
+        radial-gradient(circle at top left, rgba(75, 181, 154, .24), transparent 30rem),
+        linear-gradient(135deg, #e8f5f1 0%, #f6fbf8 42%, #eaf3f8 100%);
     }
 
-    .stage::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      background:
-        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
-      background-size: 46px 46px;
-      mask-image: radial-gradient(circle at center, black, transparent 76%);
-      animation: driftGrid 12s linear infinite;
+    a {
+      color: inherit;
+      text-decoration: none;
     }
 
-    .stage::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      background: radial-gradient(circle at center, transparent 0 42%, rgba(0,0,0,.68) 100%);
+    .shell {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 42px 0 56px;
     }
 
-    canvas {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      display: block;
-      z-index: 2;
-    }
-
-    .hud {
-      position: fixed;
-      top: clamp(18px, 3vw, 34px);
-      left: clamp(18px, 3vw, 40px);
-      right: clamp(18px, 3vw, 40px);
-      z-index: 4;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 18px;
-      pointer-events: none;
-    }
-
-    .title {
-      max-width: 760px;
-      padding: 18px 20px;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.035));
-      box-shadow: 0 22px 70px rgba(0,0,0,.32);
-      backdrop-filter: blur(18px);
+    header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: end;
+      padding: 0 0 28px;
+      border-bottom: 1px solid rgba(27, 127, 135, .18);
     }
 
     .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: #8fffe2;
-      font-size: 12px;
-      font-weight: 900;
-      letter-spacing: 0;
+      margin: 0 0 10px;
+      color: var(--teal);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
       text-transform: uppercase;
     }
 
-    .pulse-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: #48ffba;
-      box-shadow: 0 0 20px #48ffba;
-      animation: pulse 1.25s ease-in-out infinite;
-    }
-
     h1 {
-      margin: 10px 0 8px;
-      font-size: clamp(32px, 5vw, 72px);
-      line-height: .98;
+      margin: 0;
+      font-size: clamp(34px, 5vw, 64px);
+      line-height: 1;
       letter-spacing: 0;
     }
 
-    .title p {
-      margin: 0;
+    .subtitle {
+      max-width: 620px;
+      margin: 16px 0 0;
       color: var(--muted);
-      font-size: clamp(14px, 1.55vw, 18px);
-      line-height: 1.7;
+      font-size: 16px;
+      line-height: 1.75;
     }
 
-    .legend {
-      display: grid;
-      gap: 9px;
-      min-width: 230px;
-      padding: 14px;
+    .meta {
+      min-width: 190px;
+      padding: 16px 18px;
       border: 1px solid var(--line);
-      border-radius: 16px;
-      background: var(--panel);
-      backdrop-filter: blur(18px);
-      box-shadow: 0 22px 70px rgba(0,0,0,.28);
+      border-radius: 8px;
+      background: rgba(248, 252, 250, .72);
+      box-shadow: 0 10px 26px rgba(30, 82, 86, .08);
     }
 
-    .legend-item {
-      display: grid;
-      grid-template-columns: 24px 1fr;
-      align-items: center;
-      gap: 10px;
-      color: rgba(255,255,255,.88);
+    .meta strong {
+      display: block;
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .meta span {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
       font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 18px;
+      margin-top: 28px;
+    }
+
+    section {
+      grid-column: span 6;
+      overflow: hidden;
+      border: 1px solid rgba(27, 127, 135, .16);
+      border-radius: 8px;
+      background: rgba(248, 252, 250, .86);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    section.wide {
+      grid-column: span 12;
+    }
+
+    .section-head {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(90deg, rgba(75, 181, 154, .14), rgba(55, 106, 166, .08));
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.35;
+    }
+
+    .count {
+      display: inline-flex;
+      min-width: 34px;
+      height: 28px;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(27, 127, 135, .18);
+      border-radius: 999px;
+      color: var(--teal);
+      background: rgba(255, 255, 255, .58);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .links {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+    }
+
+    .item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      align-items: center;
+      min-height: 68px;
+      padding: 13px 14px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .64);
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+
+    a.item:hover,
+    a.item:focus-visible {
+      transform: translateY(-2px);
+      border-color: rgba(27, 127, 135, .28);
+      background: #ffffff;
+      box-shadow: 0 12px 24px rgba(30, 82, 86, .12);
+      outline: none;
+    }
+
+    .name {
+      display: block;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .url {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 74px;
+      min-height: 30px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: #ffffff;
+      background: var(--teal);
+      font-size: 12px;
       font-weight: 800;
       white-space: nowrap;
     }
 
-    .swatch {
-      width: 24px;
-      height: 14px;
-      border-radius: 999px;
-      box-shadow: 0 0 20px currentColor;
+    .badge.pending {
+      color: #5b421c;
+      background: #f5dda9;
     }
 
-    .ticker {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 5;
-      overflow: hidden;
-      border-top: 1px solid rgba(255,255,255,.16);
-      background: rgba(4, 8, 18, .72);
-      backdrop-filter: blur(18px);
-    }
+    .accent-tools .badge { background: var(--teal); }
+    .accent-email .badge { background: #597b8b; }
+    .accent-symantec .badge { background: var(--blue); }
+    .accent-tdsynnex .badge { background: #437b68; }
+    .accent-support .badge { background: #626a9c; }
+    .accent-ms .badge { background: var(--amber); }
 
-    .ticker-track {
+    footer {
       display: flex;
-      width: max-content;
-      animation: ticker 24s linear infinite;
-    }
-
-    .ticker span {
-      display: inline-flex;
-      align-items: center;
-      min-height: 44px;
-      padding: 0 18px;
-      color: rgba(255,255,255,.78);
-      font-weight: 900;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 24px;
+      padding-top: 20px;
+      color: var(--muted);
+      border-top: 1px solid rgba(27, 127, 135, .18);
       font-size: 13px;
-      text-transform: uppercase;
     }
 
-    .ticker span::before {
-      content: "";
-      width: 7px;
-      height: 7px;
-      margin-right: 12px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #28dcff, #68ff93, #ff4eb8);
-      box-shadow: 0 0 16px rgba(83, 255, 198, .75);
-    }
-
-    @keyframes ticker {
-      to {
-        transform: translateX(-50%);
+    @media (max-width: 820px) {
+      .shell {
+        width: min(100% - 24px, 1180px);
+        padding-top: 26px;
       }
-    }
 
-    @keyframes pulse {
-      50% {
-        transform: scale(1.65);
-        opacity: .45;
+      header {
+        grid-template-columns: 1fr;
       }
-    }
 
-    @keyframes driftGrid {
-      to {
-        background-position: 46px 46px;
+      .meta {
+        width: 100%;
       }
-    }
 
-    @media (max-width: 840px) {
-      .hud {
+      section,
+      section.wide {
+        grid-column: span 12;
+      }
+
+      .item {
+        grid-template-columns: 1fr;
+      }
+
+      .badge {
+        justify-self: start;
+      }
+
+      footer {
         display: block;
-      }
-
-      .legend {
-        width: max-content;
-        margin-top: 12px;
-      }
-    }
-
-    @media (max-width: 560px) {
-      .title {
-        padding: 14px;
-      }
-
-      .legend {
-        display: none;
       }
     }
   </style>
 </head>
 <body>
-  <main class="stage">
-    <canvas id="motion"></canvas>
-
-    <section class="hud" aria-label="Brand motion dashboard">
-      <div class="title">
-        <div class="eyebrow"><span class="pulse-dot"></span> collision powered product universe</div>
-         </div>
-      <div class="legend">
-        <div class="legend-item"><span class="swatch" style="color:#ffd447;background:#ffd447"></span>Symantec</div>
-        <div class="legend-item"><span class="swatch" style="color:#00d8ff;background:#00d8ff"></span>TD SYNNEX</div>
-        <div class="legend-item"><span class="swatch" style="color:#ff4aa2;background:#ff4aa2"></span>Broadcom</div>
+  <main class="shell">
+    <header>
+      <div>
+        <p class="eyebrow">TD SYNNEX / Symantec Portal</p>
+        <h1>Portal Index</h1>
+        <p class="subtitle">業務で使うテストツール、メール関連、各種ポータルをひとつに整理したショートカットページです。</p>
       </div>
-    </section>
-
-    <aside class="ticker" aria-hidden="true">
-      <div class="ticker-track">
-        <span>DLP</span><span>SMG</span><span>ESS</span><span>EDGESWG</span><span>CloudSWG</span><span>ZTNA</span><span>PGP</span><span>SEP</span><span>CarbonBlack</span><span>ISOLATION</span><span>CAS</span>
-        <span>DLP</span><span>SMG</span><span>ESS</span><span>EDGESWG</span><span>CloudSWG</span><span>ZTNA</span><span>PGP</span><span>SEP</span><span>CarbonBlack</span><span>ISOLATION</span><span>CAS</span>
+      <div class="meta" aria-label="リンク数">
+        <strong>23</strong>
+        <span>index entries</span>
       </div>
-    </aside>
+    </header>
+
+    <div class="grid">
+      <section class="wide accent-tools">
+        <div class="section-head">
+          <h2>1. テストツール</h2>
+          <span class="count">6</span>
+        </div>
+        <div class="links">
+          <a class="item" href="https://isgformatter-tdsynnex.streamlit.app/" target="_blank" rel="noopener noreferrer">
+            <span><span class="name">ISG整形ツール</span><span class="url">https://isgformatter-tdsynnex.streamlit.app/</span></span>
+            <span class="badge">Open</span>
+          </a>
+          <a class="item" href="https://rmaweb-synnex.streamlit.app/" target="_blank" rel="noopener noreferrer">
+            <span><span class="name">RMAテンプレート</span><span class="url">https://rmaweb-synnex.streamlit.app/</span></span>
+            <span class="badge">Open</span>
+          </a>
+          <a class="item" href="https://swgwebtest-synnex.streamlit.app/" target="_blank" rel="noopener noreferrer">
+            <span><span class="name">URLチェックテスト</span><span class="url">https://swgwebtest-synnex.streamlit.app/</span></span>
+            <span class="badge">Open</span>
+          </a>
+          <a class="item" href="https://clouddlp-aiptest.streamlit.app/" target="_blank" rel="noopener noreferrer">
+            <span><span class="name">DLPAPI</span><span class="url">https://clouddlp-aiptest.streamlit.app/</span></span>
+            <span class="badge">Open</span>
+          </a>
+          <a class="item" href="https://casicapclient-virusscan.streamlit.app/" target="_blank" rel="noopener noreferrer">
+            <span><span class="name">ICAPテスト</span><span class="url">https://casicapclient-virusscan.streamlit.app/</span></span>
+            <span class="badge">Open</span>
+          </a>
+          <a class="item" href="https://www.symdl.net/" target="_blank" rel="noopener noreferrer">
+            <span><span class="name">Jisongtest</span><span class="url">https://www.symdl.net/</span></span>
+            <span class="badge">Open</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="accent-email">
+        <div class="section-head">
+          <h2>2. Email関連</h2>
+          <span class="count">2</span>
+        </div>
+        <div class="links">
+          <a class="item" href="https://us.quarantine.symantec.com/" target="_blank" rel="noopener noreferrer">
+            <span><span class="name">隔離ポータル</span><span class="url">https://us.quarantine.symantec.com/</span></span>
+            <span class="badge">Open</span>
+          </a>
+          <a class="item" href="https://litdsynnex.securitytraining.io/users/sign_in" target="_blank" rel="noopener noreferrer">
+            <span><span class="name">訓練ポータル</span><span class="url">https://litdsynnex.securitytraining.io/users/sign_in</span></span>
+            <span class="badge">Open</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="accent-symantec">
+        <div class="section-head">
+          <h2>3. Symantecポータル</h2>
+          <span class="count">3</span>
+        </div>
+        <div class="links">
+          <a class="item" href="https://enterprise.security.com/portal/cloud-config/subscription" target="_blank" rel="noopener noreferrer">
+            <span><span class="name">EC</span><span class="url">https://enterprise.security.com/portal/cloud-config/subscription</span></span>
+            <span class="badge">Open</span>
+          </a>
+          <a class="item" href="https://defense-prodnrt.conferdeploy.net/?s[searchWindow]=TWO_WEEKS&amp;s[dataGrouping]=NO_GROUP_RESULTS&amp;s[c][SEVERITY][0]=WARNING&amp;s[c][THREAT_SCORE][0]=3&amp;s[c][DISMISSED][0]=false" target="_blank" rel="noopener noreferrer">
+            <span><span class="name">Carbonblack</span><span class="url">https://defense-prodnrt.conferdeploy.net/?s[searchWindow]=TWO_WEEKS&amp;s[dataGrouping]=NO_GROUP_RESULTS&amp;s[c][SEVERITY][0]=WARNING&amp;s[c][THREAT_SCORE][0]=3&amp;s[c][DISMISSED][0]=false</span></span>
+            <span class="badge">Open</span>
+          </a>
+          <a class="item" href="https://accounts.security.com/cc/productAccounts?productId=10F3B13D-A2B6-4986-8323-4561E86ECE18" target="_blank" rel="noopener noreferrer">
+            <span><span class="name">パートナーポータル</span><span class="url">https://accounts.security.com/cc/productAccounts?productId=10F3B13D-A2B6-4986-8323-4561E86ECE18</span></span>
+            <span class="badge">Open</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="wide accent-tdsynnex">
+        <div class="section-head">
+          <h2>4. Tdsynnexポータル</h2>
+          <span class="count">8</span>
+        </div>
+        <div class="links">
+          <a class="item" href="https://outlook.office.com/mail/inbox/id/AAQkAGFhZjU0ODg4LTNjYmEtNDk2Ny05ZTc0LWVkNzJmNGZjOGJlNQAQAI5fj52vMr1Bmlo4Ib5ZPxY%3D" target="_blank" rel="noopener noreferrer">
+            <span><span class="name">個人アドレス</span><span class="url">https://outlook.office.com/mail/inbox/id/AAQkAGFhZjU0ODg4LTNjYmEtNDk2Ny05ZTc0LWVkNzJmNGZjOGJlNQAQAI5fj52vMr1Bmlo4Ib5ZPxY%3D</span></span>
+            <span class="badge">Open</span>
+          </a>
+          <a class="item" href="https://outlook.office.com/mail/Broadcom_HelpDesk_JP@tdsynnex.com/" target="_blank" rel="noopener noreferrer">
+            <span><span class="name">グループアドレス</span><span class="url">https://outlook.office.com/mail/Broadcom_HelpDesk_JP@tdsynnex.com/</span></span>
+            <span class="badge">Open</span>
+          </a>
+          <a class="item" href="https://outlook.office.com/mail/Broadcom_HelpDesk_JP@tdsynnex.com" target="_blank" rel="noopener noreferrer">
+            <span><span class="name">Box</span><span class="url">https://outlook.office.com/mail/Broadcom_HelpDesk_JP@tdsynnex.com</span></span>
+            <span class="badge">Open</span>
+          </a>
+          <a class="item" href="https://tdsynnex-help.freshdesk.com/a/dashboard/default" target="_blank" rel="noopener noreferrer">
+            <span><span class="name">KB編集</span><span class="url">https://tdsynnex-help.freshdesk.com/a/dashboard/default</span></span>
+            <span class="badge">Open</span>
+          </a>
+          <a class="item" href="https://tdworldwide.sharepoint.com/:o:/r/sites/Broadcomjapantechengine/_layouts/15/doc2.aspx?sourcedoc=%7Bb2312c5c-2a06-4da9-af1f-74bf678cb574%7D&amp;action=edit&amp;wd=target(Untitled%20Section.one%7Ccb4fbbb2-aba2-44aa-850c-a2fe22c2357a%2Fxx%E3%83%AD%E3%82%B0%E6%8E%A1%E5%8F%96%E6%89%8B%E9%A0%86%7Cd8ab9ec2-738c-4e39-9834-232331922881%2F)&amp;wdorigin=NavigationUrl" target="_blank" rel="noopener noreferrer">
+            <span><span class="name">大連チームOnenote</span><span class="url">https://tdworldwide.sharepoint.com/:o:/r/sites/Broadcomjapantechengine/...</span></span>
+            <span class="badge">Open</span>
+          </a>
+          <a class="item" href="https://tdworldwide.sharepoint.com/sites/Broadcomjapantechengine/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FBroadcomjapantechengine%2FShared%20Documents%2FNetwork%20Security%20Team&amp;viewid=8b213fc0%2D9fd5%2D4455%2Daca1%2D5e4af7d0801f" target="_blank" rel="noopener noreferrer">
+            <span><span class="name">NetworkチームSharePoint</span><span class="url">https://tdworldwide.sharepoint.com/sites/Broadcomjapantechengine/...</span></span>
+            <span class="badge">Open</span>
+          </a>
+          <a class="item" href="https://tdworldwide-my.sharepoint.com/personal/t389168j_tdsynnex_com/_layouts/Doc.aspx?sourcedoc=%7B42DC2B6A-40CA-4701-9E34-16208212754C%7D&amp;end=()&amp;end" target="_blank" rel="noopener noreferrer">
+            <span><span class="name">ネットワークチームOnenote</span><span class="url">https://tdworldwide-my.sharepoint.com/personal/t389168j_tdsynnex_com/...</span></span>
+            <span class="badge">Open</span>
+          </a>
+          <a class="item" href="onenote:https://tdworldwide-my.sharepoint.com/personal/t389168j_tdsynnex_com/Documents/Yin%20さん%20@%20TDSYNNEX/" target="_blank" rel="noopener noreferrer">
+            <span><span class="name">ネットワークチームOnenote App</span><span class="url">onenote:https://tdworldwide-my.sharepoint.com/personal/t389168j_tdsynnex_com/Documents/Yin%20さん%20@%20TDSYNNEX/</span></span>
+            <span class="badge">OneNote</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="accent-support">
+        <div class="section-head">
+          <h2>5. Symantecポータル</h2>
+          <span class="count">3</span>
+        </div>
+        <div class="links">
+          <a class="item" href="https://support.broadcom.com/group/ecx/products" target="_blank" rel="noopener noreferrer">
+            <span><span class="name">サポートポータル</span><span class="url">https://support.broadcom.com/group/ecx/products</span></span>
+            <span class="badge">Open</span>
+          </a>
+          <a class="item" href="https://partnerportal.broadcom.com/" target="_blank" rel="noopener noreferrer">
+            <span><span class="name">ポートナーサポートポータル</span><span class="url">https://partnerportal.broadcom.com/</span></span>
+            <span class="badge">Open</span>
+          </a>
+          <a class="item" href="https://mylogin.broadcom.com/default/ui/v1/selfserviceconsole/applications/" target="_blank" rel="noopener noreferrer">
+            <span><span class="name">ブロードコムポータル</span><span class="url">https://mylogin.broadcom.com/default/ui/v1/selfserviceconsole/applications/</span></span>
+            <span class="badge">Open</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="accent-ms">
+        <div class="section-head">
+          <h2>6. MSポータル</h2>
+          <span class="count">1</span>
+        </div>
+        <div class="links">
+          <a class="item" href="https://portal.azure.com/auth/login/" target="_blank" rel="noopener noreferrer">
+            <span><span class="name">Azureポータル</span><span class="url">https://portal.azure.com/auth/login/</span></span>
+            <span class="badge">Open</span>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <span>Designed for calm visibility and fast access.</span>
+      <span>Last updated: 2026-07-07</span>
+    </footer>
   </main>
-
-  <script>
-    const canvas = document.getElementById("motion");
-    const ctx = canvas.getContext("2d");
-    const products = ["DLP", "SMG", "ESS", "SMG", "EDGESWG", "CloudSWG", "ZTNA", "PGP", "SEP", "CarbonBlack", "ISOLATION", "CAS"];
-    const brands = [
-      { name: "Symantec", color: "#ffd447", accent: "#fff2a8", x: 120, y: 300, vx: 2.4, vy: 1.7 },
-      { name: "TD SYNNEX", color: "#00d8ff", accent: "#9ff7ff", x: 520, y: 350, vx: -2.1, vy: 2.15 },
-      { name: "Broadcom", color: "#ff4aa2", accent: "#ffc1df", x: 860, y: 280, vx: 1.85, vy: -2.35 }
-    ];
-    const particles = [];
-    const sparks = [];
-    const trails = [];
-    let width = 0;
-    let height = 0;
-    let dpr = 1;
-    let lastPulse = 0;
-
-    function resize() {
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = Math.floor(width * dpr);
-      canvas.height = Math.floor(height * dpr);
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      brands.forEach((bar, index) => {
-        bar.w = Math.max(210, Math.min(360, width * .23));
-        bar.h = Math.max(56, Math.min(82, height * .085));
-        const topLimit = Math.min(Math.max(250, height * .38), height - bar.h - 90);
-        bar.x = Math.min(width - bar.w - 28, Math.max(28, bar.x || 80 + index * 230));
-        bar.y = Math.min(height - bar.h - 70, Math.max(topLimit, bar.y || topLimit + index * 42));
-      });
-    }
-
-    function random(min, max) {
-      return min + Math.random() * (max - min);
-    }
-
-    function productColor() {
-      const palette = ["#76ffb3", "#56e7ff", "#ffcf56", "#ff63c7", "#b58cff", "#ffffff"];
-      return palette[Math.floor(Math.random() * palette.length)];
-    }
-
-    function overlap(a, b) {
-      return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
-    }
-
-    function burst(x, y, sourceA, sourceB) {
-
-  // 2～3個だけ選ぶ
-  const count = Math.floor(random(2, 4));
-
-  // 重複なしで製品選択
-  const selected = [...products]
-    .sort(() => Math.random() - 0.5)
-    .slice(0, count);
-
-  selected.forEach(product => {
-
-    const angle = random(0, Math.PI * 2);
-    const speed = random(1.7, 5.8);
-
-    particles.push({
-      text: product,
-      x: x + random(-26, 26),
-      y: y + random(-18, 18),
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed - random(.8, 2.2),
-      life: random(78, 126),
-      age: 0,
-      size: random(20, 42),
-      color: productColor(),
-      spin: random(-.045, .045),
-      rot: random(-.35, .35)
-    });
-
-  });
-
-  // spark演出はそのまま
-  for (let i = 0; i < 36; i++) {
-    const angle = random(0, Math.PI * 2);
-    const speed = random(2, 8);
-
-    sparks.push({
-      x,
-      y,
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed,
-      life: random(22, 48),
-      age: 0,
-      color: Math.random() > .5 ? sourceA.color : sourceB.color
-    });
-  }
-}
-
-    function drawBar(bar) {
-      const radius = 18;
-      ctx.save();
-      ctx.translate(bar.x + bar.w / 2, bar.y + bar.h / 2);
-      ctx.rotate(Math.sin(performance.now() * .0012 + bar.x * .01) * .04);
-      ctx.translate(-bar.w / 2, -bar.h / 2);
-
-      const glow = ctx.createLinearGradient(0, 0, bar.w, bar.h);
-      glow.addColorStop(0, bar.accent);
-      glow.addColorStop(.48, bar.color);
-      glow.addColorStop(1, "#ffffff");
-
-      ctx.shadowColor = bar.color;
-      ctx.shadowBlur = 34;
-      ctx.fillStyle = "rgba(255,255,255,.08)";
-      roundRect(-9, -9, bar.w + 18, bar.h + 18, radius + 7);
-      ctx.fill();
-
-      ctx.shadowBlur = 22;
-      ctx.fillStyle = glow;
-      roundRect(0, 0, bar.w, bar.h, radius);
-      ctx.fill();
-
-      ctx.shadowBlur = 0;
-      ctx.globalAlpha = .2;
-      ctx.fillStyle = "#ffffff";
-      roundRect(8, 7, bar.w - 16, Math.max(12, bar.h * .26), radius - 4);
-      ctx.fill();
-      ctx.globalAlpha = 1;
-
-      ctx.fillStyle = "#06101c";
-      ctx.font = `900 ${Math.max(22, Math.min(34, bar.w / 8))}px Inter, system-ui, sans-serif`;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(bar.name, bar.w / 2, bar.h / 2 + 1);
-      ctx.restore();
-    }
-
-    function roundRect(x, y, w, h, r) {
-      const radius = Math.min(r, w / 2, h / 2);
-      ctx.beginPath();
-      ctx.moveTo(x + radius, y);
-      ctx.arcTo(x + w, y, x + w, y + h, radius);
-      ctx.arcTo(x + w, y + h, x, y + h, radius);
-      ctx.arcTo(x, y + h, x, y, radius);
-      ctx.arcTo(x, y, x + w, y, radius);
-      ctx.closePath();
-    }
-
-    function updateBars() {
-      brands.forEach((bar) => {
-        bar.x += bar.vx;
-        bar.y += bar.vy;
-        bar.vx += random(-.035, .035);
-        bar.vy += random(-.035, .035);
-        bar.vx = Math.max(-3.6, Math.min(3.6, bar.vx));
-        bar.vy = Math.max(-3.4, Math.min(3.4, bar.vy));
-
-        if (bar.x <= 18 || bar.x + bar.w >= width - 18) {
-          bar.vx *= -1;
-          bar.x = Math.max(18, Math.min(width - bar.w - 18, bar.x));
-        }
-        const topLimit = Math.min(Math.max(250, height * .38), height - bar.h - 90);
-        if (bar.y <= topLimit || bar.y + bar.h >= height - 58) {
-          bar.vy *= -1;
-          bar.y = Math.max(topLimit, Math.min(height - bar.h - 58, bar.y));
-        }
-
-        trails.push({ x: bar.x + bar.w / 2, y: bar.y + bar.h / 2, color: bar.color, life: 32, age: 0 });
-      });
-
-      for (let i = 0; i < brands.length; i++) {
-        for (let j = i + 1; j < brands.length; j++) {
-          const a = brands[i];
-          const b = brands[j];
-          if (overlap(a, b)) {
-            const now = performance.now();
-            const cx = (Math.max(a.x, b.x) + Math.min(a.x + a.w, b.x + b.w)) / 2;
-            const cy = (Math.max(a.y, b.y) + Math.min(a.y + a.h, b.y + b.h)) / 2;
-            const tempVx = a.vx;
-            const tempVy = a.vy;
-            a.vx = b.vx * random(.85, 1.18);
-            a.vy = b.vy * random(.85, 1.18);
-            b.vx = tempVx * random(.85, 1.18);
-            b.vy = tempVy * random(.85, 1.18);
-            if (now - lastPulse > 150) {
-              burst(cx, cy, a, b);
-              lastPulse = now;
-            }
-          }
-        }
-      }
-    }
-
-    function drawTrails() {
-      for (let i = trails.length - 1; i >= 0; i--) {
-        const t = trails[i];
-        t.age++;
-        const alpha = 1 - t.age / t.life;
-        ctx.globalAlpha = alpha * .22;
-        ctx.fillStyle = t.color;
-        ctx.beginPath();
-        ctx.arc(t.x, t.y, 20 + (1 - alpha) * 28, 0, Math.PI * 2);
-        ctx.fill();
-        if (t.age >= t.life) trails.splice(i, 1);
-      }
-      ctx.globalAlpha = 1;
-    }
-
-    function drawParticles() {
-      for (let i = particles.length - 1; i >= 0; i--) {
-        const p = particles[i];
-        p.age++;
-        p.x += p.vx;
-        p.y += p.vy;
-        p.vy += .035;
-        p.rot += p.spin;
-        const alpha = Math.max(0, 1 - p.age / p.life);
-
-        ctx.save();
-        ctx.translate(p.x, p.y);
-        ctx.rotate(p.rot);
-        ctx.globalAlpha = alpha;
-        ctx.font = `900 ${p.size}px Inter, system-ui, sans-serif`;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.lineWidth = 8;
-        ctx.strokeStyle = "rgba(3, 6, 14, .55)";
-        ctx.strokeText(p.text, 0, 0);
-        ctx.shadowColor = p.color;
-        ctx.shadowBlur = 24;
-        ctx.fillStyle = p.color;
-        ctx.fillText(p.text, 0, 0);
-        ctx.restore();
-
-        if (p.age >= p.life) particles.splice(i, 1);
-      }
-    }
-
-    function drawSparks() {
-      for (let i = sparks.length - 1; i >= 0; i--) {
-        const s = sparks[i];
-        s.age++;
-        s.x += s.vx;
-        s.y += s.vy;
-        s.vx *= .96;
-        s.vy *= .96;
-        const alpha = 1 - s.age / s.life;
-
-        ctx.globalAlpha = alpha;
-        ctx.strokeStyle = s.color;
-        ctx.lineWidth = 2.4;
-        ctx.shadowColor = s.color;
-        ctx.shadowBlur = 14;
-        ctx.beginPath();
-        ctx.moveTo(s.x, s.y);
-        ctx.lineTo(s.x - s.vx * 2.8, s.y - s.vy * 2.8);
-        ctx.stroke();
-
-        if (s.age >= s.life) sparks.splice(i, 1);
-      }
-      ctx.globalAlpha = 1;
-      ctx.shadowBlur = 0;
-    }
-
-    function drawAmbient() {
-      const time = performance.now() * .001;
-      for (let i = 0; i < 34; i++) {
-        const x = (Math.sin(time * .3 + i * 17.2) * .5 + .5) * width;
-        const y = (Math.cos(time * .24 + i * 9.8) * .5 + .5) * height;
-        ctx.globalAlpha = .09;
-        ctx.fillStyle = i % 3 === 0 ? "#66ffe0" : i % 3 === 1 ? "#ff5bb9" : "#ffe66d";
-        ctx.beginPath();
-        ctx.arc(x, y, 1.5 + (i % 5), 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.globalAlpha = 1;
-    }
-
-    function loop() {
-      ctx.clearRect(0, 0, width, height);
-      drawAmbient();
-      updateBars();
-      drawTrails();
-      brands.forEach(drawBar);
-      drawSparks();
-      drawParticles();
-      requestAnimationFrame(loop);
-    }
-
-    window.addEventListener("resize", resize);
-    resize();
-    burst(width * .5, height * .52, brands[0], brands[1]);
-    loop();
-  </script>
 </body>
 </html>
