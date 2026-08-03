@@ -441,7 +441,63 @@
           </a>
         </div>
       </section>
+
+      <!-- DLP (データ流出防止) テスト用セクション -->
+<div class="Box m-4 p-4">
+  <div class="Box-header mb-3">
+    <h2 class="Box-title h3">DLP テストフォーム</h2>
+  </div>
+  <div class="Box-body">
+    <form action="/dlp-test-endpoint" method="POST" enctype="multipart/form-data">
+      
+      <!-- メッセージ入力セクション -->
+      <div class="form-group mb-4">
+        <div class="form-group-header">
+          <label for="dlp-text-input" class="f5 text-bold">1. テキスト（メッセージ）検知テスト</label>
+          <p class="note" id="dlp-text-help">
+            個人情報（マイナンバー、クレジットカード番号、マイナンバーカード等）や暗号化キーなどのテスト用文字列を入力してください。
+          </p>
+        </div>
+        <div class="form-group-body">
+          <textarea 
+            id="dlp-text-input" 
+            name="dlp_message" 
+            class="form-control width-full" 
+            rows="4" 
+            aria-describedby="dlp-text-help"
+            placeholder="例: 4532-XXXX-XXXX-XXXX や 機密テキストを入力"></textarea>
+        </div>
+      </div>
+
+      <!-- ファイルアップロードセクション -->
+      <div class="form-group mb-4">
+        <div class="form-group-header">
+          <label for="dlp-file-input" class="f5 text-bold">2. ファイルアップロード検知テスト</label>
+          <p class="note" id="dlp-file-help">
+            DLPの検査対象となるファイル（PDF、Office文書、ZIP圧縮ファイル等）を選択してください。
+          </p>
+        </div>
+        <div class="form-group-body">
+          <input 
+            type="file" 
+            id="dlp-file-input" 
+            name="dlp_file" 
+            class="form-control" 
+            aria-describedby="dlp-file-help" />
+        </div>
+      </div>
+
+      <!-- 送信ボタン -->
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">DLPテストを実行</button>
+      </div>
+
+    </form>
+  </div>
+  
+</div>
     </div>
+    
 
     <footer>
       <span>Designed for calm visibility and fast access.</span>
