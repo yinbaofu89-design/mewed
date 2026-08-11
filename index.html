@@ -16,6 +16,8 @@
       --teal: #1b7f87;
       --blue: #376aa6;
       --amber: #b9822e;
+      --warn: #c84b31;
+      --warn-bg: #fff0ef;
       --shadow: 0 18px 48px rgba(30, 82, 86, .13);
       --taiji-white: #f8f8f8;
       --taiji-black: #1a1a1a;
@@ -46,8 +48,10 @@
     /* ========== 八卦太极时钟样式 ========== */
     .clock-wrap {
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      align-items: center;
       margin-bottom: 40px;
+      gap: 14px;
     }
     .taiji-clock {
       position: relative;
@@ -149,6 +153,36 @@
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: 4;
+    }
+    /* 数字时间 */
+    .digital-time {
+      text-align: center;
+    }
+    .time-hms {
+      font-size: 32px;
+      font-weight: bold;
+      color: var(--teal);
+      letter-spacing: 3px;
+    }
+    .time-date {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    /* 打刻提醒 */
+    .reminder {
+      display: none;
+      margin-top: 8px;
+      padding: 8px 16px;
+      background: var(--warn-bg);
+      color: var(--warn);
+      font-weight: bold;
+      font-size: 16px;
+      border-radius: 999px;
+      border: 1px solid #f7c8c2;
+    }
+    .reminder.show {
+      display: inline-block;
     }
 
     header {
@@ -322,6 +356,12 @@
         width: 130px;
         height: 130px;
       }
+      .time-hms {
+        font-size: 24px;
+      }
+      .reminder {
+        font-size: 14px;
+      }
       .shell {
         width: min(100% - 24px, 1180px);
         padding-top: 26px;
@@ -350,7 +390,7 @@
 </head>
 <body>
   <main class="shell">
-    <!-- 顶部八卦太极时钟 -->
+    <!-- 顶部八卦太极时钟 + 数字时间 + 打刻提醒 -->
     <div class="clock-wrap">
       <div class="taiji-clock">
         <div class="taiji-yin-dot"></div>
@@ -361,6 +401,13 @@
         <div class="clock-hand hand-minute" id="minHand"></div>
         <div class="clock-hand hand-second" id="secHand"></div>
         <div class="clock-center"></div>
+      </div>
+      <!-- 数字时间区域 -->
+      <div class="digital-time">
+        <div class="time-hms" id="timeHMS">00:00:00</div>
+        <div class="time-date" id="timeDate">2026年08月11日 火曜日</div>
+        <!-- 打刻提醒文案 -->
+        <div class="reminder" id="reminder">打刻を忘れずにやってください！</div>
       </div>
     </div>
 
@@ -523,15 +570,15 @@
         </div>
         <div class="links">
           <a class="item" href="https://support.broadcom.com/group/ecx/products" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">サポートポータル</span><span class="url">https://support.broadcom.com/group/ecx/products</span></span>
+            <span><span class="name">サポートポータル</span><span class="url">httpssupport.broadcom.com/group/ecx/products</span></span>
             <span class="badge">Open</span>
           </a>
           <a class="item" href="https://partnerportal.broadcom.com/" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">ポートナーサポートポータル</span><span class="url">https://partnerportal.broadcom.com/</span></span>
+            <span><span class="name">ポートナーサポートポータル</span><span class="url">httpspartnerportal.broadcom.com/</span></span>
             <span class="badge">Open</span>
           </a>
           <a class="item" href="https://mylogin.broadcom.com/default/ui/v1/selfserviceconsole/applications/" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">ブロードコムポータル</span><span class="url">https://mylogin.broadcom.com/default/ui/v1/selfserviceconsole/applications/</span></span>
+            <span><span class="name">ブロードコムポータル</span><span class="url">httpsmylogin.broadcom.com/default/ui/v1/selfserviceconsole/applications/</span></span>
             <span class="badge">Open</span>
           </a>
         </div>
@@ -543,7 +590,7 @@
         </div>
         <div class="links">
           <a class="item" href="https://portal.azure.com/auth/login/" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">Azureポータル</span><span class="url">https://portal.azure.com/auth/login/</span></span>
+            <span><span class="name">Azureポータル</span><span class="url">httpsportal.azure.com/auth/login/</span></span>
             <span class="badge">Open</span>
           </a>
         </div>
@@ -555,7 +602,7 @@
     </footer>
   </main>
 
-  <!-- 太极时钟运行JS -->
+  <!-- 太极时钟运行JS + 数字时间 + 打刻提醒判定 -->
   <script>
     // 生成12时辰刻度
     const markWrap = document.getElementById('clockMarks');
@@ -569,20 +616,44 @@
     const hourHand = document.getElementById('hourHand');
     const minHand = document.getElementById('minHand');
     const secHand = document.getElementById('secHand');
+    const timeHMS = document.getElementById('timeHMS');
+    const timeDate = document.getElementById('timeDate');
+    const reminder = document.getElementById('reminder');
+    const weekArr = ["日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日"];
+
+    function pad(n){
+      return n < 10 ? "0"+n : n;
+    }
 
     function updateClock(){
       const now = new Date();
       const sec = now.getSeconds();
       const min = now.getMinutes();
       const hour = now.getHours() % 12;
+      const fullHour = now.getHours();
+      const year = now.getFullYear();
+      const month = now.getMonth()+1;
+      const day = now.getDate();
+      const week = weekArr[now.getDay()];
 
+      // 指针旋转
       const secDeg = sec * 6;
       const minDeg = min * 6 + sec * 0.1;
       const hourDeg = hour * 30 + min * 0.5;
-
       secHand.style.transform = `rotate(${secDeg}deg)`;
       minHand.style.transform = `rotate(${minDeg}deg)`;
       hourHand.style.transform = `rotate(${hourDeg}deg)`;
+
+      // 数字時刻更新
+      timeHMS.textContent = `${pad(fullHour)}:${pad(min)}:${pad(sec)}`;
+      timeDate.textContent = `${year}年${pad(month)}月${pad(day)}日 ${week}`;
+
+      // 17時30分以降ならリマインダー表示
+      if (fullHour > 17 || (fullHour === 17 && min >= 30)) {
+        reminder.classList.add("show");
+      } else {
+        reminder.classList.remove("show");
+      }
     }
     updateClock();
     setInterval(updateClock, 1000);
