@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="ja">
 <head>
@@ -49,9 +50,11 @@
       text-decoration: none;
     }
     .shell {
-      width: min(1180px, calc(100% - 36px));
+      /* 画面全体を有効活用。左右に寄らず、中央いっぱいに展開 */
+      width: calc(100% - 56px);
+      max-width: 1800px;
       margin: 0 auto;
-      padding: 42px 0 56px;
+      padding: 36px 0 56px;
     }
 
     /* ========== 八卦太极时钟 ========== */
@@ -317,9 +320,165 @@
       padding: 12px;
     }
 
+    /* ========== 重要スケジュール ========== */
+    .schedule-panel {
+      margin: 0 0 28px;
+      padding: 20px;
+      background: #f4f0ff;
+      border: 1px solid #cfc3ef;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+    .schedule-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #6750a4;
+      margin: 0 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .toggle-schedule-form {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      background: #6750a4;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .schedule-form-wrap {
+      display: none;
+      margin-bottom: 16px;
+      padding: 14px;
+      background: white;
+      border-radius: 8px;
+    }
+    .schedule-form-wrap.open { display: block; }
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .schedule-field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .schedule-field.full { grid-column: 1 / -1; }
+    .schedule-field label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .schedule-field input,
+    .schedule-field textarea {
+      width: 100%;
+      padding: 9px 10px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      font: inherit;
+      background: #fff;
+    }
+    .schedule-field textarea {
+      min-height: 70px;
+      resize: vertical;
+    }
+    .schedule-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .schedule-item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 14px;
+      border-radius: 8px;
+      border-left: 4px solid #6750a4;
+      background: #fff;
+    }
+    .schedule-item.warning {
+      border-left-color: #d12020;
+      background: #fff0f0;
+      box-shadow: 0 0 0 1px rgba(209,32,32,.10);
+    }
+    .schedule-item-title {
+      font-weight: 800;
+      font-size: 16px;
+    }
+    .schedule-time {
+      font-size: 14px;
+      font-weight: 700;
+      color: #6750a4;
+    }
+    .schedule-item.warning .schedule-time,
+    .schedule-item.warning .schedule-flag {
+      color: #d12020;
+    }
+    .schedule-flag {
+      display: inline-flex;
+      align-self: flex-start;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: #eadfff;
+      color: #6750a4;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .schedule-flag.warning {
+      background: #ffdede;
+      color: #b00000;
+    }
+    .schedule-url {
+      color: #376aa6;
+      word-break: break-all;
+      font-size: 13px;
+    }
+    .schedule-comment {
+      color: var(--muted);
+      white-space: pre-wrap;
+      font-size: 14px;
+    }
+    .schedule-item-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .schedule-del {
+      background: var(--warn);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 4px 10px;
+      cursor: pointer;
+    }
+    .schedule-hint {
+      padding: 8px 10px;
+      border-radius: 7px;
+      background: #fff7d6;
+      color: #805d00;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .empty-schedule {
+      color: var(--muted);
+      text-align: center;
+      padding: 12px;
+    }
+    @media (max-width: 700px) {
+      .schedule-grid { grid-template-columns: 1fr; }
+      .schedule-field.full { grid-column: auto; }
+    }
+
     header {
       display: grid;
-      grid-template-columns: 1fr auto;
+      grid-template-columns: 1fr;
       gap: 24px;
       align-items: end;
       padding: 0 0 28px;
@@ -346,30 +505,37 @@
       font-size: 16px;
       line-height: 1.75;
     }
-    .meta {
-      min-width: 190px;
-      padding: 16px 18px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: rgba(248, 252, 250, .72);
-      box-shadow: 0 10px 26px rgba(30, 82, 86, .08);
-    }
-    .meta strong {
-      display: block;
-      font-size: 28px;
-      line-height: 1;
-    }
-    .meta span {
-      display: block;
-      margin-top: 7px;
-      color: var(--muted);
-      font-size: 13px;
-    }
     .grid {
       display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 18px;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 24px;
       margin-top: 28px;
+      width: 100%;
+    }
+
+    /* 最上段：TDSYNNEXと重要スケジュールを画面幅いっぱいに左右配置 */
+    .grid > .accent-tdsynnex,
+    .grid > .schedule-panel {
+      grid-column: span 6;
+      min-width: 0;
+    }
+
+    /* 大画面ではカード内部も余白を広げて見やすくする */
+    @media (min-width: 1400px) {
+      .shell {
+        width: calc(100% - 72px);
+        max-width: 1800px;
+      }
+      .grid {
+        gap: 28px;
+      }
+      .links {
+        padding: 18px;
+      }
+      .item {
+        min-height: 74px;
+        padding: 15px 16px;
+      }
     }
     section {
       grid-column: span 6;
@@ -498,14 +664,12 @@
         flex-direction: column;
       }
       .shell {
-        width: min(100% - 24px, 1180px);
+        width: calc(100% - 24px);
+        max-width: none;
         padding-top: 26px;
       }
       header {
         grid-template-columns: 1fr;
-      }
-      .meta {
-        width: 100%;
       }
       section,
       section.wide {
@@ -566,15 +730,11 @@
         <h1>Portal Index</h1>
         <p class="subtitle">業務で使うテストツール、メール関連、各種ポータルをひとつに整理したショートカットページです。</p>
       </div>
-      <div class="meta" aria-label="リンク数">
-        <strong>26</strong>
-        <span>index entries</span>
-      </div>
-    </div>
+    </header>
 
     <div class="grid">
       <!-- 1. Tdsynnexポータル（一番多用、wide上部） -->
-      <section class="wide accent-tdsynnex">
+      <section class="accent-tdsynnex">
         <div class="section-head">
           <h2>1. Tdsynnexポータル</h2>
           <span class="count">8</span>
@@ -613,6 +773,41 @@
             <span class="badge">OneNote</span>
           </a>
         </div>
+      </section>
+
+      <!-- 重要スケジュール（Tdsynnexポータルの横） -->
+      <section class="schedule-panel" id="schedulePanel">
+        <div class="schedule-title">📅 重要スケジュール</div>
+        <button class="toggle-schedule-form" id="toggleScheduleForm">スケジュール追加を展開</button>
+        <div class="schedule-form-wrap" id="scheduleForm">
+          <div class="schedule-grid">
+            <div class="schedule-field">
+              <label for="meeting-start">ミーティング開始日時</label>
+              <input type="datetime-local" id="meeting-start">
+            </div>
+            <div class="schedule-field">
+              <label for="meeting-end">ミーティング終了日時</label>
+              <input type="datetime-local" id="meeting-end">
+            </div>
+            <div class="schedule-field full">
+              <label for="meeting-content">ミーティング内容</label>
+              <input type="text" id="meeting-content" placeholder="例：Symantec DLP定例会">
+            </div>
+            <div class="schedule-field full">
+              <label for="meeting-url">ミーティングURL</label>
+              <input type="url" id="meeting-url" placeholder="https://...">
+            </div>
+            <div class="schedule-field full">
+              <label for="meeting-comment">コメント</label>
+              <textarea id="meeting-comment" placeholder="事前確認事項など"></textarea>
+            </div>
+          </div>
+          <div class="schedule-actions">
+            <button class="task-btn btn-add" id="add-schedule">スケジュール追加</button>
+            <button class="task-btn btn-clear" id="clear-schedules">全スケジュール削除</button>
+          </div>
+        </div>
+        <div class="task-list" id="schedule-list"></div>
       </section>
 
       <!-- 2. MSポータル(AZURE) -->
@@ -812,6 +1007,196 @@
     updateClock();
     setInterval(updateClock, 1000);
 
+    // ==================== 重要スケジュール機能 ====================
+    // タスクと同じブラウザのlocalStorageに保存するため、ページをリロードしても残ります。
+    const SCHEDULE_KEY = "portal_important_schedules";
+    const scheduleToggleBtn = document.getElementById("toggleScheduleForm");
+    const scheduleForm = document.getElementById("scheduleForm");
+    const meetingStart = document.getElementById("meeting-start");
+    const meetingEnd = document.getElementById("meeting-end");
+    const meetingContent = document.getElementById("meeting-content");
+    const meetingUrl = document.getElementById("meeting-url");
+    const meetingComment = document.getElementById("meeting-comment");
+    const addScheduleBtn = document.getElementById("add-schedule");
+    const clearSchedulesBtn = document.getElementById("clear-schedules");
+    const scheduleListDom = document.getElementById("schedule-list");
+
+    scheduleToggleBtn.addEventListener("click", function(){
+      scheduleForm.classList.toggle("open");
+      this.textContent = scheduleForm.classList.contains("open")
+        ? "スケジュール追加を折り畳む"
+        : "スケジュール追加を展開";
+    });
+
+    function loadSchedules(){
+      try {
+        const raw = localStorage.getItem(SCHEDULE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch(e) {
+        console.error("スケジュール読み込みエラー:", e);
+        return [];
+      }
+    }
+
+    function saveSchedules(arr){
+      localStorage.setItem(SCHEDULE_KEY, JSON.stringify(arr));
+    }
+
+    function formatMeetingDate(value){
+      const d = new Date(value);
+      if (Number.isNaN(d.getTime())) return value;
+      return `${d.getFullYear()}年${pad(d.getMonth()+1)}月${pad(d.getDate())}日 ` +
+             `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+
+    // 「前日になったら」＝ミーティング開始日の前日00:00以降を赤色警告にする。
+    function isScheduleWarning(schedule){
+      const start = new Date(schedule.start);
+      if (Number.isNaN(start.getTime())) return false;
+      const now = new Date();
+      const warningStart = new Date(start);
+      warningStart.setDate(warningStart.getDate() - 1);
+      return now >= warningStart;
+    }
+
+    function renderSchedules(){
+      const schedules = loadSchedules();
+      scheduleListDom.innerHTML = "";
+
+      if(schedules.length === 0){
+        scheduleListDom.innerHTML =
+          `<div class="empty-schedule">重要なスケジュールが登録されていません。</div>`;
+        return;
+      }
+
+      // 日時順に表示
+      schedules.sort((a,b) => new Date(a.start) - new Date(b.start));
+      saveSchedules(schedules);
+
+      schedules.forEach((schedule, idx) => {
+        const warning = isScheduleWarning(schedule);
+        const item = document.createElement("div");
+        item.className = `schedule-item${warning ? " warning" : ""}`;
+
+        const head = document.createElement("div");
+        head.className = "schedule-item-head";
+
+        const title = document.createElement("div");
+        title.className = "schedule-item-title";
+        title.textContent = schedule.content || "ミーティング";
+
+        const del = document.createElement("button");
+        del.className = "schedule-del";
+        del.textContent = "削除";
+        del.dataset.idx = idx;
+        head.appendChild(title);
+        head.appendChild(del);
+        item.appendChild(head);
+
+        const flag = document.createElement("span");
+        flag.className = `schedule-flag${warning ? " warning" : ""}`;
+        flag.textContent = warning ? "🔴 前日・要確認" : "予定";
+        item.appendChild(flag);
+
+        const time = document.createElement("div");
+        time.className = "schedule-time";
+        time.textContent = `🕒 ${formatMeetingDate(schedule.start)} ～ ${formatMeetingDate(schedule.end)}`;
+        item.appendChild(time);
+
+        if(schedule.url){
+          const url = document.createElement("a");
+          url.className = "schedule-url";
+          url.href = schedule.url;
+          url.target = "_blank";
+          url.rel = "noopener noreferrer";
+          url.textContent = `🔗 ${schedule.url}`;
+          item.appendChild(url);
+        }
+
+        if(schedule.comment){
+          const comment = document.createElement("div");
+          comment.className = "schedule-comment";
+          comment.textContent = `💬 ${schedule.comment}`;
+          item.appendChild(comment);
+        }
+
+        if(warning){
+          const hint = document.createElement("div");
+          hint.className = "schedule-hint";
+          hint.textContent =
+            "⚠️ ヒント：このミーティングは前日になりました。URL・参加者・事前資料などを確認してください。";
+          item.appendChild(hint);
+        }
+
+        scheduleListDom.appendChild(item);
+      });
+
+      document.querySelectorAll(".schedule-del").forEach(btn => {
+        btn.onclick = () => {
+          const idx = Number(btn.dataset.idx);
+          const all = loadSchedules();
+          all.splice(idx, 1);
+          saveSchedules(all);
+          renderSchedules();
+        };
+      });
+    }
+
+    addScheduleBtn.onclick = () => {
+      const start = meetingStart.value;
+      const end = meetingEnd.value;
+      const content = meetingContent.value.trim();
+      const url = meetingUrl.value.trim();
+      const comment = meetingComment.value.trim();
+
+      if(!start) return alert("ミーティング開始日時を入力してください。");
+      if(!end) return alert("ミーティング終了日時を入力してください。");
+      if(new Date(end) <= new Date(start)){
+        return alert("終了日時は開始日時より後にしてください。");
+      }
+      if(!content) return alert("ミーティング内容を入力してください。");
+
+      if(url){
+        try {
+          const parsed = new URL(url);
+          if(!["http:","https:"].includes(parsed.protocol)){
+            return alert("ミーティングURLは http:// または https:// で入力してください。");
+          }
+        } catch(e) {
+          return alert("ミーティングURLの形式を確認してください。");
+        }
+      }
+
+      const schedules = loadSchedules();
+      schedules.push({
+        id: Date.now().toString(),
+        start,
+        end,
+        content,
+        url,
+        comment
+      });
+      saveSchedules(schedules);
+
+      meetingStart.value = "";
+      meetingEnd.value = "";
+      meetingContent.value = "";
+      meetingUrl.value = "";
+      meetingComment.value = "";
+      renderSchedules();
+    };
+
+    clearSchedulesBtn.onclick = () => {
+      if(confirm("すべての重要スケジュールを削除しますか？")){
+        saveSchedules([]);
+        renderSchedules();
+      }
+    };
+
+    // 初期描画。1分ごとに再判定して「前日」フラグを自動更新。
+    renderSchedules();
+    setInterval(renderSchedules, 60000);
+
     // ==================== タスク機能（折り畳みクリック不具合完全修正） ====================
     const TASK_KEY = "portal_main_tasks";
     const toggleBtn = document.getElementById("toggleForm");
@@ -879,7 +1264,7 @@
           `;
           label.querySelector("input").onchange = ()=>{
             const allTasks = loadTasks();
-            all[idx].status = s.val;
+            allTasks[idx].status = s.val;
             saveTasks(allTasks);
             renderTasks();
           };
