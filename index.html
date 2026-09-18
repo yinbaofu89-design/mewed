@@ -1,10 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TD SYNNEX Portal</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>TD SYNNEX Portal</title>
+<style>
     :root {
       color-scheme: light;
       --bg: #eef7f3;
@@ -765,346 +766,336 @@
     .mail-link{color:var(--blue)!important;text-decoration:none!important;font-weight:700}
     .mail-link:hover,.mail-link:focus-visible{text-decoration:underline!important}
     @media(max-width:820px){.product-contact-grid{grid-template-columns:1fr}.product-contact-card{padding:14px}}
-  </style>
+  
+/* Manual and request template tabs */
+.manual-frame{width:100%;height:calc(100vh - 190px);min-height:720px;border:1px solid var(--line);border-radius:10px;background:#fff}.template-content{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;font-family:"Yu Gothic UI","Meiryo",sans-serif;font-size:15px;line-height:1.75;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px}@media(max-width:820px){.manual-frame{height:calc(100vh - 240px);min-height:560px}.template-content{padding:14px;font-size:14px}}</style>
 </head>
 <body>
-  <main class="shell">
-    <!-- 八卦時計＋デジタル時計＋打刻リマインダー -->
-    <div class="clock-wrap">
-      <div class="taiji-clock">
-        <div class="taiji-yin-dot"></div>
-        <div class="taiji-yang-dot"></div>
-        <div id="clockMarks"></div>
-        <div class="clock-hand hand-hour" id="hourHand"></div>
-        <div class="clock-hand hand-minute" id="minHand"></div>
-        <div class="clock-hand hand-second" id="secHand"></div>
-        <div class="clock-center"></div>
-      </div>
-      <div class="digital-time">
-        <div class="time-hms" id="timeHMS">00:00:00</div>
-        <div class="time-date" id="timeDate">2026年08月11日 火曜日</div>
-        <div class="reminder" id="reminder">打刻を忘れずにやってください！</div>
-      </div>
-    </div>
-
-    <!-- 重要タスクパネル（折り畳み入力フォーム） -->
-    <div class="task-panel">
-      <div class="task-title">🔥 本日最重要タスク</div>
-      <!-- 展開/折り畳みトグルボタン -->
-      <button class="toggle-task-form" id="toggleForm">タスク追加を展開</button>
-      <!-- 入力フォーム（初期非表示） -->
-      <div class="task-form-wrap" id="taskForm">
-        <div class="task-input-row">
-          <input type="text" id="task-input" placeholder="タスク内容を入力">
-          <button class="task-btn btn-add" id="add-task">タスク追加</button>
-          <button class="task-btn btn-clear" id="clear-all">全タスク削除</button>
-        </div>
-      </div>
-      <!-- タスク一覧表示エリア -->
-      <div class="task-list" id="task-list"></div>
-    </div>
-
-    <!-- 本日最重要タスクの下：重要仕事スケジュール／個人重要スケジュール -->
-    <div class="schedule-row">
-          <section class="schedule-panel work-schedule" id="workSchedulePanel">
-        <div class="schedule-title">💼 重要仕事スケジュール</div>
-        <div class="schedule-category-note">仕事・会議・顧客対応など</div>
-        <button class="toggle-schedule-form" id="toggleWorkScheduleForm">スケジュール追加を展開</button>
-        <div class="schedule-form-wrap" id="workScheduleForm">
-          <div class="schedule-grid">
-            <div class="schedule-field">
-              <label for="work-meeting-start">開始日時</label>
-              <input type="datetime-local" id="work-meeting-start">
-            </div>
-            <div class="schedule-field">
-              <label for="work-meeting-end">終了日時</label>
-              <input type="datetime-local" id="work-meeting-end">
-            </div>
-            <div class="schedule-field full">
-              <label for="work-meeting-content">ミーティング内容</label>
-              <input type="text" id="work-meeting-content" placeholder="例：Symantec DLP定例会">
-            </div>
-            <div class="schedule-field full">
-              <label for="work-meeting-url">ミーティングURL</label>
-              <input type="url" id="work-meeting-url" placeholder="https://...">
-            </div>
-            <div class="schedule-field full">
-              <label for="work-meeting-comment">コメント</label>
-              <textarea id="work-meeting-comment" placeholder="事前確認事項など"></textarea>
-            </div>
-          </div>
-          <div class="schedule-actions">
-            <button class="task-btn btn-add" id="add-work-schedule">追加</button>
-            <button class="task-btn btn-clear" id="clear-work-schedules">全削除</button>
-          </div>
-        </div>
-        <div class="task-list" id="work-schedule-list"></div>
-      </section>
-
-      <!-- 3. 個人重要スケジュール -->
-      <section class="schedule-panel personal-schedule" id="personalSchedulePanel">
-        <div class="schedule-title">👤 個人重要スケジュール</div>
-        <div class="schedule-category-note">個人予定・私用・個人的な重要事項など</div>
-        <button class="toggle-schedule-form" id="togglePersonalScheduleForm">スケジュール追加を展開</button>
-        <div class="schedule-form-wrap" id="personalScheduleForm">
-          <div class="schedule-grid">
-            <div class="schedule-field">
-              <label for="personal-meeting-start">開始日時</label>
-              <input type="datetime-local" id="personal-meeting-start">
-            </div>
-            <div class="schedule-field">
-              <label for="personal-meeting-end">終了日時</label>
-              <input type="datetime-local" id="personal-meeting-end">
-            </div>
-            <div class="schedule-field full">
-              <label for="personal-meeting-content">予定内容</label>
-              <input type="text" id="personal-meeting-content" placeholder="例：家族との予定">
-            </div>
-            <div class="schedule-field full">
-              <label for="personal-meeting-url">URL</label>
-              <input type="url" id="personal-meeting-url" placeholder="https://...（任意）">
-            </div>
-            <div class="schedule-field full">
-              <label for="personal-meeting-comment">コメント</label>
-              <textarea id="personal-meeting-comment" placeholder="メモ・確認事項など"></textarea>
-            </div>
-          </div>
-          <div class="schedule-actions">
-            <button class="task-btn btn-add" id="add-personal-schedule">追加</button>
-            <button class="task-btn btn-clear" id="clear-personal-schedules">全削除</button>
-          </div>
-        </div>
-        <div class="task-list" id="personal-schedule-list"></div>
-          </section>
-    </div>
-
-    <div class="grid">
-      <div class="portal-schedule-layout">
-        <!-- 左：Tdsynnexポータル -->
-        <section class="accent-tdsynnex">
-        <div class="section-head">
-          <h2>1. Tdsynnexポータル</h2>
-          <span class="count">8</span>
-        </div>
-        <div class="links">
-          <a class="item" href="https://outlook.office.com/mail/inbox/id/AAQkAGFhZjU0ODg4LTNjYmEtNDk2Ny05ZTc0LWVkNzJmNGZjOGJlNQAQAI5fj52vMr1Bmlo4Ib5ZPxY%3D" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">個人アドレス</span><span class="url">https://outlook.office.com/mail/inbox/id/AAQkAGFhZjU0ODg4LTNjYmEtNDk2Ny05ZTc0LWVkNzJmNGZjOGJlNQAQAI5fj52vMr1Bmlo4Ib5ZPxY%3D</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://outlook.office.com/mail/Broadcom_HelpDesk_JP@tdsynnex.com/" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">グループアドレス</span><span class="url">https://outlook.office.com/mail/Broadcom_HelpDesk_JP@tdsynnex.com/</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://techdata-marketing.app.box.com/folder/0" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">Box</span><span class="url">https://techdata-marketing.app.box.com/folder/0</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://tdsynnex-help.freshdesk.com/a/dashboard/default" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">KB編集</span><span class="url">https://tdsynnex-help.freshdesk.com/a/dashboard/default</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://tdworldwide.sharepoint.com/:o:/r/sites/Broadcomjapantechengine/_layouts/15/doc2.aspx?sourcedoc=%7Bb2312c5c-2a06-4da9-af1f-74bf678cb574%7D&amp;action=edit&amp;wd=target(Untitled%20Section.one%7Ccb4fbbb2-aba2-44aa-850c-a2fe22c2357a%2Fxx%E3%83%AD%E3%82%B0%E6%8E%A1%E5%8F%96%E6%89%8B%E9%A0%86%7Cd8ab9ec2-738c-4e39-9834-232331922881%2F)&amp;wdorigin=NavigationUrl" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">大連チームOnenote</span><span class="url">https://tdworldwide.sharepoint.com/:o:/r/sites/Broadcomjapantechengine/...</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://tdworldwide.sharepoint.com/sites/Broadcomjapantechengine/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FBroadcomjapantechengine%2FShared%20Documents%2FNetwork%20Security%20Team&amp;viewid=8b213fc0%2D9fd5%2D4455%2Daca1%2D5e4af7d0801f" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">NetworkチームSharePoint</span><span class="url">https://tdworldwide.sharepoint.com/sites/Broadcomjapantechengine/...</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://tdworldwide-my.sharepoint.com/personal/t389168j_tdsynnex_com/_layouts/Doc.aspx?sourcedoc=%7B42DC2B6A-40CA-4701-9E34-16208212754C%7D&amp;end=()&amp;end" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">ネットワークチームOnenote</span><span class="url">https://tdworldwide-my.sharepoint.com/personal/t389168j_tdsynnex_com/...</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="onenote:https://tdworldwide-my.sharepoint.com/personal/t389168j_tdsynnex_com/Documents/Yin%20さん%20@%20TDSYNNEX/" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">ネットワークチームOnenote App</span><span class="url">onenote:https://tdworldwide-my.sharepoint.com/personal/t389168j_tdsynnex_com/Documents/Yin%20さん%20@%20TDSYNNEX/</span></span>
-            <span class="badge">OneNote</span>
-          </a>
-        </div>
-        </section>
-
-
-      <!-- 4. MSポータル(AZURE) -->
-      <section class="accent-ms">
-        <div class="section-head">
-          <h2>4. MSポータル</h2>
-          <span class="count">1</span>
-        </div>
-        <div class="links">
-          <a class="item" href="https://portal.azure.com/auth/login/" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">Azureポータル</span><span class="url">https://portal.azure.com/auth/login/</span></span>
-            <span class="badge">Open</span>
-          </a>
-        </div>
-      </section>
-
-      <!-- 5. Symantecポータル -->
-      <section class="accent-symantec">
-        <div class="section-head">
-          <h2>5. Symantecポータル</h2>
-          <span class="count">4</span>
-        </div>
-        <div class="links">
-          <a class="item" href="https://enterprise.security.com/portal/cloud-config/subscription" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">EC</span><span class="url">https://enterprise.security.com/portal/cloud-config/subscription</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://tdsynnex.luminatesec.com/home" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">TDSYNNEXZTNA</span><span class="url">https://tdsynnex.luminatesec.com/home</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://admin.baofuzna.luminatesec.com/dashboard" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">BaofuZTNA</span><span class="url">https://admin.baofuzna.luminatesec.com/dashboard</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://defense-prodnrt.conferdeploy.net/?s[searchWindow]=TWO_WEEKS&amp;s[dataGrouping]=NO_GROUP_RESULTS&amp;s[c][SEVERITY][0]=WARNING&amp;s[c][THREAT_SCORE][0]=3&amp;s[c][DISMISSED][0]=false" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">Carbonblack</span><span class="url">https://defense-prodnrt.conferdeploy.net/?s[searchWindow]=TWO_WEEKS&amp;s[dataGrouping]=NO_GROUP_RESULTS&amp;s[c][SEVERITY][0]=WARNING&amp;s[c][THREAT_SCORE][0]=3&amp;s[c][DISMISSED][0]=false</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://accounts.security.com/cc/productAccounts?productId=10F3B13D-A2B6-4986-8323-4561E86ECE18" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">パートナーポータル</span><span class="url">https://accounts.security.com/cc/productAccounts?productId=10F3B13D-A2B6-4986-8323-4561E86ECE18</span></span>
-            <span class="badge">Open</span>
-          </a>
-        </div>
-      </section>
-
-      <!-- 6. テストツール -->
-      <section class="wide accent-tools">
-        <div class="section-head">
-          <h2>6. テストツール</h2>
-          <span class="count">11</span>
-        </div>
-        <div class="links">
-          <a class="item" href="https://isgformatter-tdsynnex.streamlit.app/" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">ISG整形ツール</span><span class="url">https://isgformatter-tdsynnex.streamlit.app/</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://dlptest.tds-cnx.com/" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">DLPテスト</span><span class="url">https://dlptest.tds-cnx.com/</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://sgformatter.streamlit.app//" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">SG整形ツール</span><span class="url">https://sgformatter.streamlit.app/</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://rmaweb-synnex.streamlit.app/" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">RMAテンプレート</span><span class="url">https://rmaweb-synnex.streamlit.app/</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://swgwebtest-synnex.streamlit.app/" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">URLチェックテスト</span><span class="url">https://swgwebtest-synnex.streamlit.app/</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://symantecdlpddsapi.streamlit.app/" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">DDSAPIテスト</span><span class="url">https://symantecdlpddsapi.streamlit.app/</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://clouddlp-aiptest.streamlit.app/" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">DLPAPI</span><span class="url">https://clouddlp-aiptest.streamlit.app/</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://casicapclient-virusscan.streamlit.app/" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">ICAPテスト</span><span class="url">https://casicapclient-virusscan.streamlit.app/</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://www.symdl.net/" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">Jisongtest</span><span class="url">https://www.symdl.net/</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://dds-study.streamlit.app/" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">DDSAPI学習サイト</span><span class="url">https://dds-study.streamlit.app/</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://aicheckandaiuse.streamlit.app/" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">DDSAI検知ツール</span><span class="url">https://aicheckandaiuse.streamlit.app/</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://hardware-ssp-sslv.streamlit.app/" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">ハードウェア修理</span><span class="url">https://hardware-ssp-sslv.streamlit.app/</span></span>
-            <span class="badge">Open</span>
-          </a>
-        </div>
-      </section>
-
-      <!-- 7. Email関連 -->
-      <section class="accent-email">
-        <div class="section-head">
-          <h2>7. Email関連</h2>
-          <span class="count">3</span>
-        </div>
-        <div class="links">
-          <a class="item" href="https://us.quarantine.symantec.com/" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">隔離ポータル</span><span class="url">https://us.quarantine.symantec.com/</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://litdsynnex.securitytraining.io/users/sign_in" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">訓練ポータル</span><span class="url">https://litdsynnex.securitytraining.io/users/sign_in</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://pgp-tdsynnexkk.secure-email.symanteccloud.com:9000/smc" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">PGPポータル</span><span class="url">https://pgp-tdsynnexkk.secure-email.symanteccloud.com:9000/smc</span></span>
-            <span class="badge">Open</span>
-          </a>
-        </div>
-      </section>
-
-      <!-- 8. サポートポータル -->
-      <section class="accent-support">
-        <div class="section-head">
-          <h2>8. Symantecサポート</h2>
-          <span class="count">3</span>
-        </div>
-        <div class="links">
-          <a class="item" href="https://support.broadcom.com/group/ecx/products" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">サポートポータル</span><span class="url">https://support.broadcom.com/group/ecx/products</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://partnerportal.broadcom.com/" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">パートナーサポートポータル</span><span class="url">https://partnerportal.broadcom.com/</span></span>
-            <span class="badge">Open</span>
-          </a>
-          <a class="item" href="https://mylogin.broadcom.com/default/ui/v1/selfserviceconsole/applications/" target="_blank" rel="noopener noreferrer">
-            <span><span class="name">ブロードコムポータル</span><span class="url">https://mylogin.broadcom.com/default/ui/v1/selfserviceconsole/applications/</span></span>
-            <span class="badge">Open</span>
-          </a>
-        </div>
-      </section>
-    </div>
-
-    
-  <!-- 追加ナレッジタブ: 元のメインコンテンツは変更せず、そのまま保持 -->
-  <div class="supplemental-tabs" id="supplementalTabs">
-    <nav class="main-tabbar" aria-label="ポータル表示切替">
-      <button class="main-tab active" data-main="main" type="button">メイン</button>
-      <button class="main-tab" data-main="lab" type="button">LAB環境</button>
-      <button class="main-tab" data-main="sku" type="button">製品SKU</button>
-      <button class="main-tab" data-main="deploy" type="button">ディプロイ方法</button>
-      <button class="main-tab" data-main="trouble" type="button">トラブルシューティングログ</button>
-      <button class="main-tab" data-main="product-chart" type="button">プロダクトチャートグループ</button>
-      <button class="main-tab" data-main="hardware" type="button">ハードウェア修理</button>
-    </nav>
-    <div class="knowledge-area" hidden>
-      <div class="sub-tabbar" data-group="lab" hidden><button class="sub-tab active" data-panel="lab-ztna" type="button">ZTNA環境</button></div>
-      <div class="sub-tabbar" data-group="sku" hidden><button class="sub-tab active" data-panel="sku-network" type="button">ネットワーク製品SKU</button><button class="sub-tab" data-panel="sku-dlp" type="button">DLPライセンス</button></div>
-      <div class="sub-tabbar" data-group="deploy" hidden><button class="sub-tab active" data-panel="deploy-sg" type="button">SGデプロイ</button><button class="sub-tab" data-panel="deploy-cas" type="button">CASデプロイ</button></div>
-      <div class="sub-tabbar" data-group="trouble" hidden><button class="sub-tab active" data-panel="trouble-ca" type="button">Content Analysis</button><button class="sub-tab" data-panel="trouble-edge" type="button">Edge Secure Web Gateway (旧名 ProxySG)</button><button class="sub-tab" data-panel="trouble-refs" type="button">参考URL</button></div>
-      <div class="sub-tabbar" data-group="product-chart" hidden><button class="sub-tab active" data-panel="product-chart-pm" type="button">チャートPM</button><button class="sub-tab" data-panel="product-chart-ml" type="button">ML情報</button></div>
-      <div class="sub-tabbar" data-group="hardware" hidden><button class="sub-tab active" data-panel="hardware-repair" type="button">ハードウェア修理情報</button></div>
-<section class="knowledge-panel" id="panel-lab-ztna" role="tabpanel" hidden><div class="knowledge-card"><h3>ZTNA環境</h3><h4>192.168.84.7   SSLV S550 Management</h4><h4>192.168.84.8   SSP-S410 Management</h4><h4>192.168.84.9   SSP-S210 Management</h4><h4>192.168.84.10  SSP-S210 APP-1</h4><h4>192.168.84.11  SSP-S210 APP-2</h4><h4>192.168.84.12  SSP-S210 APP-3</h4><h4>192.168.84.13  SSP-S410 APP-1</h4><h4>192.168.84.14  SSP-S410 APP-2</h4><h4>192.168.84.15  SSP-S410 APP-3</h4><h4>192.168.84.16  Reserved</h4><h4>192.168.84.17  Reserved</h4><h4>192.168.84.18  Reserved</h4><h4>192.168.84.19  Reserved</h4></div></section><section class="knowledge-panel" id="panel-sku-network" role="tabpanel" hidden><div class="knowledge-card"><h3>ネットワーク製品SKU</h3><div class="doc-table-wrap"><table class="doc-table"><tr><th>SKU Part Number</th><th>Description</th><th>License Metric</th><th>Hardware SSP Appliance</th><th>Virtual Appliance</th></tr><tr><td>ISG-PR-ADV-SUB</td><td>Edge SWG, Content Analysis, with Advanced Intelligence Services</td><td>Core</td><td>Yes</td><td>Yes</td></tr><tr><td>ISG-MC-SUB</td><td>Centralized Management for on-premises appliances up to 25 devices</td><td>Device</td><td>Yes</td><td>Yes</td></tr><tr><td>ISG-CAS-SUB</td><td>On-Prem Content Analysis with the included Symantec AV<br>BYOL Options for Sophos AV (Now), or ReversingLabs (Mid-2025)</td><td>Core</td><td>Yes</td><td>Yes</td></tr><tr><td>ISG-CAS-MAAS-SUB</td><td>On-Prem Content Analysis with Cloud-Based Sandboxing</td><td>Core</td><td>Yes</td><td>Yes</td></tr><tr><td>CLD-RPTR-OP-SUB</td><td>Cloud Hosted Reporting for On-Premises Devices</td><td>User</td><td>—</td><td>—</td></tr><tr><td>ISG-HSMA-SUB</td><td>HSM Agent instance installed on SSP Appliance (per appliance serial #)</td><td>Core</td><td>Yes</td><td>Yes</td></tr><tr><td>ISG-SV-SUB (June 2025)</td><td>SSL Visibility with Advanced Intelligence Services (HostCAT)</td><td>Core</td><td>Yes</td><td>Future</td></tr><tr><td>SKU Part Number</td><td>Description</td><td>Prerequisite</td><td>License Metric</td><td>Cloud Service</td></tr><tr><td>SAC-SUB</td><td>Symantec ZTNA Subscription</td><td>No</td><td>User</td><td>Yes</td></tr><tr><td>CLD-WI-SUB</td><td>Web Isolation（pre-req: CLD-SWG-SUB）</td><td>Yes</td><td>User</td><td>Yes</td></tr><tr><td>ZTNA-APP-PROTECT-SUB</td><td>Threat Inspection Service（TIS）inline protection and Web Isolation access, preventing metadata from reaching the user client and blocking sensitive actions like copy/paste/print for internal web applications. Currently available for BYOD access.（Pre-req: SAC-SUB）</td><td>Yes</td><td>User</td><td>Yes</td></tr><tr><td>CLD-BCP-SUB</td><td>CLD-BCP-SUB（Business Continuity Plan, 30 days max）is for customers who are looking for a business continuity cloud backup solution. Customers who want to migrate to Broadcom as primary from backup would subscribe to CLD-SWG-SUB.</td><td>No</td><td>User</td><td>Yes</td></tr><tr><td>CLD-SRVW-SUB</td><td>Cloud Server Workload Traffic per User, prerequisite CLD-SWG-SUB</td><td>Yes</td><td>User</td><td>Yes</td></tr><tr><td>CLD-SWG-SUB</td><td>Cloud Security Web Gateway, includes Proxy, Content Analysis, and Intelligence Services, primary base SKUs for Cloud Services</td><td>No</td><td>User</td><td>Yes</td></tr><tr><td>CLD-RPT-SUB</td><td>Cloud Reporting for Cloud-originated traffic, prerequisite CLD-SWG-SUB</td><td>Yes</td><td>User</td><td>Yes</td></tr><tr><td>CLD-MAAS-SUB</td><td>Cloud Malware Analysis Advanced Service（MAAS）, prerequisite CLD-SWG-SUB</td><td>Yes</td><td>User</td><td>Yes</td></tr></table></div></div></section><section class="knowledge-panel" id="panel-sku-dlp" role="tabpanel" hidden><div class="knowledge-card"><h3>DLPライセンス</h3><div class="doc-table-wrap"><table class="doc-table"><tr><th>SKU</th><th>Description</th><th>Components</th></tr><tr><td>DLP-CORE-SUB（Bundle SKU）</td><td>Data Loss Prevention Core</td><td>• DLP Enterprise Suite（DLP-ES-SUB）　○ Endpoint Discover（DLP-ED-SUB）<br>　○ Endpoint Prevent（DLP-EP-SUB）<br>　○ Network Discover（DLP-D-SUB）<br>　○ Network Monitor（DLP-M-SUB）<br>　○ Network Protect（DLP-NPA-SUB）<br>　○ Network Prevent for Email（DLP-MPE-SUB）<br>　○ Network Prevent for Web<br>（DLP-MPW-SUB）• DLP Sensitive Image Recognition（DLP-SIR-SUB）<br>• Information Centric Analytics（ICA-SUB）<br></td></tr><tr><td>DLP-CLOUD-SUB（Bundle SKU）</td><td>Data Loss Prevention Cloud</td><td>• CloudSOC CASB Audit（CASB-AUD-SUB）• <br>CloudSOC CASB for SaaS（SEC-SAAS-SUB）• <br>CloudSOC CASB for IaaS（CASB-IAAS-GB-SUB）• <br>CloudSOC CASB Gateway（CASB-GAT-SUB）• DLP Cloud Detection Service（DLP-CDS-SUB）<br>• DLP Cloud Detection Service for CloudSWG（DLP-CDS-WSS-SUB）<br><br>• DLP for Office 365 Email and Gmail（DLP-CSES-SUB）</td></tr><tr><td>DLP-CDS-SUB</td><td>DLP Cloud Detection Service for CASB</td><td>• Additional license for CASB is needed　CASB: SEC-SAAS-SUB、CASB-IAAS-GB-SUB、またはCASB-GAT-SUB<br><br>Can be managed via cloud-managed DLP or Enforce<br></td></tr><tr><td>DLP-CSES-SUB</td><td>DLP for Office 365 Email and GmailForward mode and Reflect mode is available<br></td><td>• DLP Cloud Detection Service for Office 365 and Gmail<br>Can be managed via cloud-managed DLP or Enforce<br></td></tr><tr><td>DLP-CDS-WSS-SUB</td><td>DLP Cloud Detection for CloudSWG</td><td>• Add-on SKU to CLD-WSS-SUB</td></tr><tr><td>SKU</td><td>Description</td><td>Components</td></tr><tr><td></td><td></td><td>Can be managed via cloud-managed DLP or Enforce</td></tr><tr><td>DLP-CDS-Endpoint-SUB<br>（Additional Agent license needed: DLP-EP-SUB）<br></td><td>Cloud-managed DLP Endpoint<br>※Endpoint Discover not yet available<br></td><td>• DLP Cloud Detection Service for Endpoint.<br>• Agent license needed: DLP-EP-SUB<br><br>Cloud-managed DLP（in <br>CloudSOC）management console needed</td></tr><tr><td>DLP-CDS-APID-SUB</td><td>Data Loss Prevention Cloud Detection Service for API Detection</td><td>License metric is Per Managed User Per Year.Please review additional information and service limits in the Specific Program Documentation. As of July 2026, the limit is 20GB per user per year.<br></td></tr><tr><td>DLP-CORE-APID-SUB</td><td>Data Loss Prevention Core API Detection</td><td>• License metric is Per Managed User Per Year.• Enforce-managed API detection server<br></td></tr><tr><td>DLP-CLD-MET-SUB<br>（<br>Add-on SKU for Data Retention）</td><td>Data Retention Add-on SKU<br>Applicable to base:<br>SEC-SAAS-SUB, CASB-IAAS-GB-SUB, CASB-GAT-SUB, DLP-CDS-SUB, DLP-<br>CDS-WSS-SUB, DLP-CSES-SUB, DLP-CDS-Endpoint-SUB, DLP-CLOUD-SUB, DLP-APID-SUB</td><td>• CloudSOC Data Retention SKU. Available in 1-year and 3-year options.</td></tr><tr><td>SEC-SAAS-SUB</td><td>CloudSOC CASB for SaaS</td><td>• Securelets and SSPM capabilities• It also includes the <br>CloudSOC Audit functionality（CASB-AUD-SUB）</td></tr><tr><td>CASB-GAT-SUB</td><td>CloudSOC CASB Gateway</td><td>• Includes all Gatelets with Detect, Investigate and Protect capabilities• It also includes the <br>CloudSOC Audit functionality（CASB-AUD-SUB）</td></tr><tr><td>CASB-ATP-SUB</td><td>CloudSOC CASB Advanced Threat Protection</td><td>• Requires Securelets（SEC-SAAS-SUB）or Gatelets（CASB-GAT-SUB）</td></tr><tr><td>CASB-AUD-SUB</td><td>Elastica CASB Audit - App Visibility, Analytics and Control</td><td>• Included in DLP-CLOUD-SUB, SEC-SAAS-SUB, and CASB-GAT-SUB</td></tr><tr><td>CASB-IAAS-GB-SUB</td><td>Symantec Cloud Access Security Broker for IaaS</td><td>Securelet for IaaS functionality measured per GB</td></tr><tr><td>DLP-D-SUB</td><td>Data Loss Prevention Network Discover</td><td>• Included in DLP-DS-SUB and DLP-CORE-SUB bundles</td></tr><tr><td>SKU</td><td>Description</td><td>Components</td></tr><tr><td>DLP-DS-SUB</td><td>Data Loss Prevention Discover Suite</td><td>• Includes DLP-D-SUB and DLP-NPA-SUB</td></tr><tr><td>DLP-ED-SUB</td><td>Data Loss Prevention Endpoint Discover</td><td>• Included in DLP-ES-SUB and DLP-CORE-SUB bundles</td></tr><tr><td>DLP-EP-SUB</td><td>Data Loss Prevention Endpoint Prevent</td><td>• Included in DLP-ES-SUB and DLP-CORE-SUB bundles</td></tr><tr><td>DLP-ES-SUB</td><td>Data Loss Prevention Enterprise Suite</td><td>• DLP Enterprise Suite（DLP-ES-SUB）　○ Endpoint Discover（DLP-ED-SUB）<br>　○ Endpoint Prevent（DLP-EP-SUB）<br>　○ Network Discover（DLP-D-SUB）<br>　○ Network Monitor（DLP-M-SUB）<br>　○ Network Protect（DLP-NPA-SUB）<br>　○ Network Prevent for Email（DLP-MPE-SUB）<br>　○ Network Prevent for Web（DLP-MPW-SUB）<br></td></tr><tr><td>DLP-M-SUB</td><td>Data Loss Prevention Network Monitor</td><td>• Included in DLP-ES-SUB and DLP-CORE-SUB bundles</td></tr><tr><td>DLP-MPE-SUB</td><td>Data Loss Prevention Network Monitor and Network Prevent for Email</td><td>• Included in DLP-ES-SUB and DLP-CORE-SUB bundles</td></tr><tr><td>DLP-MPEW-SUB</td><td>Data Loss Prevention Network Monitor and Network Prevent for Email and Web</td><td>記載なし</td></tr><tr><td>DLP-MPW-SUB</td><td>Data Loss Prevention Network Monitor and Network Prevent for Web</td><td>• Included in DLP-ES-SUB and DLP-CORE-SUB bundles</td></tr><tr><td>DLP-NPA-SUB</td><td>Data Loss Prevention Network Protect Addon</td><td>• Included in DLP-ES-SUB and DLP-CORE-SUB bundles</td></tr><tr><td>DLP-SIR-SUB</td><td>Data Loss Prevention Sensitive Image Recognition Addon</td><td>• Included in DLP-ES-SUB and DLP-CORE-SUB bundles</td></tr><tr><td>ICA-SUB</td><td>Information Centric Analytics - Powered by Bay Dynamics</td><td>• Included in DLP-ES-SUB and DLP-CORE-SUB bundles</td></tr><tr><td>DLP-DSP-SUB</td><td>Symantec Data Security Posture Management</td><td>• DSPM requires base SKUs of either:<br>1. SEC-SAAS-SUB and DLP-CDS-SUB are both required to be configured, or<br>2. CASB-IAAS-GB-SUB and DLP-CDS-SUB are both required to be configured, or<br>3. A base SKU of DLP-CLOUD-SUB（which contains the aforementioned combinations）, or<br><br>4. DLP-CDS-Endpoint-SUB and the …</td></tr><tr><td>KU</td><td>Description</td><td>Components</td></tr><tr><td>DLP-DDS-APID-SUB</td><td>Symantec DLP Distributed Detection Service for API</td><td>（画像内ではComponents欄の記載なし）</td></tr><tr><td>DLP-CDS-ZTNA-SUB</td><td>DLP Cloud Detection for ZTNA</td><td>• Add-on SKU to ZTNA [SAC-SUB] or NPS [NETWORK-PROTECT-SUB]<br>Can be managed via cloud-managed DLP or Enforce<br></td></tr><tr><td>DLP-CDS-WI-SUB</td><td>DLP Cloud Detection for Web Isolation</td><td>• Add-on SKU to Web Isolation [CLD-WI-SUB] or NPS [NETWORK-PROTECT-SUB]<br>Can be managed via cloud-managed DLP or Enforce<br></td></tr></table></div><h3>画像上部に表示されている前ページから続くComponentsの記載</h3><div class="doc-table-wrap"><table class="doc-table"><tr><th>項目</th><th>内容</th></tr><tr><td>Additional Requirement</td><td>additional DLP-EP-SUB entitlement or its equivalent.</td></tr><tr><td>Management Requirement</td><td>The Cloud Detection Server associated with the Securelet must be Cloud-DLP managed.</td></tr></table></div><h3>Oracle SKU</h3><div class="doc-table-wrap"><table class="doc-table"><tr><th>SKU</th><th>Description</th></tr><tr><td>DLP-OSE2-PER</td><td>Oracle Standard Edition 2 for Data Loss Prevention, Per CPU</td></tr></table></div></div></section><section class="knowledge-panel" id="panel-deploy-sg" role="tabpanel" hidden><div class="knowledge-card"><h3>SGデプロイ</h3><h3>SG Applications on the S210</h3><p>SG applications that are compatible with the S210 are shown in the following table, along with their requirements per model, and the number of instances supported per appliance.</p><div class="doc-table-wrap"><table class="doc-table"><tr><th>SG Model</th><th>Requirements Per SG Model</th><th>Instances Per Appliance</th></tr><tr><td>SG Model</td><td>Cores</td><td>RAM (GB)</td><td>Disk (GB)</td><td>Connections Count</td><td>S210-10</td></tr><tr><td>C2S*</td><td>2</td><td>12</td><td>1x200</td><td>15,000</td><td>4</td></tr><tr><td>C2S-A</td><td>2</td><td>12</td><td>2x100</td><td>15,000</td><td>4</td></tr><tr><td>C2S-B</td><td>2</td><td>12</td><td>2x200</td><td>15,000</td><td>2</td></tr><tr><td>C2M*</td><td>2</td><td>16</td><td>1x200</td><td>20,000</td><td>3</td></tr><tr><td>C2M-A</td><td>2</td><td>16</td><td>2x100</td><td>20,000</td><td>3</td></tr><tr><td>C2M-B</td><td>2</td><td>16</td><td>2x200</td><td>20,000</td><td>3</td></tr><tr><td>C2L*</td><td>2</td><td>20</td><td>1x200</td><td>25,000</td><td>2</td></tr><tr><td>C2L-A</td><td>2</td><td>20</td><td>2x100</td><td>25,000</td><td>2</td></tr><tr><td>C2L-B</td><td>2</td><td>20</td><td>2x200</td><td>25,000</td><td>2</td></tr><tr><td>C4S*</td><td>4</td><td>20</td><td>1x200</td><td>25,000</td><td>2</td></tr><tr><td>C4S-A</td><td>4</td><td>20</td><td>2x100</td><td>25,000</td><td>2</td></tr><tr><td>C4S-B</td><td>4</td><td>20</td><td>2x200</td><td>25,000</td><td>2</td></tr><tr><td>C4M*</td><td>4</td><td>24</td><td>1x200</td><td>37,500</td><td>2</td></tr><tr><td>C4M-A</td><td>4</td><td>24</td><td>2x100</td><td>37,500</td><td>2</td></tr><tr><td>C4M-B</td><td>4</td><td>24</td><td>2x200</td><td>37,500</td><td>2</td></tr><tr><td>C4L*</td><td>4</td><td>32</td><td>1x200</td><td>50,000</td><td>1</td></tr><tr><td>C4L-A</td><td>4</td><td>32</td><td>2x100</td><td>50,000</td><td>1</td></tr><tr><td>C4L-B</td><td>4</td><td>32</td><td>2x200</td><td>50,000</td><td>1</td></tr><tr><td>C6S*</td><td>6</td><td>24</td><td>1x200</td><td>37,500</td><td>2</td></tr><tr><td>C6S-A</td><td>6</td><td>24</td><td>2x100</td><td>37,500</td><td>2</td></tr><tr><td>C6S-B</td><td>6</td><td>24</td><td>2x200</td><td>37,500</td><td>2</td></tr><tr><td>C6M</td><td>6</td><td>40</td><td>2x200</td><td>62,500</td><td>1</td></tr><tr><td>C6L</td><td>6</td><td>48</td><td>2x200</td><td>75,000</td><td>1</td></tr><tr><td>C8S</td><td>8</td><td>32</td><td>2x200</td><td>50,000</td><td>1</td></tr><tr><td>C10S</td><td>10</td><td>40</td><td>2x200</td><td>62,500</td><td>1</td></tr><tr><td>C12S</td><td>12</td><td>48</td><td>2x200</td><td>75,000</td><td>1</td></tr></table></div><h3>SG Applications on the S410</h3><p>SG applications that are compatible with the S410 are shown in the following table, along with their requirements per model, and the number of instances supported per appliance.</p><div class="doc-table-wrap"><table class="doc-table"><tr><th>SG Model</th><th>Requirements Per SG Model</th><th>Instances Per Appliance</th></tr><tr><td>SG Model</td><td>Cores</td><td>RAM (GB)</td><td>Disk (GB)</td><td>Connections Count</td><td>S410-20/20B</td><td>S410-40/40B</td></tr><tr><td>C2S*</td><td>2</td><td>12</td><td>1x200</td><td>15,000</td><td>4</td><td>8</td></tr><tr><td>C2S-A</td><td>2</td><td>12</td><td>2x100</td><td>15,000</td><td>4</td><td>8</td></tr><tr><td>C2S-B</td><td>2</td><td>12</td><td>2x200</td><td>15,000</td><td>2</td><td>4</td></tr><tr><td>C2M*</td><td>2</td><td>16</td><td>1x200</td><td>20,000</td><td>4</td><td>8</td></tr><tr><td>C2M-A</td><td>2</td><td>16</td><td>2x100</td><td>20,000</td><td>4</td><td>8</td></tr><tr><td>C2M-B</td><td>2</td><td>16</td><td>2x200</td><td>20,000</td><td>2</td><td>4</td></tr><tr><td>C2L*</td><td>2</td><td>20</td><td>1x200</td><td>25,000</td><td>4</td><td>8</td></tr><tr><td>C2L-A</td><td>2</td><td>20</td><td>2x100</td><td>25,000</td><td>4</td><td>8</td></tr><tr><td>C2L-B</td><td>2</td><td>20</td><td>2x200</td><td>25,000</td><td>2</td><td>4</td></tr><tr><td>C4S*</td><td>4</td><td>20</td><td>1x200</td><td>25,000</td><td>4</td><td>8</td></tr><tr><td>C4S-A</td><td>4</td><td>20</td><td>2x100</td><td>25,000</td><td>4</td><td>8</td></tr><tr><td>C4S-B</td><td>4</td><td>20</td><td>2x200</td><td>25,000</td><td>2</td><td>4</td></tr><tr><td>C4M*</td><td>4</td><td>24</td><td>1x200</td><td>37,500</td><td>3</td><td>8</td></tr><tr><td>C4M-A</td><td>4</td><td>24</td><td>2x100</td><td>37,500</td><td>3</td><td>8</td></tr><tr><td>C4M-B</td><td>4</td><td>24</td><td>2x200</td><td>37,500</td><td>2</td><td>4</td></tr><tr><td>C4L*</td><td>4</td><td>32</td><td>1x200</td><td>50,000</td><td>2</td><td>8</td></tr><tr><td>C4L-A</td><td>4</td><td>32</td><td>2x100</td><td>50,000</td><td>2</td><td>8</td></tr><tr><td>C4L-B</td><td>4</td><td>32</td><td>2x200</td><td>50,000</td><td>2</td><td>4</td></tr><tr><td>C6S*</td><td>6</td><td>24</td><td>1x200</td><td>37,500</td><td>3</td><td>8</td></tr><tr><td>C6S-A</td><td>6</td><td>24</td><td>2x100</td><td>37,500</td><td>3</td><td>8</td></tr><tr><td>C6S-B</td><td>6</td><td>24</td><td>2x200</td><td>37,500</td><td>2</td><td>4</td></tr><tr><td>C6M</td><td>6</td><td>40</td><td>2x200</td><td>62,500</td><td>2</td><td>4</td></tr><tr><td>C6L</td><td>6</td><td>48</td><td>2x200</td><td>75,000</td><td>1</td><td>4</td></tr><tr><td>C8S</td><td>8</td><td>32</td><td>2x200</td><td>50,000</td><td>2</td><td>4</td></tr><tr><td>C8M</td><td>8</td><td>64</td><td>2x200</td><td>100,000</td><td>1</td><td>4</td></tr><tr><td>C8L</td><td>8</td><td>80</td><td>2x200</td><td>125,000</td><td>1</td><td>4</td></tr><tr><td>C10S</td><td>10</td><td>40</td><td>2x200</td><td>62,500</td><td>2</td><td>4</td></tr><tr><td>C10M</td><td>10</td><td>80</td><td>2x200</td><td>125,000</td><td>1</td><td>4</td></tr><tr><td>C10L</td><td>10</td><td>96</td><td>2x200</td><td>150,000</td><td>0</td><td>3</td></tr><tr><td>C12S</td><td>12</td><td>48</td><td>2x200</td><td>75,000</td><td>1</td><td>4</td></tr><tr><td>C12M**</td><td>12</td><td>96</td><td>2x200</td><td>150,000</td><td>0</td><td>3</td></tr><tr><td>C12L**</td><td>12</td><td>128</td><td>2x200</td><td>200,000</td><td>0</td><td>2</td></tr><tr><td>C14S</td><td>14</td><td>64</td><td>2x200</td><td>100,000</td><td>1</td><td>4</td></tr><tr><td>C14M</td><td>14</td><td>112</td><td>2x200</td><td>175,000</td><td>0</td><td>2</td></tr><tr><td>C14L</td><td>14</td><td>144</td><td>4x200</td><td>225,000</td><td>0</td><td>2</td></tr><tr><td>C16XS</td><td>16</td><td>32</td><td>2x200</td><td>50,000</td><td>2</td><td>4</td></tr><tr><td>C16S</td><td>16</td><td>80</td><td>2x200</td><td>125,000</td><td>1</td><td>4</td></tr><tr><td>C16M</td><td>16</td><td>128</td><td>4x200</td><td>200,000</td><td>0</td><td>2</td></tr><tr><td>C16L</td><td>16</td><td>160</td><td>4x200</td><td>250,000</td><td>0</td><td>2</td></tr><tr><td>C20S</td><td>20</td><td>96</td><td>2x200</td><td>150,000</td><td>0</td><td>3</td></tr><tr><td>C20M</td><td>20</td><td>144</td><td>4x200</td><td>225,000</td><td>0</td><td>2</td></tr><tr><td>C20L</td><td>20</td><td>192</td><td>6x200</td><td>300,000</td><td>0</td><td>1</td></tr><tr><td>C24XS</td><td>24</td><td>80</td><td>2x200</td><td>125,000</td><td>1</td><td>2</td></tr><tr><td>C24S**</td><td>24</td><td>112</td><td>2x200</td><td>175,000</td><td>0</td><td>2</td></tr><tr><td>C24M</td><td>24</td><td>160</td><td>4x200</td><td>250,000</td><td>0</td><td>2</td></tr><tr><td>C24L</td><td>24</td><td>256</td><td>8x200</td><td>375,000</td><td>0</td><td>1</td></tr><tr><td>C28S</td><td>28</td><td>128</td><td>4x200</td><td>200,000</td><td>0</td><td>2</td></tr><tr><td>C28M</td><td>28</td><td>192</td><td>6x200</td><td>300,000</td><td>0</td><td>1</td></tr><tr><td>C28L</td><td>28</td><td>288</td><td>8x200</td><td>450,000</td><td>0</td><td>1</td></tr><tr><td>C32XS</td><td>32</td><td>80</td><td>2x200</td><td>125,000</td><td>1</td><td>2</td></tr><tr><td>C32S</td><td>32</td><td>160</td><td>4x200</td><td>250,000</td><td>0</td><td>2</td></tr><tr><td>C32M</td><td>32</td><td>256</td><td>8x200</td><td>400,000</td><td>0</td><td>1</td></tr><tr><td>C32L</td><td>32</td><td>320</td><td>8x200</td><td>500,000</td><td>0</td><td>1</td></tr></table></div><h3>SG Applications on the S620</h3><p>SG applications that are compatible with the S620 are shown in the following table, along with their requirements per model, and the number of instances supported per appliance.</p><div class="doc-table-wrap"><table class="doc-table"><tr><th>SG Model</th><th>Requirements Per SG Model</th><th>Instances Per Appliance</th></tr><tr><td>SG Model</td><td>Cores</td><td>RAM (GB)</td><td>Disk (GB)</td><td>Connections Count</td><td>S620-10</td></tr><tr><td>C2S-B</td><td>2</td><td>12</td><td>2x400</td><td>15,000</td><td>16</td></tr><tr><td>C2M-B</td><td>2</td><td>16</td><td>2x400</td><td>20,000</td><td>16</td></tr><tr><td>C2L-B</td><td>2</td><td>20</td><td>2x400</td><td>25,000</td><td>16</td></tr><tr><td>C4S-B</td><td>4</td><td>20</td><td>2x400</td><td>25,000</td><td>16</td></tr><tr><td>C4M-B</td><td>4</td><td>24</td><td>2x400</td><td>37,500</td><td>16</td></tr><tr><td>C4L-B</td><td>4</td><td>32</td><td>2x400</td><td>50,000</td><td>16</td></tr><tr><td>C6S-B</td><td>6</td><td>24</td><td>2x400</td><td>37,500</td><td>16</td></tr><tr><td>C6M</td><td>6</td><td>40</td><td>2x400</td><td>62,500</td><td>16</td></tr><tr><td>C6L</td><td>6</td><td>48</td><td>2x400</td><td>75,000</td><td>16</td></tr><tr><td>C8S</td><td>8</td><td>32</td><td>2x400</td><td>50,000</td><td>14</td></tr><tr><td>C8M</td><td>8</td><td>64</td><td>2x400</td><td>100,000</td><td>14</td></tr><tr><td>C8L</td><td>8</td><td>80</td><td>2x400</td><td>125,000</td><td>12</td></tr><tr><td>C10S</td><td>10</td><td>40</td><td>2x400</td><td>62,500</td><td>11</td></tr><tr><td>C10M</td><td>10</td><td>80</td><td>2x400</td><td>125,000</td><td>11</td></tr><tr><td>C10L</td><td>10</td><td>96</td><td>2x400</td><td>150,000</td><td>10</td></tr><tr><td>C12S</td><td>12</td><td>48</td><td>2x400</td><td>75,000</td><td>9</td></tr><tr><td>C12M**</td><td>12</td><td>96</td><td>2x400</td><td>150,000</td><td>9</td></tr><tr><td>C12L**</td><td>12</td><td>128</td><td>2x400</td><td>200,000</td><td>7</td></tr><tr><td>C14S</td><td>14</td><td>64</td><td>2x400</td><td>100,000</td><td>8</td></tr><tr><td>C14M</td><td>14</td><td>112</td><td>2x400</td><td>175,000</td><td>8</td></tr><tr><td>C14L</td><td>14</td><td>144</td><td>4x800</td><td>225,000</td><td>6</td></tr><tr><td>C16XS</td><td>16</td><td>32</td><td>2x400</td><td>50,000</td><td>7</td></tr><tr><td>C16S</td><td>16</td><td>80</td><td>2x400</td><td>125,000</td><td>7</td></tr><tr><td>C16M</td><td>16</td><td>128</td><td>4x800</td><td>200,000</td><td>7</td></tr><tr><td>C16L</td><td>16</td><td>160</td><td>4x800</td><td>250,000</td><td>6</td></tr><tr><td>C20S</td><td>20</td><td>96</td><td>2x400</td><td>150,000</td><td>5</td></tr><tr><td>C20M</td><td>20</td><td>144</td><td>4x800</td><td>225,000</td><td>5</td></tr><tr><td>C20L</td><td>20</td><td>192</td><td>6x1200</td><td>300,000</td><td>5</td></tr><tr><td>C24XS</td><td>24</td><td>80</td><td>2x400</td><td>125,000</td><td>4</td></tr><tr><td>C24S**</td><td>24</td><td>112</td><td>2x400</td><td>175,000</td><td>4</td></tr><tr><td>C24M</td><td>24</td><td>160</td><td>4x800</td><td>250,000</td><td>4</td></tr><tr><td>C24L</td><td>24</td><td>256</td><td>8x1600</td><td>400,000</td><td>3</td></tr><tr><td>C28S</td><td>28</td><td>128</td><td>4x800</td><td>200,000</td><td>4</td></tr><tr><td>C28M</td><td>28</td><td>224</td><td>6x1200</td><td>350,000</td><td>4</td></tr><tr><td>C28L</td><td>28</td><td>288</td><td>8x1600</td><td>450,000</td><td>3</td></tr><tr><td>C32XS</td><td>32</td><td>80</td><td>2x400</td><td>125,000</td><td>3</td></tr><tr><td>C32S</td><td>32</td><td>160</td><td>4x800</td><td>250,000</td><td>3</td></tr><tr><td>C32M</td><td>32</td><td>256</td><td>8x1600</td><td>400,000</td><td>3</td></tr><tr><td>C32L</td><td>32</td><td>320</td><td>8x1600</td><td>500,000</td><td>3</td></tr></table></div><h3>Maximum Performance for SG Deployments</h3><p>See the following tables for the recommended SG (6.7 and 7.3) configurations that yield the maximum performance per SSP host appliance.</p><div class="doc-table-wrap"><table class="doc-table"><tr><th>Max Performance for SG 6.7 Deployments</th></tr><tr><td>SSP Model</td><td>SG Model</td><td>Instances Count</td><td>Total Cores</td><td>Total RAM (GB)</td><td>Total Disk (GB)</td><td>Total Connections</td></tr><tr><td>S210-10</td><td>C12S</td><td>1</td><td>12</td><td>48</td><td>400</td><td>75,000</td></tr><tr><td>S410-20/20B</td><td>C16XS</td><td>2</td><td>32</td><td>64</td><td>800</td><td>100,000</td></tr><tr><td>S410-40/40B</td><td>C16S</td><td>4</td><td>64</td><td>320</td><td>1,600</td><td>500,000</td></tr></table></div><div class="doc-table-wrap"><table class="doc-table"><tr><th>Max Performance for SG 7.3 Deployments</th></tr><tr><td>SSP Model</td><td>SG Model</td><td>Instances Count</td><td>Total Cores</td><td>Total RAM (GB)</td><td>Total Disk (GB)</td><td>Total Connections</td></tr><tr><td>S210-10</td><td>C12S</td><td>1</td><td>12</td><td>48</td><td>400</td><td>75,000</td></tr><tr><td>S410-20/20B</td><td>C32XS</td><td>1</td><td>32</td><td>80</td><td>400</td><td>125,000</td></tr><tr><td>S410-40/40B</td><td>C32S</td><td>2</td><td>64</td><td>320</td><td>1,600</td><td>500,000</td></tr><tr><td>S620-10</td><td>C28M</td><td>4</td><td>112</td><td>896</td><td>4,800</td><td>1,400,000</td></tr></table></div></div></section><section class="knowledge-panel" id="panel-deploy-cas" role="tabpanel" hidden><div class="knowledge-card"><h3>CASデプロイ</h3><h3>CAS Applications on the S210</h3><p>CAS applications that are compatible with the S210 are shown in the following table, along with their requirements per model, and the number of instances supported per appliance.</p><div class="doc-table-wrap"><table class="doc-table"><tr><th>CAS Model</th><th>Requirements Per CAS Model</th><th>Instances Per Appliance</th></tr><tr><td>CAS Model</td><td>Cores</td><td>RAM (GB)</td><td>Disk (GB)</td><td>S210-10</td></tr><tr><td>C4S*</td><td>4</td><td>8</td><td>1x200</td><td>3</td></tr><tr><td>C4M*</td><td>4</td><td>12</td><td>1x200</td><td>3</td></tr><tr><td>C4L</td><td>4</td><td>16</td><td>1x200</td><td>3</td></tr><tr><td>C4XL</td><td>4</td><td>24</td><td>1x200</td><td>2</td></tr><tr><td>C4XXL</td><td>4</td><td>32</td><td>1x200</td><td>1</td></tr><tr><td>C6S*</td><td>6</td><td>8</td><td>1x200</td><td>2</td></tr><tr><td>C6M*</td><td>6</td><td>12</td><td>1x200</td><td>2</td></tr><tr><td>C6L</td><td>6</td><td>16</td><td>1x200</td><td>2</td></tr><tr><td>C6XL</td><td>6</td><td>24</td><td>1x200</td><td>2</td></tr><tr><td>C6XXL</td><td>6</td><td>32</td><td>1x200</td><td>1</td></tr><tr><td>C8S*</td><td>8</td><td>8</td><td>1x200</td><td>1</td></tr><tr><td>C8M*</td><td>8</td><td>12</td><td>1x200</td><td>1</td></tr><tr><td>C8L</td><td>8</td><td>16</td><td>1x200</td><td>1</td></tr><tr><td>C8XL</td><td>8</td><td>24</td><td>1x200</td><td>1</td></tr><tr><td>C8XXL</td><td>8</td><td>32</td><td>1x200</td><td>1</td></tr><tr><td>C10S*</td><td>10</td><td>10</td><td>1x200</td><td>1</td></tr><tr><td>C10M*</td><td>10</td><td>14</td><td>1x200</td><td>1</td></tr><tr><td>C10L</td><td>10</td><td>20</td><td>1x200</td><td>1</td></tr><tr><td>C10XL</td><td>10</td><td>30</td><td>1x200</td><td>1</td></tr><tr><td>C10XXL</td><td>10</td><td>40</td><td>1x200</td><td>1</td></tr><tr><td>C12S*</td><td>12</td><td>12</td><td>1x200</td><td>1</td></tr><tr><td>C12M*</td><td>12</td><td>18</td><td>1x200</td><td>1</td></tr><tr><td>C12L</td><td>12</td><td>24</td><td>1x200</td><td>1</td></tr><tr><td>C12XL</td><td>12</td><td>36</td><td>1x200</td><td>1</td></tr><tr><td>C12XXL</td><td>12</td><td>48</td><td>1x200</td><td>1</td></tr></table></div><h3>CAS Applications on the S410</h3><p>CAS applications that are compatible with the S410 are shown in the following table, along with their requirements per model, and the number of instances supported per appliance.</p><div class="doc-table-wrap"><table class="doc-table"><tr><th>CAS Model</th><th>Requirements Per CAS Model</th><th>Instances Per Appliance</th></tr><tr><td>CAS Model</td><td>Cores</td><td>RAM (GB)</td><td>Disk (GB)</td><td>S410-20/20B</td><td>S410-40/40B</td></tr><tr><td>C4S*</td><td>4</td><td>8</td><td>1x200</td><td>4</td><td>8</td></tr><tr><td>C4M*</td><td>4</td><td>12</td><td>1x200</td><td>4</td><td>8</td></tr><tr><td>C4L</td><td>4</td><td>16</td><td>1x200</td><td>4</td><td>8</td></tr><tr><td>C4XL</td><td>4</td><td>24</td><td>1x200</td><td>3</td><td>8</td></tr><tr><td>C4XXL</td><td>4</td><td>32</td><td>1x200</td><td>2</td><td>8</td></tr><tr><td>C6S*</td><td>6</td><td>8</td><td>1x200</td><td>4</td><td>8</td></tr><tr><td>C6M*</td><td>6</td><td>12</td><td>1x200</td><td>4</td><td>8</td></tr><tr><td>C6L</td><td>6</td><td>16</td><td>1x200</td><td>4</td><td>8</td></tr><tr><td>C6XL</td><td>6</td><td>24</td><td>1x200</td><td>3</td><td>8</td></tr><tr><td>C6XXL</td><td>6</td><td>32</td><td>1x200</td><td>2</td><td>8</td></tr><tr><td>C8S*</td><td>8</td><td>8</td><td>1x200</td><td>4</td><td>8</td></tr><tr><td>C8M*</td><td>8</td><td>12</td><td>1x200</td><td>4</td><td>8</td></tr><tr><td>C8L</td><td>8</td><td>16</td><td>1x200</td><td>4</td><td>8</td></tr><tr><td>C8XL</td><td>8</td><td>24</td><td>1x200</td><td>3</td><td>8</td></tr><tr><td>C8XXL</td><td>8</td><td>32</td><td>1x200</td><td>2</td><td>8</td></tr><tr><td>C10S*</td><td>10</td><td>10</td><td>1x200</td><td>3</td><td>6</td></tr><tr><td>C10M*</td><td>10</td><td>14</td><td>1x200</td><td>3</td><td>6</td></tr><tr><td>C10L</td><td>10</td><td>20</td><td>1x200</td><td>3</td><td>6</td></tr><tr><td>C10XL</td><td>10</td><td>30</td><td>1x200</td><td>2</td><td>6</td></tr><tr><td>C10XXL</td><td>10</td><td>40</td><td>1x200</td><td>2</td><td>6</td></tr><tr><td>C12S*</td><td>12</td><td>12</td><td>1x200</td><td>2</td><td>5</td></tr><tr><td>C12M*</td><td>12</td><td>18</td><td>1x200</td><td>2</td><td>5</td></tr><tr><td>C12L</td><td>12</td><td>24</td><td>1x200</td><td>2</td><td>5</td></tr><tr><td>C12XL</td><td>12</td><td>36</td><td>1x200</td><td>2</td><td>5</td></tr><tr><td>C12XXL</td><td>12</td><td>48</td><td>1x200</td><td>1</td><td>5</td></tr><tr><td>C14S*</td><td>14</td><td>14</td><td>1x200</td><td>2</td><td>4</td></tr><tr><td>C14M*</td><td>14</td><td>20</td><td>1x200</td><td>2</td><td>4</td></tr><tr><td>C14L</td><td>14</td><td>28</td><td>1x200</td><td>2</td><td>4</td></tr><tr><td>C14XL</td><td>14</td><td>42</td><td>1x200</td><td>1</td><td>4</td></tr><tr><td>C14XXL</td><td>14</td><td>56</td><td>1x200</td><td>1</td><td>4</td></tr><tr><td>C16S</td><td>16</td><td>16</td><td>1x200</td><td>2</td><td>4</td></tr><tr><td>C16M</td><td>16</td><td>24</td><td>1x200</td><td>2</td><td>4</td></tr><tr><td>C16L</td><td>16</td><td>32</td><td>1x200</td><td>2</td><td>4</td></tr><tr><td>C16XL</td><td>16</td><td>48</td><td>1x200</td><td>1</td><td>4</td></tr><tr><td>C16XXL</td><td>16</td><td>64</td><td>1x200</td><td>1</td><td>4</td></tr><tr><td>C20S*</td><td>20</td><td>20</td><td>1x200</td><td>1</td><td>3</td></tr><tr><td>C20M*</td><td>20</td><td>30</td><td>1x200</td><td>1</td><td>3</td></tr><tr><td>C20L</td><td>20</td><td>40</td><td>1x200</td><td>1</td><td>3</td></tr><tr><td>C20XL</td><td>20</td><td>60</td><td>1x200</td><td>1</td><td>3</td></tr><tr><td>C20XXL</td><td>20</td><td>80</td><td>1x200</td><td>1</td><td>3</td></tr><tr><td>C24S*</td><td>24</td><td>24</td><td>1x200</td><td>1</td><td>2</td></tr><tr><td>C24M*</td><td>24</td><td>36</td><td>1x200</td><td>1</td><td>2</td></tr><tr><td>C24L</td><td>24</td><td>48</td><td>1x200</td><td>1</td><td>2</td></tr><tr><td>C24XL</td><td>24</td><td>72</td><td>1x200</td><td>1</td><td>2</td></tr><tr><td>C24XXL</td><td>24</td><td>96</td><td>1x200</td><td>0</td><td>2</td></tr><tr><td>C28S*</td><td>28</td><td>28</td><td>1x200</td><td>1</td><td>2</td></tr><tr><td>C28M*</td><td>28</td><td>42</td><td>1x200</td><td>1</td><td>2</td></tr><tr><td>C28L</td><td>28</td><td>56</td><td>1x200</td><td>1</td><td>2</td></tr><tr><td>C28XL</td><td>28</td><td>84</td><td>1x200</td><td>0</td><td>2</td></tr><tr><td>C28XXL</td><td>28</td><td>112</td><td>1x200</td><td>0</td><td>2</td></tr><tr><td>C32S*</td><td>32</td><td>32</td><td>1x200</td><td>1</td><td>2</td></tr><tr><td>C32M*</td><td>32</td><td>48</td><td>1x200</td><td>1</td><td>2</td></tr><tr><td>C32L</td><td>32</td><td>64</td><td>1x200</td><td>1</td><td>2</td></tr><tr><td>C32XL</td><td>32</td><td>80</td><td>1x200</td><td>1</td><td>2</td></tr><tr><td>C32XXL</td><td>32</td><td>160</td><td>1x200</td><td>0</td><td>2</td></tr></table></div><h3>CAS Applications on the S620</h3><p>CAS applications that are compatible with the S620 are shown in the following table, along with their requirements per model, and the number of instances supported per appliance.</p><div class="doc-table-wrap"><table class="doc-table"><tr><th>CAS Model</th><th>Requirements Per CAS Model</th><th>Instances Per Appliance</th></tr><tr><td>CAS Model</td><td>Cores</td><td>RAM (GB)</td><td>Disk (GB)</td><td>S620-10</td></tr><tr><td>C4L</td><td>4</td><td>16</td><td>1x200</td><td>28</td></tr><tr><td>C4XL</td><td>4</td><td>24</td><td>1x200</td><td>28</td></tr><tr><td>C4XXL</td><td>4</td><td>32</td><td>1x200</td><td>28</td></tr><tr><td>C6L</td><td>6</td><td>16</td><td>1x200</td><td>18</td></tr><tr><td>C6XL</td><td>6</td><td>24</td><td>1x200</td><td>18</td></tr><tr><td>C6XXL</td><td>6</td><td>32</td><td>1x200</td><td>18</td></tr><tr><td>C8L</td><td>8</td><td>16</td><td>1x200</td><td>14</td></tr><tr><td>C8XL</td><td>8</td><td>24</td><td>1x200</td><td>14</td></tr><tr><td>C8XXL</td><td>8</td><td>32</td><td>1x200</td><td>14</td></tr><tr><td>C10L</td><td>10</td><td>20</td><td>1x200</td><td>11</td></tr><tr><td>C10XL</td><td>10</td><td>30</td><td>1x200</td><td>11</td></tr><tr><td>C10XXL</td><td>10</td><td>40</td><td>1x200</td><td>11</td></tr><tr><td>C12S*</td><td>12</td><td>12</td><td>1x200</td><td>9</td></tr><tr><td>C12M*</td><td>12</td><td>18</td><td>1x200</td><td>9</td></tr><tr><td>C12L</td><td>12</td><td>24</td><td>1x200</td><td>9</td></tr><tr><td>C12XL</td><td>12</td><td>36</td><td>1x200</td><td>9</td></tr><tr><td>C12XXL</td><td>12</td><td>48</td><td>1x200</td><td>9</td></tr><tr><td>C14M*</td><td>14</td><td>20</td><td>1x200</td><td>8</td></tr><tr><td>C14L</td><td>14</td><td>28</td><td>1x200</td><td>8</td></tr><tr><td>C14XL</td><td>14</td><td>42</td><td>1x200</td><td>8</td></tr><tr><td>C14XXL</td><td>14</td><td>56</td><td>1x200</td><td>8</td></tr><tr><td>C16S*</td><td>16</td><td>16</td><td>1x200</td><td>7</td></tr><tr><td>C16M*</td><td>16</td><td>24</td><td>1x200</td><td>7</td></tr><tr><td>C16L</td><td>16</td><td>32</td><td>1x200</td><td>7</td></tr><tr><td>C16XL</td><td>16</td><td>48</td><td>1x200</td><td>7</td></tr><tr><td>C16XXL</td><td>16</td><td>64</td><td>1x200</td><td>7</td></tr><tr><td>C20S*</td><td>20</td><td>20</td><td>1x200</td><td>5</td></tr><tr><td>C20M*</td><td>20</td><td>30</td><td>1x200</td><td>5</td></tr><tr><td>C20L</td><td>20</td><td>40</td><td>1x200</td><td>5</td></tr><tr><td>C20XL</td><td>20</td><td>60</td><td>1x200</td><td>5</td></tr><tr><td>C20XXL</td><td>20</td><td>80</td><td>1x200</td><td>5</td></tr><tr><td>C24S*</td><td>24</td><td>24</td><td>1x200</td><td>4</td></tr><tr><td>C24M*</td><td>24</td><td>36</td><td>1x200</td><td>4</td></tr><tr><td>C24L</td><td>24</td><td>48</td><td>1x200</td><td>4</td></tr><tr><td>C24XL</td><td>24</td><td>72</td><td>1x200</td><td>4</td></tr><tr><td>C24XXL</td><td>24</td><td>96</td><td>1x200</td><td>4</td></tr><tr><td>C28S*</td><td>28</td><td>28</td><td>1x200</td><td>4</td></tr><tr><td>C28M*</td><td>28</td><td>42</td><td>1x200</td><td>2</td></tr><tr><td>C28L</td><td>28</td><td>56</td><td>1x200</td><td>4</td></tr><tr><td>C28XL</td><td>28</td><td>84</td><td>1x200</td><td>4</td></tr><tr><td>C28XXL</td><td>28</td><td>112</td><td>1x200</td><td>4</td></tr><tr><td>C32S*</td><td>32</td><td>32</td><td>1x200</td><td>3</td></tr><tr><td>C32M*</td><td>32</td><td>48</td><td>1x200</td><td>3</td></tr><tr><td>C32L</td><td>32</td><td>64</td><td>1x200</td><td>3</td></tr><tr><td>C32XL</td><td>32</td><td>80</td><td>1x200</td><td>3</td></tr><tr><td>C32XXL</td><td>32</td><td>160</td><td>1x200</td><td>3</td></tr></table></div><h3>Maximum Performance for CAS Applications</h3><p>The following table shows the recommended CAS configurations that provide the maximum performance for each SSP appliance model.</p><div class="doc-table-wrap"><table class="doc-table"><tr><th>SSP Appliance</th><th>CAS Model</th><th>Instances</th><th>Cores</th><th>RAM (GB)</th><th>Disk (GB)</th></tr><tr><td>S210-10</td><td>C12L</td><td>1</td><td>12</td><td>24</td><td>200</td></tr><tr><td>S410-20/20B</td><td>C32L</td><td>1</td><td>32</td><td>64</td><td>200</td></tr><tr><td>S410-40/40B</td><td>C32L</td><td>2</td><td>64</td><td>128</td><td>400</td></tr><tr><td>S620-10</td><td>C28XXL</td><td>4</td><td>28</td><td>112</td><td>400</td></tr></table></div></div></section><section class="knowledge-panel" id="panel-trouble-ca" role="tabpanel" hidden><div class="knowledge-card"><h3>Content Analysis 障害発生時に取得する基本情報</h3><p>Content Analysis で障害が発生した場合、Content Analysis の GUI にログインし、以下の情報を取得します。</p><h4>1. Content Analysis のシステム情報</h4><p>Utilities &gt; System Information を開きます。表示された内容をすべてコピーし、テキストエディタなどに貼り付けて保存します。<br></p><h4>2. Troubleshooting Log</h4><p>Utilities &gt; Troubleshooting を開きます。取得手順は以下の通りです。<br></p><h4>1) Create troubleshooting log をクリックします。2) Select all cores をクリックしてすべて選択します。<br>3) Create をクリックします。<br>4) 画面を再読み込みし、Status が In Progress から Completed になることを確認します。<br>5) Download ボタンからログをダウンロードします。<br></h4><h4>3. Configuration ファイル</h4><p>Utilities &gt; Configuration を開きます。Get Configuration をクリックし、設定ファイルを取得します。<br></p><h3><a href="https://knowledge.broadcom.com/external/article/447595" target="_blank" rel="noopener noreferrer">Content Analysis 障害発生時に取得する基本情報</a></h3><p>Edge</p></div></section><section class="knowledge-panel" id="panel-trouble-edge" role="tabpanel" hidden><div class="knowledge-card"><h3>Edge Secure Web Gateway (旧名 ProxySG)　 トラブル時、初期問い合わせに必要な情報</h3><p>バーチャル アプライアンス、ハードウェアアプライアンス SSP-Sシリーズとも共通で必要なファイルがあります。OSバージョン6.7および7.3で共通です。</p><h4>【事象の発生から24時間未満】</h4><p>SYSINFO<br><a href="https://proxy-ip:8082/sysinfo" target="_blank" rel="noopener noreferrer">https://Proxy-IP:8082/sysinfo</a>最後までロードされることを確認し、右クリックなど&quot;名前を付けて保存&quot;でテキストファイルに保存してください<br></p><p>Eventlog<br><a href="https://proxy-ip:8082/Eventlog/Statistics" target="_blank" rel="noopener noreferrer">https://Proxy-IP:8082/Eventlog/Statistics</a>Download<br> .. をクリックし events.logというファイル名のまま保存してください</p><h4>【事象の発生から24時間以上】<br></h4><p>Snapshot<br><a href="https://proxy-ip:8082/Diagnostics/Snapshot" target="_blank" rel="noopener noreferrer">https://Proxy-IP:8082/Diagnostics/Snapshot</a>2種類あります。それぞれのリンクをクリックし、ファイルを保存してください。<br><br></p><div class="procedure-item">Snapshot sysinfo: Enabled (/sysinfo) download allSnapshot <br>sysinfo_stats: Enabled (/sysinfo-stats) download all</div><p>事象によっては 24時間未満でも Snapshotが必要となります。</p><h3>Additional Information</h3><p>ハードウェアアプライアンス SSP-Sシリーズでは 以下が必要となることがあります。<br>Diagnostics ファイル<br><br>以下のコマンドを使用しオープンされているケース番号にアップロードします<br>SSHまたはシリアルコンソールで ISG OSへログインします。その後以下の操作をします。<br><br>BRDCM-SSP-ISG&gt; <br>enPassword:<br>BRDCM-SSP-ISG# configure <br>tEnter configuration commands, one per line. End with CNTL/Z.<br><br><br>BRDCM-SSP-ISG(config)# diagnostics service-info send ケース番号<br>ISGとは SSP各モデルで動作している SG-VAなどのベースとなるOSです。初期設定で IPアドレスが振られており、そのIPに対して SSHで接続するか、シリアルポートへ接続して上記コマンドを実行します<br></p><h3><a href="https://knowledge.broadcom.com/external/article/262163/" target="_blank" rel="noopener noreferrer">Edge Secure Web Gateway (旧名 ProxySG) トラブル時、初期問い合わせに必要な情報</a></h3></div></section><section class="knowledge-panel" id="panel-trouble-refs" role="tabpanel" hidden><div class="knowledge-card"><h3>参考URL</h3><p>SSLV</p><p><a href="https://tdsynnex-help.freshdesk.com/support/solutions/articles/157000372262" target="_blank" rel="noopener noreferrer">https://tdsynnex-help.freshdesk.com/support/solutions/articles/157000372262</a></p><p>CAS</p></div></section><section class="knowledge-panel" id="panel-product-chart-pm" role="tabpanel" hidden><div class="knowledge-card">
+<main class="shell">
+<!-- 八卦時計＋デジタル時計＋打刻リマインダー -->
+<div class="clock-wrap">
+<div class="taiji-clock">
+<div class="taiji-yin-dot"></div>
+<div class="taiji-yang-dot"></div>
+<div id="clockMarks"></div>
+<div class="clock-hand hand-hour" id="hourHand"></div>
+<div class="clock-hand hand-minute" id="minHand"></div>
+<div class="clock-hand hand-second" id="secHand"></div>
+<div class="clock-center"></div>
+</div>
+<div class="digital-time">
+<div class="time-hms" id="timeHMS">00:00:00</div>
+<div class="time-date" id="timeDate">2026年08月11日 火曜日</div>
+<div class="reminder" id="reminder">打刻を忘れずにやってください！</div>
+</div>
+</div>
+<!-- 重要タスクパネル（折り畳み入力フォーム） -->
+<div class="task-panel">
+<div class="task-title">🔥 本日最重要タスク</div>
+<!-- 展開/折り畳みトグルボタン -->
+<button class="toggle-task-form" id="toggleForm">タスク追加を展開</button>
+<!-- 入力フォーム（初期非表示） -->
+<div class="task-form-wrap" id="taskForm">
+<div class="task-input-row">
+<input id="task-input" placeholder="タスク内容を入力" type="text"/>
+<button class="task-btn btn-add" id="add-task">タスク追加</button>
+<button class="task-btn btn-clear" id="clear-all">全タスク削除</button>
+</div>
+</div>
+<!-- タスク一覧表示エリア -->
+<div class="task-list" id="task-list"></div>
+</div>
+<!-- 本日最重要タスクの下：重要仕事スケジュール／個人重要スケジュール -->
+<div class="schedule-row">
+<section class="schedule-panel work-schedule" id="workSchedulePanel">
+<div class="schedule-title">💼 重要仕事スケジュール</div>
+<div class="schedule-category-note">仕事・会議・顧客対応など</div>
+<button class="toggle-schedule-form" id="toggleWorkScheduleForm">スケジュール追加を展開</button>
+<div class="schedule-form-wrap" id="workScheduleForm">
+<div class="schedule-grid">
+<div class="schedule-field">
+<label for="work-meeting-start">開始日時</label>
+<input id="work-meeting-start" type="datetime-local"/>
+</div>
+<div class="schedule-field">
+<label for="work-meeting-end">終了日時</label>
+<input id="work-meeting-end" type="datetime-local"/>
+</div>
+<div class="schedule-field full">
+<label for="work-meeting-content">ミーティング内容</label>
+<input id="work-meeting-content" placeholder="例：Symantec DLP定例会" type="text"/>
+</div>
+<div class="schedule-field full">
+<label for="work-meeting-url">ミーティングURL</label>
+<input id="work-meeting-url" placeholder="https://..." type="url"/>
+</div>
+<div class="schedule-field full">
+<label for="work-meeting-comment">コメント</label>
+<textarea id="work-meeting-comment" placeholder="事前確認事項など"></textarea>
+</div>
+</div>
+<div class="schedule-actions">
+<button class="task-btn btn-add" id="add-work-schedule">追加</button>
+<button class="task-btn btn-clear" id="clear-work-schedules">全削除</button>
+</div>
+</div>
+<div class="task-list" id="work-schedule-list"></div>
+</section>
+<!-- 3. 個人重要スケジュール -->
+<section class="schedule-panel personal-schedule" id="personalSchedulePanel">
+<div class="schedule-title">👤 個人重要スケジュール</div>
+<div class="schedule-category-note">個人予定・私用・個人的な重要事項など</div>
+<button class="toggle-schedule-form" id="togglePersonalScheduleForm">スケジュール追加を展開</button>
+<div class="schedule-form-wrap" id="personalScheduleForm">
+<div class="schedule-grid">
+<div class="schedule-field">
+<label for="personal-meeting-start">開始日時</label>
+<input id="personal-meeting-start" type="datetime-local"/>
+</div>
+<div class="schedule-field">
+<label for="personal-meeting-end">終了日時</label>
+<input id="personal-meeting-end" type="datetime-local"/>
+</div>
+<div class="schedule-field full">
+<label for="personal-meeting-content">予定内容</label>
+<input id="personal-meeting-content" placeholder="例：家族との予定" type="text"/>
+</div>
+<div class="schedule-field full">
+<label for="personal-meeting-url">URL</label>
+<input id="personal-meeting-url" placeholder="https://...（任意）" type="url"/>
+</div>
+<div class="schedule-field full">
+<label for="personal-meeting-comment">コメント</label>
+<textarea id="personal-meeting-comment" placeholder="メモ・確認事項など"></textarea>
+</div>
+</div>
+<div class="schedule-actions">
+<button class="task-btn btn-add" id="add-personal-schedule">追加</button>
+<button class="task-btn btn-clear" id="clear-personal-schedules">全削除</button>
+</div>
+</div>
+<div class="task-list" id="personal-schedule-list"></div>
+</section>
+</div>
+<div class="grid">
+<div class="portal-schedule-layout">
+<!-- 左：Tdsynnexポータル -->
+<section class="accent-tdsynnex">
+<div class="section-head">
+<h2>1. Tdsynnexポータル</h2>
+<span class="count">8</span>
+</div>
+<div class="links">
+<a class="item" href="https://outlook.office.com/mail/inbox/id/AAQkAGFhZjU0ODg4LTNjYmEtNDk2Ny05ZTc0LWVkNzJmNGZjOGJlNQAQAI5fj52vMr1Bmlo4Ib5ZPxY%3D" rel="noopener noreferrer" target="_blank">
+<span><span class="name">個人アドレス</span><span class="url">https://outlook.office.com/mail/inbox/id/AAQkAGFhZjU0ODg4LTNjYmEtNDk2Ny05ZTc0LWVkNzJmNGZjOGJlNQAQAI5fj52vMr1Bmlo4Ib5ZPxY%3D</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://outlook.office.com/mail/Broadcom_HelpDesk_JP@tdsynnex.com/" rel="noopener noreferrer" target="_blank">
+<span><span class="name">グループアドレス</span><span class="url">https://outlook.office.com/mail/Broadcom_HelpDesk_JP@tdsynnex.com/</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://techdata-marketing.app.box.com/folder/0" rel="noopener noreferrer" target="_blank">
+<span><span class="name">Box</span><span class="url">https://techdata-marketing.app.box.com/folder/0</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://tdsynnex-help.freshdesk.com/a/dashboard/default" rel="noopener noreferrer" target="_blank">
+<span><span class="name">KB編集</span><span class="url">https://tdsynnex-help.freshdesk.com/a/dashboard/default</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://tdworldwide.sharepoint.com/:o:/r/sites/Broadcomjapantechengine/_layouts/15/doc2.aspx?sourcedoc=%7Bb2312c5c-2a06-4da9-af1f-74bf678cb574%7D&amp;action=edit&amp;wd=target(Untitled%20Section.one%7Ccb4fbbb2-aba2-44aa-850c-a2fe22c2357a%2Fxx%E3%83%AD%E3%82%B0%E6%8E%A1%E5%8F%96%E6%89%8B%E9%A0%86%7Cd8ab9ec2-738c-4e39-9834-232331922881%2F)&amp;wdorigin=NavigationUrl" rel="noopener noreferrer" target="_blank">
+<span><span class="name">大連チームOnenote</span><span class="url">https://tdworldwide.sharepoint.com/:o:/r/sites/Broadcomjapantechengine/...</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://tdworldwide.sharepoint.com/sites/Broadcomjapantechengine/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FBroadcomjapantechengine%2FShared%20Documents%2FNetwork%20Security%20Team&amp;viewid=8b213fc0%2D9fd5%2D4455%2Daca1%2D5e4af7d0801f" rel="noopener noreferrer" target="_blank">
+<span><span class="name">NetworkチームSharePoint</span><span class="url">https://tdworldwide.sharepoint.com/sites/Broadcomjapantechengine/...</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://tdworldwide-my.sharepoint.com/personal/t389168j_tdsynnex_com/_layouts/Doc.aspx?sourcedoc=%7B42DC2B6A-40CA-4701-9E34-16208212754C%7D&amp;end=()&amp;end" rel="noopener noreferrer" target="_blank">
+<span><span class="name">ネットワークチームOnenote</span><span class="url">https://tdworldwide-my.sharepoint.com/personal/t389168j_tdsynnex_com/...</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="onenote:https://tdworldwide-my.sharepoint.com/personal/t389168j_tdsynnex_com/Documents/Yin%20さん%20@%20TDSYNNEX/" rel="noopener noreferrer" target="_blank">
+<span><span class="name">ネットワークチームOnenote App</span><span class="url">onenote:https://tdworldwide-my.sharepoint.com/personal/t389168j_tdsynnex_com/Documents/Yin%20さん%20@%20TDSYNNEX/</span></span>
+<span class="badge">OneNote</span>
+</a>
+</div>
+</section>
+<!-- 4. MSポータル(AZURE) -->
+<section class="accent-ms">
+<div class="section-head">
+<h2>4. MSポータル</h2>
+<span class="count">1</span>
+</div>
+<div class="links">
+<a class="item" href="https://portal.azure.com/auth/login/" rel="noopener noreferrer" target="_blank">
+<span><span class="name">Azureポータル</span><span class="url">https://portal.azure.com/auth/login/</span></span>
+<span class="badge">Open</span>
+</a>
+</div>
+</section>
+<!-- 5. Symantecポータル -->
+<section class="accent-symantec">
+<div class="section-head">
+<h2>5. Symantecポータル</h2>
+<span class="count">4</span>
+</div>
+<div class="links">
+<a class="item" href="https://enterprise.security.com/portal/cloud-config/subscription" rel="noopener noreferrer" target="_blank">
+<span><span class="name">EC</span><span class="url">https://enterprise.security.com/portal/cloud-config/subscription</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://tdsynnex.luminatesec.com/home" rel="noopener noreferrer" target="_blank">
+<span><span class="name">TDSYNNEXZTNA</span><span class="url">https://tdsynnex.luminatesec.com/home</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://admin.baofuzna.luminatesec.com/dashboard" rel="noopener noreferrer" target="_blank">
+<span><span class="name">BaofuZTNA</span><span class="url">https://admin.baofuzna.luminatesec.com/dashboard</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://defense-prodnrt.conferdeploy.net/?s[searchWindow]=TWO_WEEKS&amp;s[dataGrouping]=NO_GROUP_RESULTS&amp;s[c][SEVERITY][0]=WARNING&amp;s[c][THREAT_SCORE][0]=3&amp;s[c][DISMISSED][0]=false" rel="noopener noreferrer" target="_blank">
+<span><span class="name">Carbonblack</span><span class="url">https://defense-prodnrt.conferdeploy.net/?s[searchWindow]=TWO_WEEKS&amp;s[dataGrouping]=NO_GROUP_RESULTS&amp;s[c][SEVERITY][0]=WARNING&amp;s[c][THREAT_SCORE][0]=3&amp;s[c][DISMISSED][0]=false</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://accounts.security.com/cc/productAccounts?productId=10F3B13D-A2B6-4986-8323-4561E86ECE18" rel="noopener noreferrer" target="_blank">
+<span><span class="name">パートナーポータル</span><span class="url">https://accounts.security.com/cc/productAccounts?productId=10F3B13D-A2B6-4986-8323-4561E86ECE18</span></span>
+<span class="badge">Open</span>
+</a>
+</div>
+</section>
+<!-- 6. テストツール -->
+<section class="wide accent-tools">
+<div class="section-head">
+<h2>6. テストツール</h2>
+<span class="count">11</span>
+</div>
+<div class="links">
+<a class="item" href="https://isgformatter-tdsynnex.streamlit.app/" rel="noopener noreferrer" target="_blank">
+<span><span class="name">ISG整形ツール</span><span class="url">https://isgformatter-tdsynnex.streamlit.app/</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://dlptest.tds-cnx.com/" rel="noopener noreferrer" target="_blank">
+<span><span class="name">DLPテスト</span><span class="url">https://dlptest.tds-cnx.com/</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://sgformatter.streamlit.app//" rel="noopener noreferrer" target="_blank">
+<span><span class="name">SG整形ツール</span><span class="url">https://sgformatter.streamlit.app/</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://rmaweb-synnex.streamlit.app/" rel="noopener noreferrer" target="_blank">
+<span><span class="name">RMAテンプレート</span><span class="url">https://rmaweb-synnex.streamlit.app/</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://swgwebtest-synnex.streamlit.app/" rel="noopener noreferrer" target="_blank">
+<span><span class="name">URLチェックテスト</span><span class="url">https://swgwebtest-synnex.streamlit.app/</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://symantecdlpddsapi.streamlit.app/" rel="noopener noreferrer" target="_blank">
+<span><span class="name">DDSAPIテスト</span><span class="url">https://symantecdlpddsapi.streamlit.app/</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://clouddlp-aiptest.streamlit.app/" rel="noopener noreferrer" target="_blank">
+<span><span class="name">DLPAPI</span><span class="url">https://clouddlp-aiptest.streamlit.app/</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://casicapclient-virusscan.streamlit.app/" rel="noopener noreferrer" target="_blank">
+<span><span class="name">ICAPテスト</span><span class="url">https://casicapclient-virusscan.streamlit.app/</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://www.symdl.net/" rel="noopener noreferrer" target="_blank">
+<span><span class="name">Jisongtest</span><span class="url">https://www.symdl.net/</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://dds-study.streamlit.app/" rel="noopener noreferrer" target="_blank">
+<span><span class="name">DDSAPI学習サイト</span><span class="url">https://dds-study.streamlit.app/</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://aicheckandaiuse.streamlit.app/" rel="noopener noreferrer" target="_blank">
+<span><span class="name">DDSAI検知ツール</span><span class="url">https://aicheckandaiuse.streamlit.app/</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://hardware-ssp-sslv.streamlit.app/" rel="noopener noreferrer" target="_blank">
+<span><span class="name">ハードウェア修理</span><span class="url">https://hardware-ssp-sslv.streamlit.app/</span></span>
+<span class="badge">Open</span>
+</a>
+</div>
+</section>
+<!-- 7. Email関連 -->
+<section class="accent-email">
+<div class="section-head">
+<h2>7. Email関連</h2>
+<span class="count">3</span>
+</div>
+<div class="links">
+<a class="item" href="https://us.quarantine.symantec.com/" rel="noopener noreferrer" target="_blank">
+<span><span class="name">隔離ポータル</span><span class="url">https://us.quarantine.symantec.com/</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://litdsynnex.securitytraining.io/users/sign_in" rel="noopener noreferrer" target="_blank">
+<span><span class="name">訓練ポータル</span><span class="url">https://litdsynnex.securitytraining.io/users/sign_in</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://pgp-tdsynnexkk.secure-email.symanteccloud.com:9000/smc" rel="noopener noreferrer" target="_blank">
+<span><span class="name">PGPポータル</span><span class="url">https://pgp-tdsynnexkk.secure-email.symanteccloud.com:9000/smc</span></span>
+<span class="badge">Open</span>
+</a>
+</div>
+</section>
+<!-- 8. サポートポータル -->
+<section class="accent-support">
+<div class="section-head">
+<h2>8. Symantecサポート</h2>
+<span class="count">3</span>
+</div>
+<div class="links">
+<a class="item" href="https://support.broadcom.com/group/ecx/products" rel="noopener noreferrer" target="_blank">
+<span><span class="name">サポートポータル</span><span class="url">https://support.broadcom.com/group/ecx/products</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://partnerportal.broadcom.com/" rel="noopener noreferrer" target="_blank">
+<span><span class="name">パートナーサポートポータル</span><span class="url">https://partnerportal.broadcom.com/</span></span>
+<span class="badge">Open</span>
+</a>
+<a class="item" href="https://mylogin.broadcom.com/default/ui/v1/selfserviceconsole/applications/" rel="noopener noreferrer" target="_blank">
+<span><span class="name">ブロードコムポータル</span><span class="url">https://mylogin.broadcom.com/default/ui/v1/selfserviceconsole/applications/</span></span>
+<span class="badge">Open</span>
+</a>
+</div>
+</section>
+</div>
+<!-- 追加ナレッジタブ: 元のメインコンテンツは変更せず、そのまま保持 -->
+<div class="supplemental-tabs" id="supplementalTabs">
+<nav aria-label="ポータル表示切替" class="main-tabbar">
+<button class="main-tab active" data-main="main" type="button">メイン</button>
+<button class="main-tab" data-main="lab" type="button">LAB環境</button>
+<button class="main-tab" data-main="sku" type="button">製品SKU</button>
+<button class="main-tab" data-main="deploy" type="button">ディプロイ方法</button>
+<button class="main-tab" data-main="trouble" type="button">トラブルシューティングログ</button>
+<button class="main-tab" data-main="product-chart" type="button">プロダクトチャートグループ</button>
+<button class="main-tab" data-main="hardware" type="button">ハードウェア修理</button>
+<button class="main-tab" data-main="manual" type="button">マニュアル</button><button class="main-tab" data-main="request-template" type="button">依頼時テンプレート</button></nav>
+<div class="knowledge-area" hidden="">
+<div class="sub-tabbar" data-group="lab" hidden=""><button class="sub-tab active" data-panel="lab-ztna" type="button">ZTNA環境</button></div>
+<div class="sub-tabbar" data-group="sku" hidden=""><button class="sub-tab active" data-panel="sku-network" type="button">ネットワーク製品SKU</button><button class="sub-tab" data-panel="sku-dlp" type="button">DLPライセンス</button></div>
+<div class="sub-tabbar" data-group="deploy" hidden=""><button class="sub-tab active" data-panel="deploy-sg" type="button">SGデプロイ</button><button class="sub-tab" data-panel="deploy-cas" type="button">CASデプロイ</button></div>
+<div class="sub-tabbar" data-group="trouble" hidden=""><button class="sub-tab active" data-panel="trouble-ca" type="button">Content Analysis</button><button class="sub-tab" data-panel="trouble-edge" type="button">Edge Secure Web Gateway (旧名 ProxySG)</button><button class="sub-tab" data-panel="trouble-refs" type="button">参考URL</button></div>
+<div class="sub-tabbar" data-group="product-chart" hidden=""><button class="sub-tab active" data-panel="product-chart-pm" type="button">チャートPM</button><button class="sub-tab" data-panel="product-chart-ml" type="button">ML情報</button></div>
+<div class="sub-tabbar" data-group="hardware" hidden=""><button class="sub-tab active" data-panel="hardware-repair" type="button">ハードウェア修理情報</button></div>
+<section class="knowledge-panel" hidden="" id="panel-lab-ztna" role="tabpanel"><div class="knowledge-card"><h3>ZTNA環境</h3><h4>192.168.84.7   SSLV S550 Management</h4><h4>192.168.84.8   SSP-S410 Management</h4><h4>192.168.84.9   SSP-S210 Management</h4><h4>192.168.84.10  SSP-S210 APP-1</h4><h4>192.168.84.11  SSP-S210 APP-2</h4><h4>192.168.84.12  SSP-S210 APP-3</h4><h4>192.168.84.13  SSP-S410 APP-1</h4><h4>192.168.84.14  SSP-S410 APP-2</h4><h4>192.168.84.15  SSP-S410 APP-3</h4><h4>192.168.84.16  Reserved</h4><h4>192.168.84.17  Reserved</h4><h4>192.168.84.18  Reserved</h4><h4>192.168.84.19  Reserved</h4></div></section><section class="knowledge-panel" hidden="" id="panel-sku-network" role="tabpanel"><div class="knowledge-card"><h3>ネットワーク製品SKU</h3><div class="doc-table-wrap"><table class="doc-table"><tr><th>SKU Part Number</th><th>Description</th><th>License Metric</th><th>Hardware SSP Appliance</th><th>Virtual Appliance</th></tr><tr><td>ISG-PR-ADV-SUB</td><td>Edge SWG, Content Analysis, with Advanced Intelligence Services</td><td>Core</td><td>Yes</td><td>Yes</td></tr><tr><td>ISG-MC-SUB</td><td>Centralized Management for on-premises appliances up to 25 devices</td><td>Device</td><td>Yes</td><td>Yes</td></tr><tr><td>ISG-CAS-SUB</td><td>On-Prem Content Analysis with the included Symantec AV<br/>BYOL Options for Sophos AV (Now), or ReversingLabs (Mid-2025)</td><td>Core</td><td>Yes</td><td>Yes</td></tr><tr><td>ISG-CAS-MAAS-SUB</td><td>On-Prem Content Analysis with Cloud-Based Sandboxing</td><td>Core</td><td>Yes</td><td>Yes</td></tr><tr><td>CLD-RPTR-OP-SUB</td><td>Cloud Hosted Reporting for On-Premises Devices</td><td>User</td><td>—</td><td>—</td></tr><tr><td>ISG-HSMA-SUB</td><td>HSM Agent instance installed on SSP Appliance (per appliance serial #)</td><td>Core</td><td>Yes</td><td>Yes</td></tr><tr><td>ISG-SV-SUB (June 2025)</td><td>SSL Visibility with Advanced Intelligence Services (HostCAT)</td><td>Core</td><td>Yes</td><td>Future</td></tr><tr><td>SKU Part Number</td><td>Description</td><td>Prerequisite</td><td>License Metric</td><td>Cloud Service</td></tr><tr><td>SAC-SUB</td><td>Symantec ZTNA Subscription</td><td>No</td><td>User</td><td>Yes</td></tr><tr><td>CLD-WI-SUB</td><td>Web Isolation（pre-req: CLD-SWG-SUB）</td><td>Yes</td><td>User</td><td>Yes</td></tr><tr><td>ZTNA-APP-PROTECT-SUB</td><td>Threat Inspection Service（TIS）inline protection and Web Isolation access, preventing metadata from reaching the user client and blocking sensitive actions like copy/paste/print for internal web applications. Currently available for BYOD access.（Pre-req: SAC-SUB）</td><td>Yes</td><td>User</td><td>Yes</td></tr><tr><td>CLD-BCP-SUB</td><td>CLD-BCP-SUB（Business Continuity Plan, 30 days max）is for customers who are looking for a business continuity cloud backup solution. Customers who want to migrate to Broadcom as primary from backup would subscribe to CLD-SWG-SUB.</td><td>No</td><td>User</td><td>Yes</td></tr><tr><td>CLD-SRVW-SUB</td><td>Cloud Server Workload Traffic per User, prerequisite CLD-SWG-SUB</td><td>Yes</td><td>User</td><td>Yes</td></tr><tr><td>CLD-SWG-SUB</td><td>Cloud Security Web Gateway, includes Proxy, Content Analysis, and Intelligence Services, primary base SKUs for Cloud Services</td><td>No</td><td>User</td><td>Yes</td></tr><tr><td>CLD-RPT-SUB</td><td>Cloud Reporting for Cloud-originated traffic, prerequisite CLD-SWG-SUB</td><td>Yes</td><td>User</td><td>Yes</td></tr><tr><td>CLD-MAAS-SUB</td><td>Cloud Malware Analysis Advanced Service（MAAS）, prerequisite CLD-SWG-SUB</td><td>Yes</td><td>User</td><td>Yes</td></tr></table></div></div></section><section class="knowledge-panel" hidden="" id="panel-sku-dlp" role="tabpanel"><div class="knowledge-card"><h3>DLPライセンス</h3><div class="doc-table-wrap"><table class="doc-table"><tr><th>SKU</th><th>Description</th><th>Components</th></tr><tr><td>DLP-CORE-SUB（Bundle SKU）</td><td>Data Loss Prevention Core</td><td>• DLP Enterprise Suite（DLP-ES-SUB）　○ Endpoint Discover（DLP-ED-SUB）<br/>　○ Endpoint Prevent（DLP-EP-SUB）<br/>　○ Network Discover（DLP-D-SUB）<br/>　○ Network Monitor（DLP-M-SUB）<br/>　○ Network Protect（DLP-NPA-SUB）<br/>　○ Network Prevent for Email（DLP-MPE-SUB）<br/>　○ Network Prevent for Web<br/>（DLP-MPW-SUB）• DLP Sensitive Image Recognition（DLP-SIR-SUB）<br/>• Information Centric Analytics（ICA-SUB）<br/></td></tr><tr><td>DLP-CLOUD-SUB（Bundle SKU）</td><td>Data Loss Prevention Cloud</td><td>• CloudSOC CASB Audit（CASB-AUD-SUB）• <br/>CloudSOC CASB for SaaS（SEC-SAAS-SUB）• <br/>CloudSOC CASB for IaaS（CASB-IAAS-GB-SUB）• <br/>CloudSOC CASB Gateway（CASB-GAT-SUB）• DLP Cloud Detection Service（DLP-CDS-SUB）<br/>• DLP Cloud Detection Service for CloudSWG（DLP-CDS-WSS-SUB）<br/><br/>• DLP for Office 365 Email and Gmail（DLP-CSES-SUB）</td></tr><tr><td>DLP-CDS-SUB</td><td>DLP Cloud Detection Service for CASB</td><td>• Additional license for CASB is needed　CASB: SEC-SAAS-SUB、CASB-IAAS-GB-SUB、またはCASB-GAT-SUB<br/><br/>Can be managed via cloud-managed DLP or Enforce<br/></td></tr><tr><td>DLP-CSES-SUB</td><td>DLP for Office 365 Email and GmailForward mode and Reflect mode is available<br/></td><td>• DLP Cloud Detection Service for Office 365 and Gmail<br/>Can be managed via cloud-managed DLP or Enforce<br/></td></tr><tr><td>DLP-CDS-WSS-SUB</td><td>DLP Cloud Detection for CloudSWG</td><td>• Add-on SKU to CLD-WSS-SUB</td></tr><tr><td>SKU</td><td>Description</td><td>Components</td></tr><tr><td></td><td></td><td>Can be managed via cloud-managed DLP or Enforce</td></tr><tr><td>DLP-CDS-Endpoint-SUB<br/>（Additional Agent license needed: DLP-EP-SUB）<br/></td><td>Cloud-managed DLP Endpoint<br/>※Endpoint Discover not yet available<br/></td><td>• DLP Cloud Detection Service for Endpoint.<br/>• Agent license needed: DLP-EP-SUB<br/><br/>Cloud-managed DLP（in <br/>CloudSOC）management console needed</td></tr><tr><td>DLP-CDS-APID-SUB</td><td>Data Loss Prevention Cloud Detection Service for API Detection</td><td>License metric is Per Managed User Per Year.Please review additional information and service limits in the Specific Program Documentation. As of July 2026, the limit is 20GB per user per year.<br/></td></tr><tr><td>DLP-CORE-APID-SUB</td><td>Data Loss Prevention Core API Detection</td><td>• License metric is Per Managed User Per Year.• Enforce-managed API detection server<br/></td></tr><tr><td>DLP-CLD-MET-SUB<br/>（<br/>Add-on SKU for Data Retention）</td><td>Data Retention Add-on SKU<br/>Applicable to base:<br/>SEC-SAAS-SUB, CASB-IAAS-GB-SUB, CASB-GAT-SUB, DLP-CDS-SUB, DLP-<br/>CDS-WSS-SUB, DLP-CSES-SUB, DLP-CDS-Endpoint-SUB, DLP-CLOUD-SUB, DLP-APID-SUB</td><td>• CloudSOC Data Retention SKU. Available in 1-year and 3-year options.</td></tr><tr><td>SEC-SAAS-SUB</td><td>CloudSOC CASB for SaaS</td><td>• Securelets and SSPM capabilities• It also includes the <br/>CloudSOC Audit functionality（CASB-AUD-SUB）</td></tr><tr><td>CASB-GAT-SUB</td><td>CloudSOC CASB Gateway</td><td>• Includes all Gatelets with Detect, Investigate and Protect capabilities• It also includes the <br/>CloudSOC Audit functionality（CASB-AUD-SUB）</td></tr><tr><td>CASB-ATP-SUB</td><td>CloudSOC CASB Advanced Threat Protection</td><td>• Requires Securelets（SEC-SAAS-SUB）or Gatelets（CASB-GAT-SUB）</td></tr><tr><td>CASB-AUD-SUB</td><td>Elastica CASB Audit - App Visibility, Analytics and Control</td><td>• Included in DLP-CLOUD-SUB, SEC-SAAS-SUB, and CASB-GAT-SUB</td></tr><tr><td>CASB-IAAS-GB-SUB</td><td>Symantec Cloud Access Security Broker for IaaS</td><td>Securelet for IaaS functionality measured per GB</td></tr><tr><td>DLP-D-SUB</td><td>Data Loss Prevention Network Discover</td><td>• Included in DLP-DS-SUB and DLP-CORE-SUB bundles</td></tr><tr><td>SKU</td><td>Description</td><td>Components</td></tr><tr><td>DLP-DS-SUB</td><td>Data Loss Prevention Discover Suite</td><td>• Includes DLP-D-SUB and DLP-NPA-SUB</td></tr><tr><td>DLP-ED-SUB</td><td>Data Loss Prevention Endpoint Discover</td><td>• Included in DLP-ES-SUB and DLP-CORE-SUB bundles</td></tr><tr><td>DLP-EP-SUB</td><td>Data Loss Prevention Endpoint Prevent</td><td>• Included in DLP-ES-SUB and DLP-CORE-SUB bundles</td></tr><tr><td>DLP-ES-SUB</td><td>Data Loss Prevention Enterprise Suite</td><td>• DLP Enterprise Suite（DLP-ES-SUB）　○ Endpoint Discover（DLP-ED-SUB）<br/>　○ Endpoint Prevent（DLP-EP-SUB）<br/>　○ Network Discover（DLP-D-SUB）<br/>　○ Network Monitor（DLP-M-SUB）<br/>　○ Network Protect（DLP-NPA-SUB）<br/>　○ Network Prevent for Email（DLP-MPE-SUB）<br/>　○ Network Prevent for Web（DLP-MPW-SUB）<br/></td></tr><tr><td>DLP-M-SUB</td><td>Data Loss Prevention Network Monitor</td><td>• Included in DLP-ES-SUB and DLP-CORE-SUB bundles</td></tr><tr><td>DLP-MPE-SUB</td><td>Data Loss Prevention Network Monitor and Network Prevent for Email</td><td>• Included in DLP-ES-SUB and DLP-CORE-SUB bundles</td></tr><tr><td>DLP-MPEW-SUB</td><td>Data Loss Prevention Network Monitor and Network Prevent for Email and Web</td><td>記載なし</td></tr><tr><td>DLP-MPW-SUB</td><td>Data Loss Prevention Network Monitor and Network Prevent for Web</td><td>• Included in DLP-ES-SUB and DLP-CORE-SUB bundles</td></tr><tr><td>DLP-NPA-SUB</td><td>Data Loss Prevention Network Protect Addon</td><td>• Included in DLP-ES-SUB and DLP-CORE-SUB bundles</td></tr><tr><td>DLP-SIR-SUB</td><td>Data Loss Prevention Sensitive Image Recognition Addon</td><td>• Included in DLP-ES-SUB and DLP-CORE-SUB bundles</td></tr><tr><td>ICA-SUB</td><td>Information Centric Analytics - Powered by Bay Dynamics</td><td>• Included in DLP-ES-SUB and DLP-CORE-SUB bundles</td></tr><tr><td>DLP-DSP-SUB</td><td>Symantec Data Security Posture Management</td><td>• DSPM requires base SKUs of either:<br/>1. SEC-SAAS-SUB and DLP-CDS-SUB are both required to be configured, or<br/>2. CASB-IAAS-GB-SUB and DLP-CDS-SUB are both required to be configured, or<br/>3. A base SKU of DLP-CLOUD-SUB（which contains the aforementioned combinations）, or<br/><br/>4. DLP-CDS-Endpoint-SUB and the …</td></tr><tr><td>KU</td><td>Description</td><td>Components</td></tr><tr><td>DLP-DDS-APID-SUB</td><td>Symantec DLP Distributed Detection Service for API</td><td>（画像内ではComponents欄の記載なし）</td></tr><tr><td>DLP-CDS-ZTNA-SUB</td><td>DLP Cloud Detection for ZTNA</td><td>• Add-on SKU to ZTNA [SAC-SUB] or NPS [NETWORK-PROTECT-SUB]<br/>Can be managed via cloud-managed DLP or Enforce<br/></td></tr><tr><td>DLP-CDS-WI-SUB</td><td>DLP Cloud Detection for Web Isolation</td><td>• Add-on SKU to Web Isolation [CLD-WI-SUB] or NPS [NETWORK-PROTECT-SUB]<br/>Can be managed via cloud-managed DLP or Enforce<br/></td></tr></table></div><h3>画像上部に表示されている前ページから続くComponentsの記載</h3><div class="doc-table-wrap"><table class="doc-table"><tr><th>項目</th><th>内容</th></tr><tr><td>Additional Requirement</td><td>additional DLP-EP-SUB entitlement or its equivalent.</td></tr><tr><td>Management Requirement</td><td>The Cloud Detection Server associated with the Securelet must be Cloud-DLP managed.</td></tr></table></div><h3>Oracle SKU</h3><div class="doc-table-wrap"><table class="doc-table"><tr><th>SKU</th><th>Description</th></tr><tr><td>DLP-OSE2-PER</td><td>Oracle Standard Edition 2 for Data Loss Prevention, Per CPU</td></tr></table></div></div></section><section class="knowledge-panel" hidden="" id="panel-deploy-sg" role="tabpanel"><div class="knowledge-card"><h3>SGデプロイ</h3><h3>SG Applications on the S210</h3><p>SG applications that are compatible with the S210 are shown in the following table, along with their requirements per model, and the number of instances supported per appliance.</p><div class="doc-table-wrap"><table class="doc-table"><tr><th>SG Model</th><th>Requirements Per SG Model</th><th>Instances Per Appliance</th></tr><tr><td>SG Model</td><td>Cores</td><td>RAM (GB)</td><td>Disk (GB)</td><td>Connections Count</td><td>S210-10</td></tr><tr><td>C2S*</td><td>2</td><td>12</td><td>1x200</td><td>15,000</td><td>4</td></tr><tr><td>C2S-A</td><td>2</td><td>12</td><td>2x100</td><td>15,000</td><td>4</td></tr><tr><td>C2S-B</td><td>2</td><td>12</td><td>2x200</td><td>15,000</td><td>2</td></tr><tr><td>C2M*</td><td>2</td><td>16</td><td>1x200</td><td>20,000</td><td>3</td></tr><tr><td>C2M-A</td><td>2</td><td>16</td><td>2x100</td><td>20,000</td><td>3</td></tr><tr><td>C2M-B</td><td>2</td><td>16</td><td>2x200</td><td>20,000</td><td>3</td></tr><tr><td>C2L*</td><td>2</td><td>20</td><td>1x200</td><td>25,000</td><td>2</td></tr><tr><td>C2L-A</td><td>2</td><td>20</td><td>2x100</td><td>25,000</td><td>2</td></tr><tr><td>C2L-B</td><td>2</td><td>20</td><td>2x200</td><td>25,000</td><td>2</td></tr><tr><td>C4S*</td><td>4</td><td>20</td><td>1x200</td><td>25,000</td><td>2</td></tr><tr><td>C4S-A</td><td>4</td><td>20</td><td>2x100</td><td>25,000</td><td>2</td></tr><tr><td>C4S-B</td><td>4</td><td>20</td><td>2x200</td><td>25,000</td><td>2</td></tr><tr><td>C4M*</td><td>4</td><td>24</td><td>1x200</td><td>37,500</td><td>2</td></tr><tr><td>C4M-A</td><td>4</td><td>24</td><td>2x100</td><td>37,500</td><td>2</td></tr><tr><td>C4M-B</td><td>4</td><td>24</td><td>2x200</td><td>37,500</td><td>2</td></tr><tr><td>C4L*</td><td>4</td><td>32</td><td>1x200</td><td>50,000</td><td>1</td></tr><tr><td>C4L-A</td><td>4</td><td>32</td><td>2x100</td><td>50,000</td><td>1</td></tr><tr><td>C4L-B</td><td>4</td><td>32</td><td>2x200</td><td>50,000</td><td>1</td></tr><tr><td>C6S*</td><td>6</td><td>24</td><td>1x200</td><td>37,500</td><td>2</td></tr><tr><td>C6S-A</td><td>6</td><td>24</td><td>2x100</td><td>37,500</td><td>2</td></tr><tr><td>C6S-B</td><td>6</td><td>24</td><td>2x200</td><td>37,500</td><td>2</td></tr><tr><td>C6M</td><td>6</td><td>40</td><td>2x200</td><td>62,500</td><td>1</td></tr><tr><td>C6L</td><td>6</td><td>48</td><td>2x200</td><td>75,000</td><td>1</td></tr><tr><td>C8S</td><td>8</td><td>32</td><td>2x200</td><td>50,000</td><td>1</td></tr><tr><td>C10S</td><td>10</td><td>40</td><td>2x200</td><td>62,500</td><td>1</td></tr><tr><td>C12S</td><td>12</td><td>48</td><td>2x200</td><td>75,000</td><td>1</td></tr></table></div><h3>SG Applications on the S410</h3><p>SG applications that are compatible with the S410 are shown in the following table, along with their requirements per model, and the number of instances supported per appliance.</p><div class="doc-table-wrap"><table class="doc-table"><tr><th>SG Model</th><th>Requirements Per SG Model</th><th>Instances Per Appliance</th></tr><tr><td>SG Model</td><td>Cores</td><td>RAM (GB)</td><td>Disk (GB)</td><td>Connections Count</td><td>S410-20/20B</td><td>S410-40/40B</td></tr><tr><td>C2S*</td><td>2</td><td>12</td><td>1x200</td><td>15,000</td><td>4</td><td>8</td></tr><tr><td>C2S-A</td><td>2</td><td>12</td><td>2x100</td><td>15,000</td><td>4</td><td>8</td></tr><tr><td>C2S-B</td><td>2</td><td>12</td><td>2x200</td><td>15,000</td><td>2</td><td>4</td></tr><tr><td>C2M*</td><td>2</td><td>16</td><td>1x200</td><td>20,000</td><td>4</td><td>8</td></tr><tr><td>C2M-A</td><td>2</td><td>16</td><td>2x100</td><td>20,000</td><td>4</td><td>8</td></tr><tr><td>C2M-B</td><td>2</td><td>16</td><td>2x200</td><td>20,000</td><td>2</td><td>4</td></tr><tr><td>C2L*</td><td>2</td><td>20</td><td>1x200</td><td>25,000</td><td>4</td><td>8</td></tr><tr><td>C2L-A</td><td>2</td><td>20</td><td>2x100</td><td>25,000</td><td>4</td><td>8</td></tr><tr><td>C2L-B</td><td>2</td><td>20</td><td>2x200</td><td>25,000</td><td>2</td><td>4</td></tr><tr><td>C4S*</td><td>4</td><td>20</td><td>1x200</td><td>25,000</td><td>4</td><td>8</td></tr><tr><td>C4S-A</td><td>4</td><td>20</td><td>2x100</td><td>25,000</td><td>4</td><td>8</td></tr><tr><td>C4S-B</td><td>4</td><td>20</td><td>2x200</td><td>25,000</td><td>2</td><td>4</td></tr><tr><td>C4M*</td><td>4</td><td>24</td><td>1x200</td><td>37,500</td><td>3</td><td>8</td></tr><tr><td>C4M-A</td><td>4</td><td>24</td><td>2x100</td><td>37,500</td><td>3</td><td>8</td></tr><tr><td>C4M-B</td><td>4</td><td>24</td><td>2x200</td><td>37,500</td><td>2</td><td>4</td></tr><tr><td>C4L*</td><td>4</td><td>32</td><td>1x200</td><td>50,000</td><td>2</td><td>8</td></tr><tr><td>C4L-A</td><td>4</td><td>32</td><td>2x100</td><td>50,000</td><td>2</td><td>8</td></tr><tr><td>C4L-B</td><td>4</td><td>32</td><td>2x200</td><td>50,000</td><td>2</td><td>4</td></tr><tr><td>C6S*</td><td>6</td><td>24</td><td>1x200</td><td>37,500</td><td>3</td><td>8</td></tr><tr><td>C6S-A</td><td>6</td><td>24</td><td>2x100</td><td>37,500</td><td>3</td><td>8</td></tr><tr><td>C6S-B</td><td>6</td><td>24</td><td>2x200</td><td>37,500</td><td>2</td><td>4</td></tr><tr><td>C6M</td><td>6</td><td>40</td><td>2x200</td><td>62,500</td><td>2</td><td>4</td></tr><tr><td>C6L</td><td>6</td><td>48</td><td>2x200</td><td>75,000</td><td>1</td><td>4</td></tr><tr><td>C8S</td><td>8</td><td>32</td><td>2x200</td><td>50,000</td><td>2</td><td>4</td></tr><tr><td>C8M</td><td>8</td><td>64</td><td>2x200</td><td>100,000</td><td>1</td><td>4</td></tr><tr><td>C8L</td><td>8</td><td>80</td><td>2x200</td><td>125,000</td><td>1</td><td>4</td></tr><tr><td>C10S</td><td>10</td><td>40</td><td>2x200</td><td>62,500</td><td>2</td><td>4</td></tr><tr><td>C10M</td><td>10</td><td>80</td><td>2x200</td><td>125,000</td><td>1</td><td>4</td></tr><tr><td>C10L</td><td>10</td><td>96</td><td>2x200</td><td>150,000</td><td>0</td><td>3</td></tr><tr><td>C12S</td><td>12</td><td>48</td><td>2x200</td><td>75,000</td><td>1</td><td>4</td></tr><tr><td>C12M**</td><td>12</td><td>96</td><td>2x200</td><td>150,000</td><td>0</td><td>3</td></tr><tr><td>C12L**</td><td>12</td><td>128</td><td>2x200</td><td>200,000</td><td>0</td><td>2</td></tr><tr><td>C14S</td><td>14</td><td>64</td><td>2x200</td><td>100,000</td><td>1</td><td>4</td></tr><tr><td>C14M</td><td>14</td><td>112</td><td>2x200</td><td>175,000</td><td>0</td><td>2</td></tr><tr><td>C14L</td><td>14</td><td>144</td><td>4x200</td><td>225,000</td><td>0</td><td>2</td></tr><tr><td>C16XS</td><td>16</td><td>32</td><td>2x200</td><td>50,000</td><td>2</td><td>4</td></tr><tr><td>C16S</td><td>16</td><td>80</td><td>2x200</td><td>125,000</td><td>1</td><td>4</td></tr><tr><td>C16M</td><td>16</td><td>128</td><td>4x200</td><td>200,000</td><td>0</td><td>2</td></tr><tr><td>C16L</td><td>16</td><td>160</td><td>4x200</td><td>250,000</td><td>0</td><td>2</td></tr><tr><td>C20S</td><td>20</td><td>96</td><td>2x200</td><td>150,000</td><td>0</td><td>3</td></tr><tr><td>C20M</td><td>20</td><td>144</td><td>4x200</td><td>225,000</td><td>0</td><td>2</td></tr><tr><td>C20L</td><td>20</td><td>192</td><td>6x200</td><td>300,000</td><td>0</td><td>1</td></tr><tr><td>C24XS</td><td>24</td><td>80</td><td>2x200</td><td>125,000</td><td>1</td><td>2</td></tr><tr><td>C24S**</td><td>24</td><td>112</td><td>2x200</td><td>175,000</td><td>0</td><td>2</td></tr><tr><td>C24M</td><td>24</td><td>160</td><td>4x200</td><td>250,000</td><td>0</td><td>2</td></tr><tr><td>C24L</td><td>24</td><td>256</td><td>8x200</td><td>375,000</td><td>0</td><td>1</td></tr><tr><td>C28S</td><td>28</td><td>128</td><td>4x200</td><td>200,000</td><td>0</td><td>2</td></tr><tr><td>C28M</td><td>28</td><td>192</td><td>6x200</td><td>300,000</td><td>0</td><td>1</td></tr><tr><td>C28L</td><td>28</td><td>288</td><td>8x200</td><td>450,000</td><td>0</td><td>1</td></tr><tr><td>C32XS</td><td>32</td><td>80</td><td>2x200</td><td>125,000</td><td>1</td><td>2</td></tr><tr><td>C32S</td><td>32</td><td>160</td><td>4x200</td><td>250,000</td><td>0</td><td>2</td></tr><tr><td>C32M</td><td>32</td><td>256</td><td>8x200</td><td>400,000</td><td>0</td><td>1</td></tr><tr><td>C32L</td><td>32</td><td>320</td><td>8x200</td><td>500,000</td><td>0</td><td>1</td></tr></table></div><h3>SG Applications on the S620</h3><p>SG applications that are compatible with the S620 are shown in the following table, along with their requirements per model, and the number of instances supported per appliance.</p><div class="doc-table-wrap"><table class="doc-table"><tr><th>SG Model</th><th>Requirements Per SG Model</th><th>Instances Per Appliance</th></tr><tr><td>SG Model</td><td>Cores</td><td>RAM (GB)</td><td>Disk (GB)</td><td>Connections Count</td><td>S620-10</td></tr><tr><td>C2S-B</td><td>2</td><td>12</td><td>2x400</td><td>15,000</td><td>16</td></tr><tr><td>C2M-B</td><td>2</td><td>16</td><td>2x400</td><td>20,000</td><td>16</td></tr><tr><td>C2L-B</td><td>2</td><td>20</td><td>2x400</td><td>25,000</td><td>16</td></tr><tr><td>C4S-B</td><td>4</td><td>20</td><td>2x400</td><td>25,000</td><td>16</td></tr><tr><td>C4M-B</td><td>4</td><td>24</td><td>2x400</td><td>37,500</td><td>16</td></tr><tr><td>C4L-B</td><td>4</td><td>32</td><td>2x400</td><td>50,000</td><td>16</td></tr><tr><td>C6S-B</td><td>6</td><td>24</td><td>2x400</td><td>37,500</td><td>16</td></tr><tr><td>C6M</td><td>6</td><td>40</td><td>2x400</td><td>62,500</td><td>16</td></tr><tr><td>C6L</td><td>6</td><td>48</td><td>2x400</td><td>75,000</td><td>16</td></tr><tr><td>C8S</td><td>8</td><td>32</td><td>2x400</td><td>50,000</td><td>14</td></tr><tr><td>C8M</td><td>8</td><td>64</td><td>2x400</td><td>100,000</td><td>14</td></tr><tr><td>C8L</td><td>8</td><td>80</td><td>2x400</td><td>125,000</td><td>12</td></tr><tr><td>C10S</td><td>10</td><td>40</td><td>2x400</td><td>62,500</td><td>11</td></tr><tr><td>C10M</td><td>10</td><td>80</td><td>2x400</td><td>125,000</td><td>11</td></tr><tr><td>C10L</td><td>10</td><td>96</td><td>2x400</td><td>150,000</td><td>10</td></tr><tr><td>C12S</td><td>12</td><td>48</td><td>2x400</td><td>75,000</td><td>9</td></tr><tr><td>C12M**</td><td>12</td><td>96</td><td>2x400</td><td>150,000</td><td>9</td></tr><tr><td>C12L**</td><td>12</td><td>128</td><td>2x400</td><td>200,000</td><td>7</td></tr><tr><td>C14S</td><td>14</td><td>64</td><td>2x400</td><td>100,000</td><td>8</td></tr><tr><td>C14M</td><td>14</td><td>112</td><td>2x400</td><td>175,000</td><td>8</td></tr><tr><td>C14L</td><td>14</td><td>144</td><td>4x800</td><td>225,000</td><td>6</td></tr><tr><td>C16XS</td><td>16</td><td>32</td><td>2x400</td><td>50,000</td><td>7</td></tr><tr><td>C16S</td><td>16</td><td>80</td><td>2x400</td><td>125,000</td><td>7</td></tr><tr><td>C16M</td><td>16</td><td>128</td><td>4x800</td><td>200,000</td><td>7</td></tr><tr><td>C16L</td><td>16</td><td>160</td><td>4x800</td><td>250,000</td><td>6</td></tr><tr><td>C20S</td><td>20</td><td>96</td><td>2x400</td><td>150,000</td><td>5</td></tr><tr><td>C20M</td><td>20</td><td>144</td><td>4x800</td><td>225,000</td><td>5</td></tr><tr><td>C20L</td><td>20</td><td>192</td><td>6x1200</td><td>300,000</td><td>5</td></tr><tr><td>C24XS</td><td>24</td><td>80</td><td>2x400</td><td>125,000</td><td>4</td></tr><tr><td>C24S**</td><td>24</td><td>112</td><td>2x400</td><td>175,000</td><td>4</td></tr><tr><td>C24M</td><td>24</td><td>160</td><td>4x800</td><td>250,000</td><td>4</td></tr><tr><td>C24L</td><td>24</td><td>256</td><td>8x1600</td><td>400,000</td><td>3</td></tr><tr><td>C28S</td><td>28</td><td>128</td><td>4x800</td><td>200,000</td><td>4</td></tr><tr><td>C28M</td><td>28</td><td>224</td><td>6x1200</td><td>350,000</td><td>4</td></tr><tr><td>C28L</td><td>28</td><td>288</td><td>8x1600</td><td>450,000</td><td>3</td></tr><tr><td>C32XS</td><td>32</td><td>80</td><td>2x400</td><td>125,000</td><td>3</td></tr><tr><td>C32S</td><td>32</td><td>160</td><td>4x800</td><td>250,000</td><td>3</td></tr><tr><td>C32M</td><td>32</td><td>256</td><td>8x1600</td><td>400,000</td><td>3</td></tr><tr><td>C32L</td><td>32</td><td>320</td><td>8x1600</td><td>500,000</td><td>3</td></tr></table></div><h3>Maximum Performance for SG Deployments</h3><p>See the following tables for the recommended SG (6.7 and 7.3) configurations that yield the maximum performance per SSP host appliance.</p><div class="doc-table-wrap"><table class="doc-table"><tr><th>Max Performance for SG 6.7 Deployments</th></tr><tr><td>SSP Model</td><td>SG Model</td><td>Instances Count</td><td>Total Cores</td><td>Total RAM (GB)</td><td>Total Disk (GB)</td><td>Total Connections</td></tr><tr><td>S210-10</td><td>C12S</td><td>1</td><td>12</td><td>48</td><td>400</td><td>75,000</td></tr><tr><td>S410-20/20B</td><td>C16XS</td><td>2</td><td>32</td><td>64</td><td>800</td><td>100,000</td></tr><tr><td>S410-40/40B</td><td>C16S</td><td>4</td><td>64</td><td>320</td><td>1,600</td><td>500,000</td></tr></table></div><div class="doc-table-wrap"><table class="doc-table"><tr><th>Max Performance for SG 7.3 Deployments</th></tr><tr><td>SSP Model</td><td>SG Model</td><td>Instances Count</td><td>Total Cores</td><td>Total RAM (GB)</td><td>Total Disk (GB)</td><td>Total Connections</td></tr><tr><td>S210-10</td><td>C12S</td><td>1</td><td>12</td><td>48</td><td>400</td><td>75,000</td></tr><tr><td>S410-20/20B</td><td>C32XS</td><td>1</td><td>32</td><td>80</td><td>400</td><td>125,000</td></tr><tr><td>S410-40/40B</td><td>C32S</td><td>2</td><td>64</td><td>320</td><td>1,600</td><td>500,000</td></tr><tr><td>S620-10</td><td>C28M</td><td>4</td><td>112</td><td>896</td><td>4,800</td><td>1,400,000</td></tr></table></div></div></section><section class="knowledge-panel" hidden="" id="panel-deploy-cas" role="tabpanel"><div class="knowledge-card"><h3>CASデプロイ</h3><h3>CAS Applications on the S210</h3><p>CAS applications that are compatible with the S210 are shown in the following table, along with their requirements per model, and the number of instances supported per appliance.</p><div class="doc-table-wrap"><table class="doc-table"><tr><th>CAS Model</th><th>Requirements Per CAS Model</th><th>Instances Per Appliance</th></tr><tr><td>CAS Model</td><td>Cores</td><td>RAM (GB)</td><td>Disk (GB)</td><td>S210-10</td></tr><tr><td>C4S*</td><td>4</td><td>8</td><td>1x200</td><td>3</td></tr><tr><td>C4M*</td><td>4</td><td>12</td><td>1x200</td><td>3</td></tr><tr><td>C4L</td><td>4</td><td>16</td><td>1x200</td><td>3</td></tr><tr><td>C4XL</td><td>4</td><td>24</td><td>1x200</td><td>2</td></tr><tr><td>C4XXL</td><td>4</td><td>32</td><td>1x200</td><td>1</td></tr><tr><td>C6S*</td><td>6</td><td>8</td><td>1x200</td><td>2</td></tr><tr><td>C6M*</td><td>6</td><td>12</td><td>1x200</td><td>2</td></tr><tr><td>C6L</td><td>6</td><td>16</td><td>1x200</td><td>2</td></tr><tr><td>C6XL</td><td>6</td><td>24</td><td>1x200</td><td>2</td></tr><tr><td>C6XXL</td><td>6</td><td>32</td><td>1x200</td><td>1</td></tr><tr><td>C8S*</td><td>8</td><td>8</td><td>1x200</td><td>1</td></tr><tr><td>C8M*</td><td>8</td><td>12</td><td>1x200</td><td>1</td></tr><tr><td>C8L</td><td>8</td><td>16</td><td>1x200</td><td>1</td></tr><tr><td>C8XL</td><td>8</td><td>24</td><td>1x200</td><td>1</td></tr><tr><td>C8XXL</td><td>8</td><td>32</td><td>1x200</td><td>1</td></tr><tr><td>C10S*</td><td>10</td><td>10</td><td>1x200</td><td>1</td></tr><tr><td>C10M*</td><td>10</td><td>14</td><td>1x200</td><td>1</td></tr><tr><td>C10L</td><td>10</td><td>20</td><td>1x200</td><td>1</td></tr><tr><td>C10XL</td><td>10</td><td>30</td><td>1x200</td><td>1</td></tr><tr><td>C10XXL</td><td>10</td><td>40</td><td>1x200</td><td>1</td></tr><tr><td>C12S*</td><td>12</td><td>12</td><td>1x200</td><td>1</td></tr><tr><td>C12M*</td><td>12</td><td>18</td><td>1x200</td><td>1</td></tr><tr><td>C12L</td><td>12</td><td>24</td><td>1x200</td><td>1</td></tr><tr><td>C12XL</td><td>12</td><td>36</td><td>1x200</td><td>1</td></tr><tr><td>C12XXL</td><td>12</td><td>48</td><td>1x200</td><td>1</td></tr></table></div><h3>CAS Applications on the S410</h3><p>CAS applications that are compatible with the S410 are shown in the following table, along with their requirements per model, and the number of instances supported per appliance.</p><div class="doc-table-wrap"><table class="doc-table"><tr><th>CAS Model</th><th>Requirements Per CAS Model</th><th>Instances Per Appliance</th></tr><tr><td>CAS Model</td><td>Cores</td><td>RAM (GB)</td><td>Disk (GB)</td><td>S410-20/20B</td><td>S410-40/40B</td></tr><tr><td>C4S*</td><td>4</td><td>8</td><td>1x200</td><td>4</td><td>8</td></tr><tr><td>C4M*</td><td>4</td><td>12</td><td>1x200</td><td>4</td><td>8</td></tr><tr><td>C4L</td><td>4</td><td>16</td><td>1x200</td><td>4</td><td>8</td></tr><tr><td>C4XL</td><td>4</td><td>24</td><td>1x200</td><td>3</td><td>8</td></tr><tr><td>C4XXL</td><td>4</td><td>32</td><td>1x200</td><td>2</td><td>8</td></tr><tr><td>C6S*</td><td>6</td><td>8</td><td>1x200</td><td>4</td><td>8</td></tr><tr><td>C6M*</td><td>6</td><td>12</td><td>1x200</td><td>4</td><td>8</td></tr><tr><td>C6L</td><td>6</td><td>16</td><td>1x200</td><td>4</td><td>8</td></tr><tr><td>C6XL</td><td>6</td><td>24</td><td>1x200</td><td>3</td><td>8</td></tr><tr><td>C6XXL</td><td>6</td><td>32</td><td>1x200</td><td>2</td><td>8</td></tr><tr><td>C8S*</td><td>8</td><td>8</td><td>1x200</td><td>4</td><td>8</td></tr><tr><td>C8M*</td><td>8</td><td>12</td><td>1x200</td><td>4</td><td>8</td></tr><tr><td>C8L</td><td>8</td><td>16</td><td>1x200</td><td>4</td><td>8</td></tr><tr><td>C8XL</td><td>8</td><td>24</td><td>1x200</td><td>3</td><td>8</td></tr><tr><td>C8XXL</td><td>8</td><td>32</td><td>1x200</td><td>2</td><td>8</td></tr><tr><td>C10S*</td><td>10</td><td>10</td><td>1x200</td><td>3</td><td>6</td></tr><tr><td>C10M*</td><td>10</td><td>14</td><td>1x200</td><td>3</td><td>6</td></tr><tr><td>C10L</td><td>10</td><td>20</td><td>1x200</td><td>3</td><td>6</td></tr><tr><td>C10XL</td><td>10</td><td>30</td><td>1x200</td><td>2</td><td>6</td></tr><tr><td>C10XXL</td><td>10</td><td>40</td><td>1x200</td><td>2</td><td>6</td></tr><tr><td>C12S*</td><td>12</td><td>12</td><td>1x200</td><td>2</td><td>5</td></tr><tr><td>C12M*</td><td>12</td><td>18</td><td>1x200</td><td>2</td><td>5</td></tr><tr><td>C12L</td><td>12</td><td>24</td><td>1x200</td><td>2</td><td>5</td></tr><tr><td>C12XL</td><td>12</td><td>36</td><td>1x200</td><td>2</td><td>5</td></tr><tr><td>C12XXL</td><td>12</td><td>48</td><td>1x200</td><td>1</td><td>5</td></tr><tr><td>C14S*</td><td>14</td><td>14</td><td>1x200</td><td>2</td><td>4</td></tr><tr><td>C14M*</td><td>14</td><td>20</td><td>1x200</td><td>2</td><td>4</td></tr><tr><td>C14L</td><td>14</td><td>28</td><td>1x200</td><td>2</td><td>4</td></tr><tr><td>C14XL</td><td>14</td><td>42</td><td>1x200</td><td>1</td><td>4</td></tr><tr><td>C14XXL</td><td>14</td><td>56</td><td>1x200</td><td>1</td><td>4</td></tr><tr><td>C16S</td><td>16</td><td>16</td><td>1x200</td><td>2</td><td>4</td></tr><tr><td>C16M</td><td>16</td><td>24</td><td>1x200</td><td>2</td><td>4</td></tr><tr><td>C16L</td><td>16</td><td>32</td><td>1x200</td><td>2</td><td>4</td></tr><tr><td>C16XL</td><td>16</td><td>48</td><td>1x200</td><td>1</td><td>4</td></tr><tr><td>C16XXL</td><td>16</td><td>64</td><td>1x200</td><td>1</td><td>4</td></tr><tr><td>C20S*</td><td>20</td><td>20</td><td>1x200</td><td>1</td><td>3</td></tr><tr><td>C20M*</td><td>20</td><td>30</td><td>1x200</td><td>1</td><td>3</td></tr><tr><td>C20L</td><td>20</td><td>40</td><td>1x200</td><td>1</td><td>3</td></tr><tr><td>C20XL</td><td>20</td><td>60</td><td>1x200</td><td>1</td><td>3</td></tr><tr><td>C20XXL</td><td>20</td><td>80</td><td>1x200</td><td>1</td><td>3</td></tr><tr><td>C24S*</td><td>24</td><td>24</td><td>1x200</td><td>1</td><td>2</td></tr><tr><td>C24M*</td><td>24</td><td>36</td><td>1x200</td><td>1</td><td>2</td></tr><tr><td>C24L</td><td>24</td><td>48</td><td>1x200</td><td>1</td><td>2</td></tr><tr><td>C24XL</td><td>24</td><td>72</td><td>1x200</td><td>1</td><td>2</td></tr><tr><td>C24XXL</td><td>24</td><td>96</td><td>1x200</td><td>0</td><td>2</td></tr><tr><td>C28S*</td><td>28</td><td>28</td><td>1x200</td><td>1</td><td>2</td></tr><tr><td>C28M*</td><td>28</td><td>42</td><td>1x200</td><td>1</td><td>2</td></tr><tr><td>C28L</td><td>28</td><td>56</td><td>1x200</td><td>1</td><td>2</td></tr><tr><td>C28XL</td><td>28</td><td>84</td><td>1x200</td><td>0</td><td>2</td></tr><tr><td>C28XXL</td><td>28</td><td>112</td><td>1x200</td><td>0</td><td>2</td></tr><tr><td>C32S*</td><td>32</td><td>32</td><td>1x200</td><td>1</td><td>2</td></tr><tr><td>C32M*</td><td>32</td><td>48</td><td>1x200</td><td>1</td><td>2</td></tr><tr><td>C32L</td><td>32</td><td>64</td><td>1x200</td><td>1</td><td>2</td></tr><tr><td>C32XL</td><td>32</td><td>80</td><td>1x200</td><td>1</td><td>2</td></tr><tr><td>C32XXL</td><td>32</td><td>160</td><td>1x200</td><td>0</td><td>2</td></tr></table></div><h3>CAS Applications on the S620</h3><p>CAS applications that are compatible with the S620 are shown in the following table, along with their requirements per model, and the number of instances supported per appliance.</p><div class="doc-table-wrap"><table class="doc-table"><tr><th>CAS Model</th><th>Requirements Per CAS Model</th><th>Instances Per Appliance</th></tr><tr><td>CAS Model</td><td>Cores</td><td>RAM (GB)</td><td>Disk (GB)</td><td>S620-10</td></tr><tr><td>C4L</td><td>4</td><td>16</td><td>1x200</td><td>28</td></tr><tr><td>C4XL</td><td>4</td><td>24</td><td>1x200</td><td>28</td></tr><tr><td>C4XXL</td><td>4</td><td>32</td><td>1x200</td><td>28</td></tr><tr><td>C6L</td><td>6</td><td>16</td><td>1x200</td><td>18</td></tr><tr><td>C6XL</td><td>6</td><td>24</td><td>1x200</td><td>18</td></tr><tr><td>C6XXL</td><td>6</td><td>32</td><td>1x200</td><td>18</td></tr><tr><td>C8L</td><td>8</td><td>16</td><td>1x200</td><td>14</td></tr><tr><td>C8XL</td><td>8</td><td>24</td><td>1x200</td><td>14</td></tr><tr><td>C8XXL</td><td>8</td><td>32</td><td>1x200</td><td>14</td></tr><tr><td>C10L</td><td>10</td><td>20</td><td>1x200</td><td>11</td></tr><tr><td>C10XL</td><td>10</td><td>30</td><td>1x200</td><td>11</td></tr><tr><td>C10XXL</td><td>10</td><td>40</td><td>1x200</td><td>11</td></tr><tr><td>C12S*</td><td>12</td><td>12</td><td>1x200</td><td>9</td></tr><tr><td>C12M*</td><td>12</td><td>18</td><td>1x200</td><td>9</td></tr><tr><td>C12L</td><td>12</td><td>24</td><td>1x200</td><td>9</td></tr><tr><td>C12XL</td><td>12</td><td>36</td><td>1x200</td><td>9</td></tr><tr><td>C12XXL</td><td>12</td><td>48</td><td>1x200</td><td>9</td></tr><tr><td>C14M*</td><td>14</td><td>20</td><td>1x200</td><td>8</td></tr><tr><td>C14L</td><td>14</td><td>28</td><td>1x200</td><td>8</td></tr><tr><td>C14XL</td><td>14</td><td>42</td><td>1x200</td><td>8</td></tr><tr><td>C14XXL</td><td>14</td><td>56</td><td>1x200</td><td>8</td></tr><tr><td>C16S*</td><td>16</td><td>16</td><td>1x200</td><td>7</td></tr><tr><td>C16M*</td><td>16</td><td>24</td><td>1x200</td><td>7</td></tr><tr><td>C16L</td><td>16</td><td>32</td><td>1x200</td><td>7</td></tr><tr><td>C16XL</td><td>16</td><td>48</td><td>1x200</td><td>7</td></tr><tr><td>C16XXL</td><td>16</td><td>64</td><td>1x200</td><td>7</td></tr><tr><td>C20S*</td><td>20</td><td>20</td><td>1x200</td><td>5</td></tr><tr><td>C20M*</td><td>20</td><td>30</td><td>1x200</td><td>5</td></tr><tr><td>C20L</td><td>20</td><td>40</td><td>1x200</td><td>5</td></tr><tr><td>C20XL</td><td>20</td><td>60</td><td>1x200</td><td>5</td></tr><tr><td>C20XXL</td><td>20</td><td>80</td><td>1x200</td><td>5</td></tr><tr><td>C24S*</td><td>24</td><td>24</td><td>1x200</td><td>4</td></tr><tr><td>C24M*</td><td>24</td><td>36</td><td>1x200</td><td>4</td></tr><tr><td>C24L</td><td>24</td><td>48</td><td>1x200</td><td>4</td></tr><tr><td>C24XL</td><td>24</td><td>72</td><td>1x200</td><td>4</td></tr><tr><td>C24XXL</td><td>24</td><td>96</td><td>1x200</td><td>4</td></tr><tr><td>C28S*</td><td>28</td><td>28</td><td>1x200</td><td>4</td></tr><tr><td>C28M*</td><td>28</td><td>42</td><td>1x200</td><td>2</td></tr><tr><td>C28L</td><td>28</td><td>56</td><td>1x200</td><td>4</td></tr><tr><td>C28XL</td><td>28</td><td>84</td><td>1x200</td><td>4</td></tr><tr><td>C28XXL</td><td>28</td><td>112</td><td>1x200</td><td>4</td></tr><tr><td>C32S*</td><td>32</td><td>32</td><td>1x200</td><td>3</td></tr><tr><td>C32M*</td><td>32</td><td>48</td><td>1x200</td><td>3</td></tr><tr><td>C32L</td><td>32</td><td>64</td><td>1x200</td><td>3</td></tr><tr><td>C32XL</td><td>32</td><td>80</td><td>1x200</td><td>3</td></tr><tr><td>C32XXL</td><td>32</td><td>160</td><td>1x200</td><td>3</td></tr></table></div><h3>Maximum Performance for CAS Applications</h3><p>The following table shows the recommended CAS configurations that provide the maximum performance for each SSP appliance model.</p><div class="doc-table-wrap"><table class="doc-table"><tr><th>SSP Appliance</th><th>CAS Model</th><th>Instances</th><th>Cores</th><th>RAM (GB)</th><th>Disk (GB)</th></tr><tr><td>S210-10</td><td>C12L</td><td>1</td><td>12</td><td>24</td><td>200</td></tr><tr><td>S410-20/20B</td><td>C32L</td><td>1</td><td>32</td><td>64</td><td>200</td></tr><tr><td>S410-40/40B</td><td>C32L</td><td>2</td><td>64</td><td>128</td><td>400</td></tr><tr><td>S620-10</td><td>C28XXL</td><td>4</td><td>28</td><td>112</td><td>400</td></tr></table></div></div></section><section class="knowledge-panel" hidden="" id="panel-trouble-ca" role="tabpanel"><div class="knowledge-card"><h3>Content Analysis 障害発生時に取得する基本情報</h3><p>Content Analysis で障害が発生した場合、Content Analysis の GUI にログインし、以下の情報を取得します。</p><h4>1. Content Analysis のシステム情報</h4><p>Utilities &gt; System Information を開きます。表示された内容をすべてコピーし、テキストエディタなどに貼り付けて保存します。<br/></p><h4>2. Troubleshooting Log</h4><p>Utilities &gt; Troubleshooting を開きます。取得手順は以下の通りです。<br/></p><h4>1) Create troubleshooting log をクリックします。2) Select all cores をクリックしてすべて選択します。<br/>3) Create をクリックします。<br/>4) 画面を再読み込みし、Status が In Progress から Completed になることを確認します。<br/>5) Download ボタンからログをダウンロードします。<br/></h4><h4>3. Configuration ファイル</h4><p>Utilities &gt; Configuration を開きます。Get Configuration をクリックし、設定ファイルを取得します。<br/></p><h3><a href="https://knowledge.broadcom.com/external/article/447595" rel="noopener noreferrer" target="_blank">Content Analysis 障害発生時に取得する基本情報</a></h3><p>Edge</p></div></section><section class="knowledge-panel" hidden="" id="panel-trouble-edge" role="tabpanel"><div class="knowledge-card"><h3>Edge Secure Web Gateway (旧名 ProxySG)　 トラブル時、初期問い合わせに必要な情報</h3><p>バーチャル アプライアンス、ハードウェアアプライアンス SSP-Sシリーズとも共通で必要なファイルがあります。OSバージョン6.7および7.3で共通です。</p><h4>【事象の発生から24時間未満】</h4><p>SYSINFO<br/><a href="https://proxy-ip:8082/sysinfo" rel="noopener noreferrer" target="_blank">https://Proxy-IP:8082/sysinfo</a>最後までロードされることを確認し、右クリックなど"名前を付けて保存"でテキストファイルに保存してください<br/></p><p>Eventlog<br/><a href="https://proxy-ip:8082/Eventlog/Statistics" rel="noopener noreferrer" target="_blank">https://Proxy-IP:8082/Eventlog/Statistics</a>Download<br/> .. をクリックし events.logというファイル名のまま保存してください</p><h4>【事象の発生から24時間以上】<br/></h4><p>Snapshot<br/><a href="https://proxy-ip:8082/Diagnostics/Snapshot" rel="noopener noreferrer" target="_blank">https://Proxy-IP:8082/Diagnostics/Snapshot</a>2種類あります。それぞれのリンクをクリックし、ファイルを保存してください。<br/><br/></p><div class="procedure-item">Snapshot sysinfo: Enabled (/sysinfo) download allSnapshot <br/>sysinfo_stats: Enabled (/sysinfo-stats) download all</div><p>事象によっては 24時間未満でも Snapshotが必要となります。</p><h3>Additional Information</h3><p>ハードウェアアプライアンス SSP-Sシリーズでは 以下が必要となることがあります。<br/>Diagnostics ファイル<br/><br/>以下のコマンドを使用しオープンされているケース番号にアップロードします<br/>SSHまたはシリアルコンソールで ISG OSへログインします。その後以下の操作をします。<br/><br/>BRDCM-SSP-ISG&gt; <br/>enPassword:<br/>BRDCM-SSP-ISG# configure <br/>tEnter configuration commands, one per line. End with CNTL/Z.<br/><br/><br/>BRDCM-SSP-ISG(config)# diagnostics service-info send ケース番号<br/>ISGとは SSP各モデルで動作している SG-VAなどのベースとなるOSです。初期設定で IPアドレスが振られており、そのIPに対して SSHで接続するか、シリアルポートへ接続して上記コマンドを実行します<br/></p><h3><a href="https://knowledge.broadcom.com/external/article/262163/" rel="noopener noreferrer" target="_blank">Edge Secure Web Gateway (旧名 ProxySG) トラブル時、初期問い合わせに必要な情報</a></h3></div></section><section class="knowledge-panel" hidden="" id="panel-trouble-refs" role="tabpanel"><div class="knowledge-card"><h3>参考URL</h3><p>SSLV</p><p><a href="https://tdsynnex-help.freshdesk.com/support/solutions/articles/157000372262" rel="noopener noreferrer" target="_blank">https://tdsynnex-help.freshdesk.com/support/solutions/articles/157000372262</a></p><p>CAS</p></div></section><section class="knowledge-panel" hidden="" id="panel-product-chart-pm" role="tabpanel"><div class="knowledge-card">
 <h3>チャートPM</h3>
 <p>Ask a Legend 公式チャネル名、担当者、対象製品領域の一覧です。</p>
 <div class="product-contact-grid">
-  <div class="product-contact-card"><strong><span class="channel-name">#help-sse</span> Easwaran Venkatachalam</strong><span>Cloud SWG、Web Isolation、ZTNA</span></div>
-  <div class="product-contact-card"><strong><span class="channel-name">#help-dlp</span> Yaron Halperin</strong><span>Symantec DLP</span></div>
-  <div class="product-contact-card"><strong><span class="channel-name">#help-esg-edge-swg</span> David Stott</strong><span>ProxySG／オンプレミスネットワーク</span></div>
-  <div class="product-contact-card"><strong><span class="channel-name">#help-casb</span> Pushkar Tawari</strong><span>CASB</span></div>
-  <div class="product-contact-card"><strong><span class="channel-name">#help-ES-Platform</span> Easwaran Venkatachalam</strong><span>プロビジョニング、コンソール、ID、SCIM、CMP、テナント管理</span></div>
-  <div class="product-contact-card"><strong><span class="channel-name">#help-threat-efficacy-intelligence</span> Jonathan Omansky</strong><span>Threat Intelligence</span></div>
-  <div class="product-contact-card"><strong><span class="channel-name">#help-Endpoint</span> Jim Roos</strong><span>CBX、CBC、SEP、SESC</span></div>
-  <div class="product-contact-card"><strong><span class="channel-name">#help-es</span> Shweta More</strong><span>APPC、DCS、オンプレミスEDR、SPE</span></div>
+<div class="product-contact-card"><strong><span class="channel-name">#help-sse</span> Easwaran Venkatachalam</strong><span>Cloud SWG、Web Isolation、ZTNA</span></div>
+<div class="product-contact-card"><strong><span class="channel-name">#help-dlp</span> Yaron Halperin</strong><span>Symantec DLP</span></div>
+<div class="product-contact-card"><strong><span class="channel-name">#help-esg-edge-swg</span> David Stott</strong><span>ProxySG／オンプレミスネットワーク</span></div>
+<div class="product-contact-card"><strong><span class="channel-name">#help-casb</span> Pushkar Tawari</strong><span>CASB</span></div>
+<div class="product-contact-card"><strong><span class="channel-name">#help-ES-Platform</span> Easwaran Venkatachalam</strong><span>プロビジョニング、コンソール、ID、SCIM、CMP、テナント管理</span></div>
+<div class="product-contact-card"><strong><span class="channel-name">#help-threat-efficacy-intelligence</span> Jonathan Omansky</strong><span>Threat Intelligence</span></div>
+<div class="product-contact-card"><strong><span class="channel-name">#help-Endpoint</span> Jim Roos</strong><span>CBX、CBC、SEP、SESC</span></div>
+<div class="product-contact-card"><strong><span class="channel-name">#help-es</span> Shweta More</strong><span>APPC、DCS、オンプレミスEDR、SPE</span></div>
 </div>
-<div class="product-note"><strong>ステータス:</strong> すべてのチャネルはGChatでセットアップ済みで稼働中です。Catalystパートナー担当者も招待済みです。<br><strong>TBD:</strong> #help-cbx は現在 #help-Endpoint 配下ですが、今後専用チャットが必要になる予定です。</div>
+<div class="product-note"><strong>ステータス:</strong> すべてのチャネルはGChatでセットアップ済みで稼働中です。Catalystパートナー担当者も招待済みです。<br/><strong>TBD:</strong> #help-cbx は現在 #help-Endpoint 配下ですが、今後専用チャットが必要になる予定です。</div>
 </div></section>
-<section class="knowledge-panel" id="panel-product-chart-ml" role="tabpanel" hidden><div class="knowledge-card">
+<section class="knowledge-panel" hidden="" id="panel-product-chart-ml" role="tabpanel"><div class="knowledge-card">
 <h3>ML情報</h3>
 <p>Ask a Legend の製品領域別 Channel PDL（Email Alias）一覧です。</p>
 <div class="doc-table-wrap"><table class="doc-table">
@@ -1118,26 +1109,156 @@
 <tr><td>Security Service Edge（SSE）</td><td><a class="mail-link" href="mailto:help-sse@broadcom.com">help-sse@broadcom.com</a></td></tr>
 <tr><td>Threat Efficacy &amp; Intelligence</td><td><a class="mail-link" href="mailto:help-threat-efficacy-intelligence@broadcom.com">help-threat-efficacy-intelligence@broadcom.com</a></td></tr>
 </table></div>
-</div></section><section class="knowledge-panel" id="panel-hardware-repair" role="tabpanel" hidden><div class="knowledge-card">
+</div></section><section class="knowledge-panel" hidden="" id="panel-hardware-repair" role="tabpanel"><div class="knowledge-card">
 <h3>ハードウェア修理</h3>
 <div class="hardware-link-card">
-  <h4>ハードウェア障害に備えて、事前にご取得いただく情報について</h4>
-  <p>ハードウェア障害の発生に備え、事前に取得しておく情報を確認できます。</p>
-  <a class="resource-link" href="https://tdsynnex-help.freshdesk.com/support/solutions/articles/157000372260" target="_blank" rel="noopener noreferrer">事前に取得する情報を確認する</a>
+<h4>ハードウェア障害に備えて、事前にご取得いただく情報について</h4>
+<p>ハードウェア障害の発生に備え、事前に取得しておく情報を確認できます。</p>
+<a class="resource-link" href="https://tdsynnex-help.freshdesk.com/support/solutions/articles/157000372260" rel="noopener noreferrer" target="_blank">事前に取得する情報を確認する</a>
 </div>
 <div class="hardware-link-card">
-  <h4>ハードウェアのセルフトラブルシューティングガイドについて</h4>
-  <p>ハードウェア障害発生時のセルフトラブルシューティング手順を確認できます。</p>
-  <a class="resource-link" href="https://tdsynnex-help.freshdesk.com/support/solutions/articles/157000372262" target="_blank" rel="noopener noreferrer">セルフトラブルシューティングガイドを確認する</a>
+<h4>ハードウェアのセルフトラブルシューティングガイドについて</h4>
+<p>ハードウェア障害発生時のセルフトラブルシューティング手順を確認できます。</p>
+<a class="resource-link" href="https://tdsynnex-help.freshdesk.com/support/solutions/articles/157000372262" rel="noopener noreferrer" target="_blank">セルフトラブルシューティングガイドを確認する</a>
 </div>
-</div></div></div>
-    <footer>
-      <span>Designed for calm visibility and fast access.</span>
-      <span>Last updated: 2026-08-11</span>
-    </footer>
-  </main>
+</div></section><div class="sub-tabbar" data-group="manual" hidden=""><button class="sub-tab active" data-panel="manual-ssp" type="button">SSP</button><button class="sub-tab" data-panel="manual-sg" type="button">SG</button><button class="sub-tab" data-panel="manual-cas" type="button">CAS</button><button class="sub-tab" data-panel="manual-sslv" type="button">SSLV</button></div><div class="sub-tabbar" data-group="request-template" hidden=""><button class="sub-tab active" data-panel="template-customer" type="button">顧客依頼時</button><button class="sub-tab" data-panel="template-pfu-temp" type="button">PFU一時依頼時</button><button class="sub-tab" data-panel="template-pfu-formal" type="button">PFU正式依頼時</button></div><section class="knowledge-panel" hidden="" id="panel-manual-ssp" role="tabpanel"><div class="knowledge-card"><h3>SSP保守手順書</h3><div style="padding:20px;text-align:center"><a href="https://techdata-marketing.box.com/s/8mbr9s3sji89l2dlsp0jpwrbzcshfnvn" rel="noopener noreferrer" style="display:inline-block;background:#2563eb;color:#fff;padding:14px 24px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:18px" target="_blank">マニュアルを開く</a><p style="margin-top:16px;word-break:break-all">https://techdata-marketing.box.com/s/8mbr9s3sji89l2dlsp0jpwrbzcshfnvn</p></div></div></section><section class="knowledge-panel" hidden="" id="panel-manual-sg" role="tabpanel"><div class="knowledge-card"><h3>SG保守手順書</h3><div style="padding:20px;text-align:center"><a href="https://techdata-marketing.box.com/s/ucj07kkkza5gbqkoallzj5zu04kdc552" rel="noopener noreferrer" style="display:inline-block;background:#2563eb;color:#fff;padding:14px 24px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:18px" target="_blank">マニュアルを開く</a><p style="margin-top:16px;word-break:break-all">https://techdata-marketing.box.com/s/ucj07kkkza5gbqkoallzj5zu04kdc552</p></div></div></section><section class="knowledge-panel" hidden="" id="panel-manual-cas" role="tabpanel"><div class="knowledge-card"><h3>CAS保守手順書</h3><div style="padding:20px;text-align:center"><a href="https://techdata-marketing.box.com/s/vlnb83xlxeprmrnon12ij88j8j8zb48j" rel="noopener noreferrer" style="display:inline-block;background:#2563eb;color:#fff;padding:14px 24px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:18px" target="_blank">マニュアルを開く</a><p style="margin-top:16px;word-break:break-all">https://techdata-marketing.box.com/s/vlnb83xlxeprmrnon12ij88j8j8zb48j</p></div></div></section><section class="knowledge-panel" hidden="" id="panel-manual-sslv" role="tabpanel"><div class="knowledge-card"><h3>SSLV保守手順書</h3><div style="padding:20px;text-align:center"><a href="https://techdata-marketing.box.com/s/4lcx61xoe1a32x6rzw0mr1xyh8k34qhr" rel="noopener noreferrer" style="display:inline-block;background:#2563eb;color:#fff;padding:14px 24px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:18px" target="_blank">マニュアルを開く</a><p style="margin-top:16px;word-break:break-all">https://techdata-marketing.box.com/s/4lcx61xoe1a32x6rzw0mr1xyh8k34qhr</p></div></div></section><section class="knowledge-panel" hidden="" id="panel-template-customer" role="tabpanel"><div class="knowledge-card"><h3>顧客依頼時テンプレート</h3><pre class="template-content">件名：ハードウェア障害発生に伴うご対応依頼（契約番号：xxxxxxxxxxxxx）
 
-  <script>
+TDSYNNEXサポートご担当者様
+いつもお世話になっております。〇〇株式会社の〇〇でございます。
+使用中の御社ハードウェアに障害が発生しております。つきましては、ご対応をお願いしたく、下記の通り情報を共有いたします。
+【お客様情報】
+契約番号：xxxxxxxxxxxxx機器設置住所：〒xxx-xxxx　埼玉県さいたま市xxxお客様名：〇〇株式会社　〇〇拠点ご担当者名：〇〇様ご連絡先：090-xxxx-xxxx
+【作業情報】
+対象機器：筐体型番：SSLV-550対象S/N：筐体S/N：xxxxxxxxx契約内容：平日日中（平日 9:00〜17:00）
+＊重要ーオプションカードの有無:
+   ＊重要ーオプションカードの種類:
+   ＊重要ーオプションカードのシリアル番号:
+   ＊重要ーオプションカードのスロット番号:
+障害内容：
+
+設置場所：同上
+作業希望日時：即時 / 期日指定（2026/xx/xx xx:xx）作業内容：機器交換
+作業立会会社名：△△株式会社ご担当者名：△△様電話番号：090-xxxx-xxxx
+復元後動作の最終確認方法：お客様にて業務確認駐車場使用可否：備考：高所作業または重量物等の有無など
+【セルフトラブルシューティングの実施およびログ収集】
+セルフトラブルシューティング：有 / 無ガイドに従ったログ収集：有 / 無
+
+セルフトラブルシューティングガイド：https://tdsynnex-help.freshdesk.com/a/solutions/articles/157000372262?lang=ja-JP
+【キッティングに必要な情報】
+有 / 無
+
+事前取得いただく情報について：https://tdsynnex-help.freshdesk.com/support/solutions/articles/157000372260
+以上となります。お手数をおかけいたしますが、ご確認のほどよろしくお願いいたします。</pre></div></section><section class="knowledge-panel" hidden="" id="panel-template-pfu-temp" role="tabpanel"><div class="knowledge-card"><h3>PFU一時依頼時テンプレート</h3><pre class="template-content">---------------------------------------------------------------------------------
+件名:TDSYNNEX -【オンサイト対応依頼】”貴社管理番号””お客様名”
+
+株式会社PFU ご担当者様
+
+ いつもお世話になっております。
+ TD SYNNEXの〇〇と申します。
+
+ 掲題のお客様よりSP-S210-10のHW障害について、ご対応をお願いいたします。
+ --------------------------------------
+【お客様情報】
+ 契約番号：xxxxxxxxxxxxx
+ 機器設置住所　：〒xxx-xxxx　埼玉県さいたま市xxx
+ お客様名　　　：〇〇株式会社　〇〇拠点
+ ご担当者名　　：〇〇様
+ 御連絡先　　　：090-xxxx-xxxx
+
+【作業情報】
+ 対象機器：筐体型番：xxxxx
+ 対象S/N ：筐体S/N：xxxxxxxxx
+ 契約内容：契約内容    　：平日日中(平日9:00-17:00)
+＊重要ーオプションカードの有無:
+   ＊重要ーオプションカードの種類:
+   ＊重要ーオプションカードのシリアル番号:
+   ＊重要ーオプションカードのスロット番号
+ 障害内容：ポート不良
+ 設置場所：同上
+
+ 作業希望日時：(即時/期日指定(2026/xx/xx xx:xx)
+ 作業内容　　：機器交換、障害機回収
+
+ 
+ 以上、ご対応のほどよろしくお願いいたします。
+---------------------------------------------------------------------------------
+
+以上、ご確認の程願います。
+</pre></div></section><section class="knowledge-panel" hidden="" id="panel-template-pfu-formal" role="tabpanel"><div class="knowledge-card"><h3>PFU正式依頼時テンプレート</h3><pre class="template-content">---------------------------------------------------------------------------------
+件名:TDSYNNEX -【オンサイト対応依頼】”貴社管理番号””お客様名”
+
+株式会社PFU ご担当者様
+
+ いつもお世話になっております。
+ TD SYNNEXの〇〇と申します。
+
+ 掲題のお客様よりSP-S210-10のHW障害について、ご対応をお願いいたします。
+ --------------------------------------
+【お客様情報】
+ 契約番号：xxxxxxxxxxxxx
+ 機器設置住所　：〒xxx-xxxx　埼玉県さいたま市xxx
+ お客様名　　　：〇〇株式会社　〇〇拠点
+ ご担当者名　　：〇〇様
+ 御連絡先　　　：090-xxxx-xxxx
+
+【作業情報】
+ 対象機器：筐体型番：xxxxx
+ 対象S/N ：筐体S/N：xxxxxxxxx
+ 契約内容：契約内容    　：平日日中(平日9:00-17:00)
+＊重要ーオプションカードの有無:
+   ＊重要ーオプションカードの種類:
+   ＊重要ーオプションカードのシリアル番号:
+   ＊重要ーオプションカードのスロット番号
+ 障害内容：ポート不良
+ 設置場所：同上
+
+ 作業希望日時：(即時/期日指定(2026/xx/xx xx:xx)
+ 作業内容　　：機器交換、障害機回収
+
+ 作業立会会社名：△△株式会社
+ ご担当者名　　：△△様
+ 電話番号　　　：090-xxxx-xxxx
+
+ 保守部品 ：$TD_SYN-SSP-S210-10-PR
+ 保守機S/N：xxxxxxxx
+ 配備倉庫 ：東京ロジスティック倉庫
+
+ 最終確認方法  ：お客様にて業務確認
+ 駐車場使用可否：使用可能等
+ 備考          ：高所作業または重量物等の有り無し等
+
+【キッティングに必要な情報】
+　・お客様提供情報シート　：入手済
+　・作業手順書　　　　  　：xxxxx設置手順書
+　・ファームウェア（アップグレードパスの通知含む）：入手済
+　・コンフィグファイルの提供：確認中
+　・ライセンスファイルの提供：確認中
+　・アクティベーションコード：確認中
+
+↓必要時、PFUに依頼
+【作業員情報】
+☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆
+ 入館予定時刻 ：2026/xx/xx xx:xx
+ 作業員氏名　 ：
+ 電話番号　   ：090-xxxx-xxxx
+ 車両情報　　 ：車種、ナンバー等
+☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆
+
+ --------------------------------------
+
+ お客様提供情報シートを添付しますので、ご確認願います。
+
+ 以上、ご対応のほどよろしくお願いいたします。
+---------------------------------------------------------------------------------
+
+以上、ご確認の程願います。
+</pre></div></section></div></div>
+<footer>
+<span>Designed for calm visibility and fast access.</span>
+<span>Last updated: 2026-08-11</span>
+</footer>
+</div></main>
+<script>
     // ==================== 時計処理（pad関数不具合修正） ====================
     const markWrap = document.getElementById('clockMarks');
     for(let i=0;i<12;i++){
